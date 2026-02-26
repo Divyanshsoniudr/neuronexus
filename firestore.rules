@@ -1,0 +1,68 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isUser(uid) {
+      return request.auth.uid == uid;
+    }
+    
+    function getRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    
+    function isAdmin() {
+      return getRole() == 'admin' || getRole() == 'singularity';
+    }
+
+    function isModerator() {
+      return getRole() == 'moderator' || isAdmin();
+    }
+
+    // --- COLLECTION RULES ---
+
+    // Users: Users can read/write their own data. Admins can read/write everything.
+    match /users/{uid} {
+      allow read: if isUser(uid) || isAdmin();
+      allow write: if isUser(uid) || isAdmin();
+    }
+
+    // Hub Topics: Publicly readable. Only Admins can forge.
+    match /hub_topics/{topicId} {
+      allow read, list, get: if true;
+      allow write: if isAdmin();
+    }
+
+    // Config (Broadcasts): Publicly readable. Only Admins can update.
+    match /config/broadcast {
+      allow read, get: if true;
+      allow write: if isAdmin();
+    }
+
+    // Audit Logs: Immutable. Only Admins can read. No one can delete/update.
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if true; // Service level logging
+      allow update, delete: if false;
+    }
+
+    // Quizzes & Roadmaps: Private to user unless Admin.
+    match /roadmaps/{docId} {
+      allow read, write: if isUser(resource.data.userId) || isAdmin();
+    }
+    
+    match /quizzes/{docId} {
+      allow read, write: if isUser(resource.data.userId) || isAdmin();
+    }
+
+    // Flagged Simulations: Moderators and Admins only.
+    match /flagged_simulations/{simId} {
+      allow read, write: if isModerator();
+    }
+  }
+}

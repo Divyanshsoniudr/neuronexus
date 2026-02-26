@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "question": "Which neural architecture revolutionized NLP in 2017?",
+    "options": ["CNN", "RNN", "Transformer", "LSTM"],
+    "answer": "Transformer",
+    "explanation": "The Transformer architecture, introduced in 'Attention Is All You Need', replaced sequential processing with self-attention."
+  },
+  {
+    "id": 2,
+    "question": "What is the primary engine behind generative 3D in 2026?",
+    "options": ["Voxel Grids", "Neural Radiance Fields (NeRF)", "Ray Tracing", "Polygon Extrusion"],
+    "answer": "Neural Radiance Fields (NeRF)",
+    "explanation": "NeRFs allow for high-fidelity 3D scene reconstruction from simple 2D images."
+  },
+  {
+    "id": 3,
+    "question": "In quantum computing, what term describes the link between two particles?",
+    "options": ["Coherence", "Superposition", "Entanglement", "Decoherence"],
+    "answer": "Entanglement",
+    "explanation": "Entanglement is a phenomenon where particles become linked, sharing state regardless of distance."
+  }
+]
