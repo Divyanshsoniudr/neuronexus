@@ -82,7 +82,7 @@ const ImprovementRoom = () => {
 
         {/* Forge Decorative Footer */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-6 opacity-20 text-[10px] font-black uppercase tracking-[0.5em] text-white whitespace-nowrap">
-          <span>Improvement Room v1.0</span>
+          <span>Improvement Room</span>
           <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
           <span>Making learning easy</span>
         </div>

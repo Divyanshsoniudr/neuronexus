@@ -211,7 +211,7 @@ const Quiz = () => {
                           <Dna size={10} /> {currentQuestion.category}
                         </span>
                         <span className="text-white/60 text-xs font-black uppercase tracking-widest font-syne">
-                          Phase {currentQuestionIndex + 1}
+                          Question {currentQuestionIndex + 1}
                         </span>
                       </div>
 

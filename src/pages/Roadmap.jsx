@@ -63,10 +63,10 @@ const Roadmap = () => {
   const pathHeight = useTransform(scrollProgressSpring, [0, 1], ["0%", "100%"]);
 
   const synthStages = [
-    "Analyzing objective...",
-    "Encoding patterns...",
-    "Syncing neural pathways...",
-    "Igniting the spark...",
+    "Analyzing subject...",
+    "Creating questions...",
+    "Building your plan...",
+    "Almost ready...",
   ];
 
   const path =
@@ -296,7 +296,7 @@ const Roadmap = () => {
                   <div
                     className={`absolute top-full mt-4 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-colors ${isActive ? "text-[#DFFF00]" : "text-white/20"}`}
                   >
-                    Phase 0{index + 1}
+                    Step 0{index + 1}
                   </div>
                 </div>
 
@@ -329,6 +329,34 @@ const Roadmap = () => {
             );
           })}
         </div>
+
+        {/* Dynamic Chapter Recommendations */}
+        <AnimatePresence mode="wait">
+          {selectedNode && (
+            <motion.div
+              key={selectedNode.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.3 } }}
+              exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
+              className="mt-32 border-t border-white/5 pt-16 relative z-40 pb-48"
+            >
+              <div className="flex flex-col items-center mb-10 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">
+                  <Star size={12} /> External Intelligence
+                </div>
+                <h3 className="text-2xl font-semibold text-white tracking-tight">
+                  Recommended Reading
+                </h3>
+                <p className="text-white/40 text-sm mt-2 font-medium">
+                  Curated articles to master{" "}
+                  <span className="text-white/80">'{selectedNode.topic}'</span>
+                </p>
+              </div>
+
+              <NeuralFeed userTopic={selectedNode.topic} skillStats={{}} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* --- PERSISTENT MISSION CONTROL ACTION BAR --- */}
@@ -413,7 +441,7 @@ const Roadmap = () => {
                       className="px-12 lg:px-16 py-6 lg:py-8 rounded-[30px] bg-white text-black font-black uppercase tracking-[0.4em] text-xs lg:text-sm flex items-center gap-4 hover:bg-[#DFFF00] transition-all shadow-[0_0_50px_rgba(255,255,255,0.2)] active:scale-95 group"
                     >
                       <Zap size={24} className="group-hover:animate-pulse" />
-                      START THE MAGIC
+                      START LEARNING
                       <ArrowRight
                         size={20}
                         className="group-hover:translate-x-2 transition-transform"
@@ -478,9 +506,7 @@ const Roadmap = () => {
               </motion.div>
             </AnimatePresence>
             <p className="mt-16 text-[#DFFF00] text-xs font-black uppercase tracking-[1em] animate-pulse font-syne italic">
-              {isVaultSync
-                ? "NEURAL VAULT SYNC ACTIVE"
-                : "AI COGNITIVE SYNC ACTIVE"}
+              {isVaultSync ? "LOADING SAVED QUIZ" : "GENERATING NEW QUIZ"}
             </p>
           </motion.div>
         )}

@@ -16,16 +16,8 @@ const NeuralLoader = ({ type = "synthesis", text }) => {
     if (Array.isArray(text)) return text;
     if (text) return [text];
     return isSync
-      ? [
-          "Syncing Neural Progress...",
-          "Verifying Credentials...",
-          "Encrypting Data Stream...",
-        ]
-      : [
-          "Scanning Knowledge Graph...",
-          "Drafting Assessment...",
-          "Finalizing Curriculum...",
-        ];
+      ? ["Saving Progress...", "Checking Details...", "Securing Account..."]
+      : ["Reading Materials...", "Writing Questions...", "Finishing Up..."];
   }, [text, isSync]);
 
   React.useEffect(() => {
@@ -161,7 +153,7 @@ const NeuralLoader = ({ type = "synthesis", text }) => {
           </div>
 
           <p className="text-white/10 text-[8px] font-black uppercase tracking-[0.3em] animate-pulse">
-            Neural Core Processing
+            Processing
           </p>
         </motion.div>
       </AnimatePresence>

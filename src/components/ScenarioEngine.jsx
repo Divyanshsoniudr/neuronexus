@@ -85,7 +85,7 @@ const ScenarioEngine = () => {
           <Zap className="text-indigo-400 animate-pulse" />
         </motion.div>
         <p className="text-xs font-black uppercase tracking-[0.4em] text-white/30">
-          Constructing Simulation...
+          Loading Scenario...
         </p>
       </div>
     );
@@ -222,7 +222,7 @@ const ScenarioEngine = () => {
             {/* Dialectical Review (Neutrality Engine) */}
             <div className="glass-panel p-8 md:p-12 rounded-[40px] border border-white/5 bg-indigo-500/5">
               <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400 mb-8 flex items-center gap-2">
-                <Scale size={16} /> The Neutrality Engine _ Dialectical Balance
+                <Scale size={16} /> Balanced Review
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -250,7 +250,7 @@ const ScenarioEngine = () => {
               onClick={() => window.location.reload()}
               className="w-full py-5 rounded-2xl glass-panel border border-white/10 text-white font-black uppercase tracking-widest hover:bg-white/10 transition-all flex items-center justify-center gap-3"
             >
-              <History size={16} /> Archive Decision & Continue
+              <History size={16} /> Save & Continue
             </button>
           </motion.div>
         )}

@@ -33,7 +33,7 @@ const PaymentSuccess = () => {
           className="w-16 h-16 border-2 border-indigo-500 border-t-transparent rounded-full mb-8 shadow-[0_0_30px_rgba(99,102,241,0.2)]"
         />
         <h2 className="text-xl font-black uppercase tracking-[0.3em] animate-pulse">
-          Verifying Neural Authorization...
+          Verifying Payment...
         </h2>
       </div>
     );
@@ -43,7 +43,7 @@ const PaymentSuccess = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white p-12 overflow-hidden">
       <SEO
         title="Payment Success"
-        description="Your Neural Mastery has been upgraded to Premium."
+        description="Your account has been upgraded to Premium."
       />
 
       <motion.div
@@ -58,13 +58,13 @@ const PaymentSuccess = () => {
       </motion.div>
 
       <h1 className="text-6xl font-black italic tracking-tighter uppercase mb-6 text-center leading-none">
-        Mastery{" "}
+        Premium{" "}
         <span className="text-emerald-500 text-glow-emerald">Unlocked</span>
       </h1>
 
       <p className="text-white/40 font-bold text-center max-w-md mb-12 uppercase tracking-widest text-[10px] leading-relaxed">
-        Platform governance has verified your transaction. All limits have been
-        removed. You now have priority access to the Neural Core.
+        Your payment was successful. All limits have been removed. You now have
+        full access to all features.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl mb-12">
@@ -100,7 +100,7 @@ const PaymentSuccess = () => {
         onClick={() => navigate("/dashboard")}
         className="group flex items-center gap-4 px-10 py-5 rounded-[24px] bg-white text-black font-black uppercase text-xs tracking-widest hover:bg-emerald-500 hover:text-white transition-all shadow-2xl shadow-white/5 hover:shadow-emerald-500/20"
       >
-        Enter Control Center{" "}
+        Go to Dashboard{" "}
         <ChevronRight
           size={18}
           className="group-hover:translate-x-2 transition-transform"

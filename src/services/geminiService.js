@@ -103,7 +103,7 @@ export const generateLiveQuiz = async (topic, difficulty = 'Intermediate', file 
         return await guardian.auditOutput(quizData.slice(0, 25));
     } catch (error) {
         console.warn(`[Gemini-Core] Generation failed: ${error.message}`);
-        throw new Error("Server Busy: The Neural Core is currently experiencing heavy load. Please try again later.");
+        throw new Error("Server Busy: The system is currently experiencing heavy load. Please try again later.");
     }
 };
 
@@ -116,10 +116,10 @@ export const generateMiniProject = async (weakSectors) => {
     const modelsToTry = ["gemini-flash-latest", "gemini-2.5-flash", "gemini-2.0-flash"];
 
     const prompt = `
-    Analyze these weak neural sectors: ${weakSectors.join(", ")}.
+    Analyze these weak topics: ${weakSectors.join(", ")}.
     Synthesize a single, creative, and highly actionable "Mini-Project" idea that forces the user to apply these concepts.
     Format your response as a JSON object: { "title": "string", "objective": "string", "steps": ["string", "string", "string"] }.
-    Make it sound futuristic and challenging.
+    Make it challenging but approachable.
     `;
 
     for (const modelName of modelsToTry) {
@@ -137,8 +137,8 @@ export const generateMiniProject = async (weakSectors) => {
     }
 
     return {
-        title: "Neural Integration Test",
-        objective: "Manually reconcile local data structures with cloud-based persistent vectors.",
+        title: "Integration Test",
+        objective: "Manually sync your local data with the cloud.",
         steps: ["Identify data schema", "Mock external API", "Verify transactional integrity"]
     };
 };
@@ -154,7 +154,7 @@ export const generateNeuralFeed = async (topic, skillStats, mentors, externalSig
     });
 
     const prompt = `
-    You are the Neural Core of the NeuroNexus platform.
+    You are the core intelligence of the learning platform.
     Analyze the FOLLOWING DATA SOURCES:
     
     1. USER STATE:
@@ -168,8 +168,8 @@ export const generateNeuralFeed = async (topic, skillStats, mentors, externalSig
        ${mentors.map(m => `- ${m.name} (${m.title}): ${m.role}`).join("\n")}
     
     TASK:
-    Synthesize a "Daily Mastery Briefing."
-    Generate exactly 3 "Synaptic Insights." At least ONE insight MUST bridge a Global Signal with the user's current progress.
+    Synthesize a "Daily Study Briefing."
+    Generate exactly 3 "Insights." At least ONE insight MUST bridge a Global Signal with the user's current progress.
     
     Output Format: JSON array.
     [

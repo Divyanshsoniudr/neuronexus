@@ -129,7 +129,7 @@ const QuizResults = () => {
                 className="absolute -bottom-4 -right-4 px-4 py-2 rounded-xl glass-panel border border-[#DFFF00]/30 backdrop-blur-xl z-20"
               >
                 <span className="text-[10px] font-black text-[#DFFF00] uppercase tracking-widest font-syne">
-                  Verified Result
+                  Your Result
                 </span>
               </motion.div>
             </div>
@@ -162,7 +162,7 @@ const QuizResults = () => {
         <div className="lg:w-7/12 w-full pt-12 lg:pt-32">
           <div className="mb-20">
             <h4 className="text-[10px] font-bold text-indigo-400 uppercase tracking-[0.6em] mb-4">
-              Subject Performance Analysis
+              Performance Analysis
             </h4>
             <div className="h-px w-24 bg-indigo-500/30 mb-8" />
             <p className="text-xl text-white/60 font-medium leading-relaxed font-outfit">
@@ -262,7 +262,7 @@ const QuizResults = () => {
               ) : (
                 <div className="py-4 border-b border-white/10">
                   <span className="text-sm font-bold text-white/20 uppercase tracking-widest font-syne italic">
-                    Excellent Domain Mastery
+                    Excellent Score
                   </span>
                 </div>
               )}

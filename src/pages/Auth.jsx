@@ -92,7 +92,7 @@ const Auth = () => {
               className="text-center"
             >
               <h1 className="text-3xl font-black mb-2 tracking-tighter uppercase">
-                PREPARE TO WIN
+                GET STARTED
               </h1>
               <p className="text-white/40 text-[10px] mb-10 uppercase tracking-[0.3em] font-black">
                 Account choice

@@ -76,7 +76,7 @@ const NeuralResume = ({ stats }) => {
       <div className="p-12 glass-panel rounded-[48px] border border-white/5 relative overflow-hidden text-center">
         <div className="absolute inset-0 bg-mesh opacity-20 pointer-events-none" />
         <h3 className="text-xl font-black uppercase tracking-[0.4em] text-white/60 mb-16 relative">
-          Neural Connectivity Map
+          Your Skill Map
         </h3>
 
         <div className="relative flex justify-center items-center h-48">
@@ -124,7 +124,7 @@ const NeuralResume = ({ stats }) => {
         </div>
 
         <p className="mt-12 text-[10px] font-black text-cyan-400 uppercase tracking-widest animate-pulse">
-          Biological Sync Level:{" "}
+          Overall Progress:{" "}
           {Math.round(
             (Object.values(stats).reduce((a, b) => a + b, 0) / 25) * 100,
           )}

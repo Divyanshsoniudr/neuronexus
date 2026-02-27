@@ -53,18 +53,18 @@ const MasteryBadge = ({ level, color = "indigo" }) => (
 
 const AsciiCoreTerminal = () => {
   const [logs, setLogs] = useState([
-    { id: 1, type: "SYSTEM", text: "INITIALIZING NEURAL CORE..." },
-    { id: 2, type: "SECURITY", text: "SAFETY LAYER ACTIVE [v.4.2.0]" },
-    { id: 3, type: "MASTERY", text: "SYNCING GLOBAL BRAIN..." },
+    { id: 1, type: "SYSTEM", text: "INITIALIZING SYSTEM..." },
+    { id: 2, type: "SECURITY", text: "SECURITY LAYER ACTIVE" },
+    { id: 3, type: "MASTERY", text: "SYNCING DATABASE..." },
   ]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const texts = [
-        "SYNAPTIC BURST DETECTED",
-        "UPDATING LEARNING HEATMAP",
-        "FORGING NEW TOPICS...",
-        "ORACLE SYNC COMPLETE",
+        "HIGH TRAFFIC DETECTED",
+        "UPDATING LEARNING DATA",
+        "CREATING NEW TOPICS...",
+        "SYNC COMPLETE",
       ];
       setLogs((prev) => [
         ...prev.slice(-10),
@@ -188,7 +188,7 @@ const Admin = () => {
     const success = await addHubTopic(hubTopic);
     if (success) {
       alert(
-        `Neural Route '${hubTopic.title}' forged.\n\nLineage: [Model: gemini-1.5-pro] recorded.`,
+        `Topic '${hubTopic.title}' created.\n\nLineage: [Model: gemini-1.5-pro] recorded.`,
       );
       setHubTopic({
         title: "",
@@ -216,7 +216,7 @@ const Admin = () => {
     if (success) {
       setIsAuthorized(true);
     } else {
-      setError("ACCESS DENIED: Neural key mismatch.");
+      setError("ACCESS DENIED: Incorrect key.");
       logSecurityViolation({
         uid: user?.uid,
         email: user?.email,
@@ -242,8 +242,7 @@ const Admin = () => {
             Step-Up Required
           </h2>
           <p className="text-white/40 text-[10px] font-black uppercase tracking-widest mb-8 leading-relaxed">
-            Enter your 2026 Neural Access Key to <br /> unlock Oracle Core
-            governance.
+            Enter your Admin Key to <br /> unlock the dashboard.
           </p>
 
           <form onSubmit={handleSecurityCheck} className="space-y-4">
@@ -292,38 +291,38 @@ const Admin = () => {
           />
         </div>
         <h1 className="text-6xl font-black tracking-tighter mb-4 italic uppercase leading-none">
-          Oracle <span className="text-red-500">Core</span>
+          Admin <span className="text-red-500">Panel</span>
         </h1>
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-500 text-[9px] font-black uppercase tracking-[0.3em]">
-          <ShieldCheck size={12} /> Access Level: Singularity Admin
+          <ShieldCheck size={12} /> Access Level: Super Admin
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {[
           {
-            label: "Authorized Personas",
+            label: "Total Users",
             value: metrics.totalUsers?.toLocaleString() || "0",
             icon: Database,
             color: "text-indigo-400",
             trend: "+12.5%",
           },
           {
-            label: "Neural Uptime",
+            label: "System Uptime",
             value: `${metrics.systemUptime}%`,
             icon: Wifi,
             color: "text-emerald-400",
             trend: "Stable",
           },
           {
-            label: "Synaptic Latency",
+            label: "API Latency",
             value: `${metrics.apiLatency}ms`,
             icon: Activity,
             color: "text-amber-400",
             trend: "-2ms",
           },
           {
-            label: "Core Health",
+            label: "System Health",
             value: metrics.apiLatency < 50 ? "Excellent" : "Nominal",
             icon: Cpu,
             color: "text-red-400",
@@ -373,7 +372,7 @@ const Admin = () => {
                   <tr className="text-white/20 uppercase tracking-widest border-b border-white/5">
                     <th className="pb-4 font-black">Identity</th>
                     <th className="pb-4 font-black">Email</th>
-                    <th className="pb-4 font-black">Neural Role</th>
+                    <th className="pb-4 font-black">Role</th>
                     <th className="pb-4 font-black text-center">Mastery</th>
                     <th className="pb-4 font-black text-center">Control</th>
                   </tr>
@@ -448,7 +447,7 @@ const Admin = () => {
                     </span>
                     <span className="flex-1 font-bold text-white/60 tracking-tight flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-indigo-500/40" />
-                      {log.topic || log.type || "Neural Sync"}
+                      {log.topic || log.type || "System Sync"}
                     </span>
                     <span
                       className={`text-[8px] px-2 py-0.5 rounded font-black ${log.flagged ? "bg-red-500/10 text-red-500" : "bg-white/5 text-white/60"}`}
@@ -468,7 +467,7 @@ const Admin = () => {
           <div className="glass-panel p-10 rounded-[48px] border border-white/5">
             <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-8 flex items-center gap-3">
               <Zap size={14} className="text-amber-500" />
-              Hub Content Forge
+              Topic Creator
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
@@ -509,7 +508,7 @@ const Admin = () => {
                 onClick={handleHubForge}
                 className="py-3 rounded-2xl bg-indigo-500 text-white font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-all shadow-xl shadow-indigo-500/20"
               >
-                Forge Neural Topic
+                Create Topic
               </button>
             </div>
           </div>
@@ -518,7 +517,7 @@ const Admin = () => {
         <div className="space-y-8">
           <div className="glass-panel p-10 rounded-[48px] border border-white/5">
             <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-6">
-              Neural Gateways
+              System Monitoring
             </h3>
             <div className="space-y-4">
               <div className="p-4 rounded-3xl bg-indigo-500/5 border border-indigo-500/10">
@@ -579,14 +578,14 @@ const Admin = () => {
           </div>
 
           <button className="w-full py-6 rounded-[32px] bg-red-500/10 border border-red-500/20 text-red-500 font-black uppercase text-[10px] tracking-[0.4em] hover:bg-red-500 hover:text-white transition-all shadow-xl hover:shadow-red-500/20">
-            Reset Neural Cores
+            Restart Servers
           </button>
 
           <div className="p-10 rounded-[48px] border border-dashed border-white/10 text-center">
             <ShieldCheck size={32} className="mx-auto text-white/10 mb-4" />
             <p className="text-[10px] font-black text-white/20 uppercase tracking-widest leading-relaxed">
               Manual Governance Protocol <br />
-              Authorized By Singularity
+              Authorized By Super Admin
             </p>
           </div>
         </div>

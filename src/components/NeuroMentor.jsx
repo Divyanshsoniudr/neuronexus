@@ -10,7 +10,7 @@ const NeuroMentor = ({ currentQuestion, mentorOverride }) => {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: `I am ${mentor.name}, your ${mentor.title}. Need a ${mentor.role.toLowerCase()} perspective on this node?`,
+      content: `Hi! I am ${mentor.name}, your ${mentor.title}. Need help with this question?`,
     },
   ]);
   const [input, setInput] = useState("");
@@ -25,7 +25,7 @@ const NeuroMentor = ({ currentQuestion, mentorOverride }) => {
     setIsLoading(true);
 
     try {
-      const responseContent = `As your ${mentor.title}, I've applied ${mentor.traits[0].toLowerCase()} analysis to your query. Regarding "${currentQuestion.category}": ${currentQuestion.explanation}. ${mentor.philosophy}`;
+      const responseContent = `As your ${mentor.title}, here is some help with "${currentQuestion.category}": ${currentQuestion.explanation}. ${mentor.philosophy}`;
 
       setMessages((prev) => [
         ...prev,
@@ -36,7 +36,7 @@ const NeuroMentor = ({ currentQuestion, mentorOverride }) => {
         ...prev,
         {
           role: "assistant",
-          content: "Neural sync interrupted. Please try again.",
+          content: "Something went wrong. Please try again.",
         },
       ]);
     } finally {
@@ -120,7 +120,7 @@ const NeuroMentor = ({ currentQuestion, mentorOverride }) => {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                  placeholder="Ask for deeper insight..."
+                  placeholder="Ask a question..."
                   className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-5 pr-14 text-xs font-bold text-white transition-all outline-none focus:border-indigo-500/50 placeholder:text-white/10"
                 />
                 <button

@@ -39,8 +39,8 @@ const fallbackSimulation = (topic, reason) => {
     return Array.from({ length: 25 }, (_, i) => ({
         id: i + 1,
         category: categories[i % categories.length],
-        question: `[NEURAL FAILSAFE] ${topic} Vector ${i + 1}`,
-        options: ["Check API Configuration", "Verify Quota/Balance", "AI Core Offline", "Try Again Later"],
+        question: `[BACKUP] ${topic} Question ${i + 1}`,
+        options: ["Check API Configuration", "Verify Quota/Balance", "AI System Offline", "Try Again Later"],
         answer: "Check API Configuration",
         explanation: "All AI models are currently unavailable. Please verify your OpenAI and Gemini API keys in the .env file."
     }));

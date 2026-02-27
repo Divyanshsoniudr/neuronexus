@@ -116,13 +116,13 @@ const fallbackSimulation = async (topic, reason) => {
     const messages = {
         MISSING_KEY: "OpenAI API Key is missing in your .env file.",
         INVALID_KEY: "Your OpenAI API Key is invalid or has expired.",
-        API_ERROR: "Failed to connect to GPT-4o. The Neural Core is offline."
+        API_ERROR: "Failed to connect to the AI. The system is offline."
     };
 
     return Array.from({ length: 25 }, (_, i) => ({
         id: i + 1,
         category: categories[i % categories.length],
-        question: `[GPT FAILSAFE] ${topic} Vector ${i + 1}`,
+        question: `[BACKUP] ${topic} Question ${i + 1}`,
         options: ["Check OpenAI Key", "Verify API Balance", "Restart Dev Server", "Try Again Later"],
         answer: "Check OpenAI Key",
         explanation: messages[reason] || "An unexpected error occurred during GPT synthesis."

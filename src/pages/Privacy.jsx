@@ -6,8 +6,8 @@ const Privacy = () => {
   return (
     <div className="w-full max-w-3xl mx-auto py-20 px-6">
       <SEO
-        title="Privacy Protocol"
-        description="Learn how we handle your neural data and cognitive vectors."
+        title="Privacy Policy"
+        description="Learn how we handle your data and learning progress."
       />
       <motion.div
         initial={{ opacity: 0 }}
@@ -18,41 +18,40 @@ const Privacy = () => {
 
         <h1 className="text-4xl font-black mb-12 tracking-tighter uppercase flex items-center gap-4">
           <Shield className="text-cyan-400" size={32} />
-          Neural Privacy Protocol
+          Privacy Policy
         </h1>
 
         <div className="space-y-12">
           <section>
             <h3 className="text-xs font-black text-cyan-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-              <Lock size={14} /> 01. Biological Data Sovereignty
+              <Lock size={14} /> 01. Data Privacy
             </h3>
             <p className="text-white/40 text-sm leading-relaxed">
-              Your cognitive stats and skill vectors are yours alone. We do not
-              sell your "Neural Resume" data to third-party entities. All data
-              is encrypted and stored in your private Firebase instance.
+              Your learning stats and progress are yours alone. We do not sell
+              your "Learning Profile" data to third-party entities. All data is
+              encrypted and stored securely.
             </p>
           </section>
 
           <section>
             <h3 className="text-xs font-black text-purple-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-              <Eye size={14} /> 02. Transparency & Synthesis
+              <Eye size={14} /> 02. Data Usage
             </h3>
             <p className="text-white/40 text-sm leading-relaxed">
-              We use anonymized quiz data to tune our Gemini-powered generation
-              engine. This ensures the difficulty curves remain precise across
-              the entire network without compromising individual identity.
+              We use anonymized quiz data to tune our AI generation engine. This
+              ensures the difficulty curves remain precise across the entire
+              system without compromising individual identity.
             </p>
           </section>
 
           <section>
             <h3 className="text-xs font-black text-green-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-              <FileText size={14} /> 03. Agentic Boundaries
+              <FileText size={14} /> 03. AI Boundaries
             </h3>
             <p className="text-white/40 text-sm leading-relaxed">
-              The Neuro-Mentor agent only access the current quiz context to
-              provide feedback. It does not have access to your personal
-              filesystem or external private documents unless explicitly
-              uploaded for synthesis.
+              The AI assistant only access the current quiz context to provide
+              feedback. It does not have access to your personal filesystem or
+              external private documents unless explicitly uploaded for use.
             </p>
           </section>
         </div>

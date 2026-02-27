@@ -36,18 +36,18 @@ const Moderator = () => {
   return (
     <div className="max-w-7xl w-full mx-auto py-12 px-6">
       <SEO
-        title="Neural Audit"
+        title="Moderator Dashboard"
         description="Moderation interface for reviewing flagged simulations."
       />
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
         <div>
           <h1 className="text-5xl font-black tracking-tighter uppercase italic leading-none mb-4">
-            Neural <span className="text-emerald-500">Audit</span>
+            Content <span className="text-emerald-500">Audit</span>
           </h1>
           <div className="flex items-center gap-4">
             <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-[0.3em] flex items-center gap-2">
-              <Shield size={12} /> Status: Guardian Online
+              <Shield size={12} /> Status: Active
             </div>
             <div className="text-[10px] text-white/30 font-bold uppercase tracking-widest">
               {flaggedItems.length} Sessions Pending Review
@@ -164,7 +164,7 @@ const Moderator = () => {
                   </div>
                   <div className="p-8 rounded-[32px] bg-red-500/[0.03] border border-red-500/10 italic">
                     <div className="text-[8px] font-black uppercase tracking-widest text-red-500/40 mb-4">
-                      Guardian Log
+                      System Log
                     </div>
                     <p className="text-sm font-bold text-red-500/60 leading-relaxed">
                       "{selectedItem.flagReason || "Suspected policy violation"}
@@ -179,7 +179,7 @@ const Moderator = () => {
                   </h4>
                   <div className="p-8 rounded-[32px] bg-white/[0.02] border border-white/5 font-mono text-[10px] text-white/40 leading-loose">
                     {/* Mocking the session trace for display */}
-                    [08:42:15] Guard Layer initialized
+                    [08:42:15] System initialized
                     <br />
                     [08:42:16] Scanning input for toxicity/bias...
                     <br />
@@ -188,7 +188,7 @@ const Moderator = () => {
                     </span>{" "}
                     Topic "{selectedItem.topic}" flagged for review
                     <br />
-                    [08:42:18] Neural Engine processing paused
+                    [08:42:18] Processing paused
                     <br />
                     [08:42:19] Session ID recorded: {selectedItem.id}
                   </div>

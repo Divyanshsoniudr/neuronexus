@@ -60,11 +60,11 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
       >
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em] mb-6 font-syne">
           <Sparkles size={12} />
-          Personalized Growth Protocol
+          Personalized Study Plan
         </div>
         <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-4 leading-tight font-outfit">
-          DETERMINE YOUR <br />
-          <span className="italic text-indigo-500">{roadmapTitle}</span> LEVEL.
+          WHAT IS YOUR <br />
+          <span className="italic text-indigo-500">{roadmapTitle}</span> LEVEL?
         </h2>
         <p className="text-white/40 text-lg font-medium max-w-md mx-auto font-outfit">
           Our AI will calibrate your roadmap to bypass what you already know.
@@ -123,8 +123,8 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
               }`}
             >
               {level.skipCount > 0
-                ? `SKIPS ${level.skipCount} FOUNDATION NODES`
-                : "FULL CURRICULUM"}
+                ? `SKIPS ${level.skipCount} BASIC TOPICS`
+                : "ALL TOPICS"}
             </div>
           </motion.button>
         ))}
@@ -142,7 +142,7 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
               onClick={() => onComplete(selected)}
               className="w-full px-8 py-5 rounded-2xl bg-indigo-600 text-white font-black uppercase tracking-widest hover:bg-indigo-500 transition-all flex items-center justify-center gap-3 text-sm font-syne shadow-2xl shadow-indigo-500/40"
             >
-              Initialize My Roadmap
+              Start My Plan
               <ChevronRight size={18} />
             </button>
           </motion.div>

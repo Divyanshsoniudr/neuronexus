@@ -94,11 +94,11 @@ const SkillRadar = ({ stats }) => {
             key={`label-${i}`}
             x={p.labelX}
             y={p.labelY}
-            fill="rgba(255,255,255,0.6)"
-            fontSize="9"
+            fill="rgba(255,255,255,0.7)"
+            fontSize="11"
             textAnchor="middle"
             alignmentBaseline="middle"
-            className="uppercase font-black font-syne tracking-widest"
+            className="font-medium tracking-wide"
           >
             {p.label}
           </text>
