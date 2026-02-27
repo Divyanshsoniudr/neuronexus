@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { generateLiveQuiz as generateGeminiQuiz } from '../services/geminiService';
 import { loginWithGoogle, logout, subscribeToAuthChanges, registerWithEmail, loginWithEmail } from '../services/authService';
-import { saveUserStats, getUserStats, saveQuizToHistory, getQuizFromVault, saveQuizToVault, saveUsageStats } from '../services/dbService';
+import { saveUserStats, syncSessionData, getUserStats, saveQuizToHistory, getQuizFromVault, saveQuizToVault, saveUsageStats } from '../services/dbService';
 import { guardian } from '../services/Guardian';
 
 export const useStore = create((set, get) => ({
@@ -26,6 +26,11 @@ export const useStore = create((set, get) => ({
         Logic: 0,
         Theory: 0,
         Security: 0
+    },
+
+    globalStats: JSON.parse(localStorage.getItem('global_stats')) || {
+        totalQuizzes: 0,
+        averageScore: 0
     },
 
     // Improvement Room State
@@ -169,10 +174,14 @@ export const useStore = create((set, get) => ({
             localStorage.setItem('quiz_data', JSON.stringify(quiz));
             localStorage.setItem('usage_stats', JSON.stringify(updatedUsage));
 
-            // Sync to Firestore
+            // [SCALE OPTIMIZATION] Defer usage sync to avoid document locks. 
+            // We rely on localStorage for immediate rate limiting, and sync 
+            // back to the cloud only at the end of a session or periodically.
             if (get().user) {
-                await saveUsageStats(get().user.uid, updatedUsage);
+                console.log("[Scale] Deferred usage stats sync to prevent write contention.");
+                // Sync is handled later in submitAnswer
             }
+
             localStorage.setItem('quiz_topic', get().userTopic);
             localStorage.setItem('quiz_diff', difficulty);
             localStorage.setItem('quiz_index', '0');
@@ -182,6 +191,7 @@ export const useStore = create((set, get) => ({
             return true;
         } catch (error) {
             set({ isGenerating: false });
+            alert(error.message || "Failed to generate quiz. The Neural Core is currently experiencing heavy load.");
             return false;
         }
     },
@@ -218,13 +228,34 @@ export const useStore = create((set, get) => ({
         // Sync to Firestore if logged in
         if (user) {
             try {
-                await saveUserStats(user.uid, updatedStats);
+                // [SCALE OPTIMIZATION] Only write to DB when the quiz is fully complete
+                // Prevents 10 writes per quiz down to 1 write per quiz per user.
                 if (isFinished) {
+                    const finalScore = isCorrect ? score + 1 : score;
+                    const percentage = Math.round((finalScore / currentQuiz.length) * 100);
+
+                    const newTotalQuizzes = get().globalStats.totalQuizzes + 1;
+                    const newAverageScore = Math.round(((get().globalStats.averageScore * get().globalStats.totalQuizzes) + percentage) / newTotalQuizzes);
+
+                    const updatedGlobalStats = {
+                        totalQuizzes: newTotalQuizzes,
+                        averageScore: newAverageScore
+                    };
+
+                    set({ globalStats: updatedGlobalStats });
+                    localStorage.setItem('global_stats', JSON.stringify(updatedGlobalStats));
+
+                    await syncSessionData(user.uid, {
+                        skillStats: updatedStats,
+                        usageStats: get().usageStats,
+                        globalStats: updatedGlobalStats
+                    });
                     await saveQuizToHistory(user.uid, {
                         topic: get().userTopic,
-                        score: isCorrect ? score + 1 : score,
+                        score: finalScore,
                         total: currentQuiz.length,
-                        difficulty: get().currentDifficulty
+                        difficulty: get().currentDifficulty,
+                        answers: newAnswers // [SCALE OPTIMIZATION] Embed flat array inside history doc
                     });
                 }
             } catch (error) {
@@ -330,7 +361,11 @@ export const useStore = create((set, get) => ({
                     ]);
 
                     const newState = { user, isAuthLoading: false };
-                    if (cloudStats) newState.skillStats = cloudStats;
+                    if (cloudStats) {
+                        newState.skillStats = cloudStats.skillStats;
+                        newState.globalStats = cloudStats.globalStats || { totalQuizzes: 0, averageScore: 0 };
+                        localStorage.setItem('global_stats', JSON.stringify(newState.globalStats));
+                    }
                     if (cloudRoadmap) {
                         newState.roadmapProgress = cloudRoadmap;
                         localStorage.setItem('roadmap_progress', JSON.stringify(cloudRoadmap));
@@ -414,7 +449,7 @@ export const useStore = create((set, get) => ({
         const keysToRemove = [
             'quiz_data', 'quiz_topic', 'quiz_diff', 'quiz_index',
             'quiz_score', 'quiz_answers', 'roadmap_progress', 'roadmap_levels',
-            'active_roadmap_id', 'active_roadmap_node'
+            'active_roadmap_id', 'active_roadmap_node', 'global_stats'
         ];
         keysToRemove.forEach(k => localStorage.removeItem(k));
     },

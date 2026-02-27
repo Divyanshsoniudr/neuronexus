@@ -16,6 +16,7 @@ import Discovery from "./pages/Discovery";
 import Generator from "./pages/Generator";
 import Quiz from "./pages/Quiz";
 import Dashboard from "./pages/Dashboard";
+import Interview from "./pages/Interview"; // IMPORT ADDED
 import Profile from "./pages/Profile";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
@@ -100,6 +101,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/interview"
+                  element={
+                    <ProtectedRoute>
+                      <Interview />
                     </ProtectedRoute>
                   }
                 />

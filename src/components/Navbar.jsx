@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   LogOut,
+  Bot,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useStore } from "../store/useStore";
@@ -32,7 +33,8 @@ const Navbar = () => {
       hidden: !user,
     },
     { icon: Search, label: "Explore Lessons", path: "/hub" },
-    { icon: Scroll, label: "Generate Quiz", path: "/generator" },
+    { icon: Scroll, label: "Create Quiz", path: "/generator" },
+    { icon: Bot, label: "Practice Test", path: "/interview", hidden: !user },
     {
       icon: Shield,
       label: "Audit",
@@ -50,7 +52,7 @@ const Navbar = () => {
   if (currentQuiz && currentQuiz.length > 0) {
     navItems.push({
       icon: Zap,
-      label: "Active Session",
+      label: "Current Quiz",
       path: "/quiz",
       special: true,
     });
@@ -78,12 +80,12 @@ const Navbar = () => {
             </span>
             <div className="flex items-center gap-2 mt-1">
               <span className="hidden md:block text-[8px] font-black tracking-[0.4em] text-indigo-500/60 uppercase leading-none font-syne">
-                Centrist Mastery
+                Study Smart
               </span>
               <div className="flex items-center gap-1.5 ml-2 border-l border-white/10 pl-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.2em]">
-                  {NEURAL_MENTORS.length} Agents Active
+                  {NEURAL_MENTORS.length} Tutors Online
                 </span>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
+import { getFunctions } from "firebase/functions"; // IMPORT ADDED
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -19,5 +20,4 @@ export const db = initializeFirestore(app, {
         tabManager: persistentMultipleTabManager()
     })
 });
-
-// Persistence is now enabled via initializeFirestore settings above.
+export const functions = getFunctions(app); // EXPORT ADDED

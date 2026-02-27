@@ -420,12 +420,12 @@ const Features = () => {
               {/* Floating Labels that actually make sense */}
               <div className="absolute top-0 right-10 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md animate-float">
                 <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">
-                  Reading_Notes...
+                  Reading Notes...
                 </span>
               </div>
               <div className="absolute bottom-0 left-10 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md animate-float-slow">
                 <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">
-                  Building_Quiz...
+                  Building Quiz...
                 </span>
               </div>
             </div>
@@ -452,9 +452,13 @@ const Features = () => {
             color="cyan"
             title="Input Your Material"
             desc="Snap a photo of your messy notebook or upload a textbook PDF. We'll read every word and turn it into digital study data instantly."
-            status="Scanner Active"
-            detail="Detected: 4 Handwritten Pages"
-            list={["Auto-Detection", "Handwriting Support", "PDF/JPG Support"]}
+            status="Reading Files"
+            detail="Found: 4 Pages"
+            list={[
+              "Reads Instantly",
+              "Reads Handwriting",
+              "Accepts PDFs & Photos",
+            ]}
           />
           <BenefitSection
             tag="Step 02"
@@ -464,9 +468,13 @@ const Features = () => {
             color="indigo"
             title="AI Builds Your Test"
             desc="Our helper finds the most important parts of your notes and creates custom quiz questions to test if you've really learned them."
-            status="AI Reasoning"
-            detail="Processing: 12 Logic Segments"
-            list={["Subject Context", "Logic Discovery", "Smart Distractors"]}
+            status="Thinking..."
+            detail="Writing Questions..."
+            list={[
+              "Understands Topic",
+              "Finds Key Ideas",
+              "Creates Good Options",
+            ]}
           />
           <BenefitSection
             tag="Step 03"
@@ -475,13 +483,9 @@ const Features = () => {
             color="emerald"
             title="Master Your Topic"
             desc="See exactly where you're struggling with simple charts. Practice until you hit 100%, then walk into your exam with total confidence."
-            status="Mastery Calibrated"
-            detail="Current Retention: 84% Grade Prediction: A"
-            list={[
-              "Heatmap Tracking",
-              "Score Prediction",
-              "Weak Spot Analysis",
-            ]}
+            status="Ready to Learn"
+            detail="Score: 84% Ready for Test"
+            list={["Tracks Progress", "Predicts Score", "Finds Weak Spots"]}
           />
         </div>
       </section>

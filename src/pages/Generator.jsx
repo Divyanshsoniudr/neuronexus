@@ -95,8 +95,8 @@ const Generator = () => {
           </span>
         </h1>
         <p className="text-white/60 text-lg max-w-xl mx-auto font-medium leading-relaxed">
-          Type a topic or upload your notes. We'll create a 25-question study
-          map to test your knowledge in seconds.
+          Type a topic or upload your notes. We'll create a 25-question practice
+          test to check your knowledge in seconds.
         </p>
       </div>
 

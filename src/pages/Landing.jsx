@@ -373,7 +373,7 @@ const Landing = () => {
                   size={14}
                   className="group-hover:rotate-12 transition-transform"
                 />
-                Intelligence for high-intent learners
+                Smart tools for students
               </motion.div>
 
               <div className="mb-6 md:mb-10">
@@ -384,9 +384,9 @@ const Landing = () => {
                   }}
                   className="text-[clamp(2.5rem,8vw,6rem)] font-black mb-6 md:mb-10 tracking-tighter leading-[0.85] text-white font-outfit uppercase italic"
                 >
-                  UNLEASH <br />
+                  LEARN <br />
                   <FlipWords
-                    words={["SUPERIOR", "GENIUS", "MASTERY", "RESULTS"]}
+                    words={["FASTER", "BETTER", "EASIER", "SMARTER"]}
                     className="text-[#DFFF00] not-italic"
                   />
                 </motion.h1>
@@ -399,9 +399,8 @@ const Landing = () => {
                 }}
                 className="text-white/40 text-lg md:text-2xl font-medium mb-12 md:mb-16 leading-relaxed max-w-2xl font-outfit"
               >
-                The advanced AI engine that evolves with your learning.
-                Transform static notes into a dynamic, performance-driven study
-                experience.
+                The smart study tool that helps you learn. Turn your notes into
+                fun quizzes and remember everything you read.
               </motion.p>
 
               <motion.div
@@ -418,7 +417,7 @@ const Landing = () => {
                   className="px-10 md:px-16 py-5 md:py-6 rounded-3xl bg-white text-black font-black uppercase tracking-[0.3em] hover:bg-[#DFFF00] transition-all shadow-3xl shadow-[#DFFF00]/20 flex items-center justify-center gap-4 font-syne text-[10px] relative overflow-hidden group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                  Start My Session{" "}
+                  Start Studying{" "}
                   <ArrowRight
                     size={20}
                     className="group-hover:translate-x-1 transition-transform"
@@ -429,7 +428,7 @@ const Landing = () => {
                     onClick={() => navigate("/auth")}
                     className="px-10 md:px-16 py-5 md:py-6 rounded-3xl border border-white/10 text-white/30 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:border-[#DFFF00]/30 hover:text-white transition-all font-syne text-[10px]"
                   >
-                    Access Workspace
+                    Login to Account
                   </button>
                 )}
               </motion.div>
@@ -449,10 +448,10 @@ const Landing = () => {
                   </div>
                   <div>
                     <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">
-                      Core Engine
+                      Your Personal
                     </div>
                     <div className="text-sm font-black text-white uppercase font-syne italic">
-                      Neural.Alpha
+                      AI Tutor
                     </div>
                   </div>
                 </div>
@@ -466,7 +465,7 @@ const Landing = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-10 pointer-events-none" />
           <div className="flex flex-col items-center gap-6 md:gap-10 px-4 md:px-6 relative">
             <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] text-white/30 text-center font-syne">
-              TRUSTED BY TOP-TIER PERFORMANCE TEAMS
+              TRUSTED BY STUDENTS WORLDWIDE
             </span>
             <div className="flex flex-wrap justify-center gap-10 md:gap-20 lg:gap-32 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
               {[
@@ -504,10 +503,8 @@ const Landing = () => {
               The AI Advantage
             </motion.div>
             <h2 className="text-[clamp(2.5rem,7vw,5rem)] font-black mb-8 tracking-tighter leading-[0.9] text-white font-syne uppercase italic">
-              UNFAIR <br />
-              <span className="text-indigo-400 not-italic">
-                LEARNING POWER.
-              </span>
+              YOUR <br />
+              <span className="text-indigo-400 not-italic">SECRET WEAPON.</span>
             </h2>
           </div>
 
@@ -516,8 +513,8 @@ const Landing = () => {
               tag="Step 01"
               color="cyan"
               icon={Search}
-              title="Input Everything"
-              desc="Snap messy notebooks or upload PDFs. Our advanced OCR extracts every detail instantly."
+              title="Upload Notes"
+              desc="Take pictures of your notes or upload PDFs. We can read even messy handwriting."
               delay={0.1}
               illustrationType="lukasz"
             />
@@ -525,8 +522,8 @@ const Landing = () => {
               tag="Step 02"
               color="indigo"
               icon={BrainCircuit}
-              title="AI Generation"
-              desc="The core engine builds custom practice tests based on deep semantic reasoning."
+              title="Auto Quizzes"
+              desc="We automatically create practice tests based on exactly what you need to learn."
               delay={0.2}
               illustrationType="storytale"
             />
@@ -534,8 +531,8 @@ const Landing = () => {
               tag="Step 03"
               color="emerald"
               icon={BarChart3}
-              title="Mastery Board"
-              desc="Track your retention in real-time. Hit 100% and own your subject."
+              title="Track Progress"
+              desc="See how much you remember. Reach 100% and ace your test."
               delay={0.3}
               illustrationType="things"
             />
@@ -565,7 +562,7 @@ const Landing = () => {
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 blur-3xl rounded-full" />
               <CheckCircle className="text-[#DFFF00] mb-6" size={32} />
               <h3 className="text-3xl font-black text-white mb-6 uppercase font-syne">
-                Science-Backed Quizzes
+                Learn By Doing
               </h3>
               <p className="text-white/50 text-lg mb-10 font-outfit">
                 QuizMaster makes you answer questions, which is the fastest way
@@ -608,7 +605,7 @@ const Landing = () => {
                       <div className="w-3 h-3 rounded-full bg-green-500/20" />
                     </div>
                     <div className="text-[10px] font-black uppercase tracking-widest text-white/20">
-                      LIVE_QUIZ_MASTER
+                      PRACTICE_QUIZ
                     </div>
                   </div>
 
@@ -849,16 +846,16 @@ const Landing = () => {
           <div className="max-w-7xl mx-auto px-6 md:px-12 mb-20 md:mb-32">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-8 font-syne">
               <Sparkles size={12} />
-              DON'T GET LOST
+              STAY ON TRACK
             </div>
             <h2 className="text-4xl md:text-8xl font-black mb-8 md:mb-12 uppercase tracking-tighter leading-none font-syne text-white">
-              FOLLOW THE <br />
-              <span className="text-[#DFFF00] italic">PRO PATHS.</span>
+              FOLLOW A <br />
+              <span className="text-[#DFFF00] italic">STUDY PLAN.</span>
             </h2>
             <p className="text-white/40 text-lg md:text-xl font-medium font-outfit max-w-2xl">
-              Don't know what to study next? We've designed expert plans for
-              every job and skill. Just follow the glowing path and reach your
-              goals.
+              Don't know what to study next? We've put together simple
+              step-by-step plans for almost any subject. Just follow the path to
+              learn anything.
             </p>
           </div>
 
@@ -886,8 +883,8 @@ const Landing = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 md:mb-32">
               <div className="max-w-2xl">
                 <h2 className="text-[clamp(1.5rem,5vw,4rem)] font-black mb-8 uppercase tracking-tighter leading-none font-syne text-white">
-                  STUDY BETTER <br />
-                  <span className="text-[#DFFF00] italic">THAN THE REST.</span>
+                  STUDY SMARTER <br />
+                  <span className="text-[#DFFF00] italic">NOT HARDER.</span>
                 </h2>
                 <p className="text-white/40 text-lg md:text-xl font-medium font-outfit">
                   Simple tools for smart students. Get better grades without
@@ -899,8 +896,8 @@ const Landing = () => {
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
               {[
                 {
-                  title: "PRECISION OCR",
-                  desc: "Scan messy handwriting and physical notes with up to 99% accuracy.",
+                  title: "READS HANDWRITING",
+                  desc: "Take a picture of your messy notes. We can read them easily.",
                   icon: FileText,
                   className: "md:col-span-8 md:row-span-1",
                   proof: (
@@ -923,20 +920,20 @@ const Landing = () => {
                   ),
                 },
                 {
-                  title: "DIAGRAM LOGIC",
-                  desc: "Analyze charts, graphs, and visual data directly from your uploads.",
+                  title: "UNDERSTANDS IMAGES",
+                  desc: "Upload pictures of charts or textbook pages, and we'll ask questions about them.",
                   icon: Layout,
                   className: "md:col-span-4 md:row-span-1",
                 },
                 {
-                  title: "CONCEPT SYNTHESIS",
-                  desc: "Our AI breaks down complex topics into digestible, masterable blocks.",
+                  title: "BREAKS IT DOWN",
+                  desc: "Our AI takes really complicated topics and makes them easy to understand.",
                   icon: BrainCircuit,
                   className: "md:col-span-4 md:row-span-1",
                 },
                 {
-                  title: "ADAPTIVE MASTERY",
-                  desc: "Watch your knowledge grow with real-time analytics and retention tracking.",
+                  title: "TRACKS PROGRESS",
+                  desc: "See exactly what you still need to study before your test.",
                   icon: BarChart3,
                   className: "md:col-span-8 md:row-span-1",
                   proof: (
@@ -1004,7 +1001,7 @@ const Landing = () => {
                   <FileText size={24} />
                 </div>
                 <div className="font-black uppercase tracking-[0.3em] text-[10px] md:text-xs text-white/30 font-syne">
-                  PASSIVE READING
+                  JUST READING
                 </div>
               </div>
               <div className="p-8 md:p-12 text-center flex flex-col items-center gap-4 bg-indigo-500/5">
@@ -1012,16 +1009,16 @@ const Landing = () => {
                   <Zap size={24} />
                 </div>
                 <div className="font-black uppercase tracking-[0.3em] text-[10px] md:text-xs text-indigo-400 font-syne">
-                  NEURAL RECALL
+                  PRACTICE QUIZZES
                 </div>
               </div>
             </div>
             <div className="divide-y divide-white/5 bg-black/20">
               {[
-                ["Forgot after 3 days", "90% retention rate"],
-                ["Fluency Illusion", "Proven mastery of topics"],
-                ["Boring & exhausting", "Fast & interactive rounds"],
-                ["Hard to track progress", "Automated smart heatmaps"],
+                ["Forgot after 3 days", "Remember it for the test"],
+                ["Thinking you know it", "Actually knowing it"],
+                ["Boring & exhausting", "Fast & fun practice"],
+                ["Hard to track progress", "Clear score tracking"],
               ].map((row, i) => (
                 <div
                   key={i}

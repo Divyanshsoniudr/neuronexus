@@ -24,13 +24,29 @@ export const saveUserStats = async (userId, stats) => {
     }
 };
 
+// [SCALE OPTIMIZATION] Consolidated Write Batch
+export const syncSessionData = async (userId, { skillStats, usageStats, globalStats }) => {
+    try {
+        const userRef = doc(db, "users", userId);
+        const updates = { skillStats, usageStats };
+        if (globalStats) updates.globalStats = globalStats;
+
+        await updateDoc(userRef, updates);
+    } catch (error) {
+        console.warn(`dbService: syncSessionData deferred (offline mode).`);
+    }
+};
+
 // Retrieve user stats
 export const getUserStats = async (userId) => {
     try {
         const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
-            return userSnap.data().skillStats;
+            return {
+                skillStats: userSnap.data().skillStats,
+                globalStats: userSnap.data().globalStats || { totalQuizzes: 0, averageScore: 0 }
+            };
         }
     } catch (error) {
         console.warn(`dbService: getUserStats fallback. Code: ${error.code}, Msg: ${error.message}`);
@@ -191,6 +207,7 @@ export const ensureUserInitialized = async (user) => {
                 role: 'learner',
                 isPremium: false,
                 skillStats: { Syntax: 0, Architecture: 0, Logic: 0, Theory: 0, Security: 0 },
+                globalStats: { totalQuizzes: 0, averageScore: 0 },
                 usageStats: {
                     roadmapsGenerated: 0,
                     quizzesGeneratedToday: 0,

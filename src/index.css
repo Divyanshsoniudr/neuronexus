@@ -133,3 +133,42 @@ body {
 .pixel-border {
   border-image: linear-gradient(to right, #6366f1, #10b981) 1;
 }
+
+/* Elite UI Polish Animations */
+@keyframes border-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-border-spin {
+  animation: border-spin 4s linear infinite;
+  will-change: transform;
+}
+
+.conic-gradient-border {
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(from 0deg, transparent 0 340deg, theme('colors.indigo.500') 360deg);
+  z-index: -1;
+  opacity: 0.3;
+}
+
+@keyframes scan-sweep {
+  0% { transform: translateY(-300%); }
+  100% { transform: translateY(800px); }
+}
+
+.scanning-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, 0.05), rgba(99, 102, 241, 0.2), transparent);
+  animation: scan-sweep 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 50;
+  will-change: transform;
+}

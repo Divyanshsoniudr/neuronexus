@@ -26,10 +26,12 @@ service cloud.firestore {
 
     // --- COLLECTION RULES ---
 
-    // Users: Users can read/write their own data. Admins can read/write everything.
+    // Users: Users can read their own data. Users can update their own data excluding sensitive fields unless Admin.
     match /users/{uid} {
       allow read: if isUser(uid) || isAdmin();
-      allow write: if isUser(uid) || isAdmin();
+      allow create: if isUser(uid) || isAdmin();
+      allow update: if (isUser(uid) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'isPremium', 'skillStats'])) || isAdmin();
+      allow delete: if isAdmin();
     }
 
     // Hub Topics: Publicly readable. Only Admins can forge.
@@ -58,6 +60,12 @@ service cloud.firestore {
     
     match /quizzes/{docId} {
       allow read, write: if isUser(resource.data.userId) || isAdmin();
+    }
+
+    // Knowledge Vault: Public read for auth users, backend-only write.
+    match /vault/{document=**} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only Cloud Functions / Admin SDK can write
     }
 
     // Flagged Simulations: Moderators and Admins only.

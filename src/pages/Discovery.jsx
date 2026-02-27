@@ -17,7 +17,6 @@ import {
   Zap,
   Activity,
 } from "lucide-react";
-import NeuralLogo from "../components/NeuralLogo";
 import { useNavigate } from "react-router-dom";
 import { TOPIC_CATEGORIES, learningPaths } from "../data/roadmapData";
 import { useStore } from "../store/useStore";
@@ -27,59 +26,10 @@ import { fetchHubTopics } from "../services/AdminService";
 import { useQuery } from "@tanstack/react-query";
 import ShaderGradient from "../components/ShaderGradient";
 import WireframeAtom from "../components/WireframeAtom";
-import {
-  StorysetRoles,
-  StorysetSkills,
-  StorysetSecrets,
-} from "../components/StorysetComponents";
 
 const VignetteCard = ({ item, isLarge, onSelect, nodeCount }) => {
   const [isHovered, setIsHovered] = useState(false);
-
-  // Map item IDs to archetypes for visuals
-  const getArchetype = (id) => {
-    if (
-      [
-        "ai",
-        "ai-engineer",
-        "data-scientist",
-        "blockchain",
-        "data-engineer",
-        "ai-agents",
-        "prompt-engineering",
-      ].includes(id)
-    )
-      return "secrets";
-    if (
-      [
-        "security",
-        "cyber-security",
-        "api-security",
-        "backend-performance",
-        "frontend-performance",
-        "code-review",
-        "system-design",
-      ].includes(id)
-    )
-      return "secrets";
-    if (
-      [
-        "frontend",
-        "backend",
-        "fullstack",
-        "devops",
-        "mobile",
-        "ios",
-        "ux-design",
-        "game-dev",
-        "qa",
-      ].includes(id)
-    )
-      return "roles";
-    return "skills"; // Default for individual skills
-  };
-
-  const archetype = getArchetype(item.id);
+  const Icon = LucideIcons[item.icon] || LucideIcons.Sparkles;
 
   return (
     <motion.button
@@ -88,42 +38,32 @@ const VignetteCard = ({ item, isLarge, onSelect, nodeCount }) => {
       whileHover={{ scale: 0.98, y: -4 }}
       whileTap={{ scale: 0.96 }}
       onClick={() => onSelect(item)}
-      className={`group relative flex flex-col items-center justify-between p-6 rounded-[40px] glass-panel border border-white/5 hover:border-white/10 transition-all text-center overflow-hidden z-10 ${
+      className={`group relative flex flex-row items-center justify-start gap-5 p-5 rounded-[24px] glass-panel border border-white/5 hover:border-white/10 hover:bg-white/[0.02] transition-all text-left overflow-hidden z-10 ${
         isLarge ? "md:col-span-2 md:row-span-1" : "md:col-span-1 md:row-span-1"
       }`}
     >
       {/* Dynamic Cinematic Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent group-hover:from-white/[0.05] transition-all -z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white/[0.02] to-transparent group-hover:from-white/[0.05] transition-all -z-10" />
 
-      {/* Blueprint SVG Slot */}
-      <div className="relative w-full aspect-square max-h-[140px] flex items-center justify-center mb-2 text-indigo-400/40 group-hover:text-indigo-400 transition-colors">
-        <div className="absolute inset-0 bg-indigo-500/10 blur-[40px] rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-1000" />
-
-        <div className="w-24 h-24">
-          {archetype === "roles" && <StorysetRoles isHovered={isHovered} />}
-          {archetype === "skills" && <StorysetSkills isHovered={isHovered} />}
-          {archetype === "secrets" && <StorysetSecrets isHovered={isHovered} />}
-        </div>
+      {/* Icon Wrapper */}
+      <div
+        className={`w-14 h-14 shrink-0 rounded-[20px] bg-white/5 border border-white/5 group-hover:border-white/10 flex items-center justify-center group-hover:scale-110 transition-all duration-500 relative`}
+      >
+        <div className="absolute inset-0 bg-white/10 blur-[15px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <Icon size={24} strokeWidth={2} className="text-white relative z-10" />
       </div>
 
-      <div className="mt-auto space-y-1 relative z-20">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 group-hover:text-white transition-colors">
+      <div className="flex-1 space-y-1 relative z-20 overflow-hidden pr-2">
+        <h3 className="text-sm font-black uppercase tracking-widest text-white truncate">
           {item.title}
         </h3>
-        <div className="h-4 flex items-center justify-center">
-          {nodeCount > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 5 }}
-              className="flex items-center gap-1.5"
-            >
-              <div className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse" />
-              <span className="text-[8px] font-bold text-indigo-400 tracking-widest uppercase">
-                {nodeCount} MILESTONES
-              </span>
-            </motion.div>
-          )}
-        </div>
+        {nodeCount > 0 && (
+          <div className="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+            <span className="text-[9px] font-bold text-white tracking-[0.3em] uppercase">
+              {nodeCount} MILESTONES
+            </span>
+          </div>
+        )}
       </div>
     </motion.button>
   );
@@ -146,7 +86,7 @@ const CategorySection = ({
         <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent" />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 auto-rows-[220px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {items.map((item, idx) => (
           <VignetteCard
             key={item.id}

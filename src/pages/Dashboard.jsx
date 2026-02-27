@@ -18,6 +18,7 @@ import {
   Monitor,
   ShieldCheck,
   ArrowRight,
+  Bot,
 } from "lucide-react";
 import { useStore } from "../store/useStore";
 import { TOPIC_CATEGORIES, learningPaths } from "../data/roadmapData";
@@ -26,6 +27,7 @@ import NeuralFeed from "../components/NeuralFeed";
 import PremiumModal from "../components/PremiumModal";
 import NeuralFabric from "../components/NeuralFabric";
 import NeuralAtoms from "../components/NeuralAtoms";
+import SkillRadar from "../components/SkillRadar";
 
 const DashCard = ({ icon: Icon, label, value, color, delay = 0 }) => (
   <motion.div
@@ -147,8 +149,8 @@ const Dashboard = () => {
         className="max-w-7xl w-full relative z-10"
       >
         <SEO
-          title="Neural Command Center"
-          description="Manage your custom learning roadmaps and tracked progress."
+          title="Dashboard"
+          description="Manage your learning plans and track your progress."
         />
 
         {/* Global Progress Hub */}
@@ -160,12 +162,12 @@ const Dashboard = () => {
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]"
             >
               <Activity size={14} className="text-indigo-400" />
-              Intelligence Core Active
+              AI Assistant Ready
             </motion.div>
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white uppercase italic font-syne leading-none">
-              COMMAND <br />
+              YOUR <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-emerald-400">
-                CENTER
+                DASHBOARD
               </span>
             </h1>
           </div>
@@ -175,10 +177,20 @@ const Dashboard = () => {
               onClick={() => navigate("/generator")}
               className="w-full sm:w-auto px-12 py-6 rounded-[32px] bg-white text-black font-black uppercase text-xs tracking-[0.3em] hover:bg-[#DFFF00] transition-all shadow-4xl shadow-white/5 flex items-center justify-center gap-4 group"
             >
-              Synthesize Quiz
+              Create Quiz
               <Zap
                 size={18}
                 className="fill-current group-hover:scale-110 transition-transform"
+              />
+            </button>
+            <button
+              onClick={() => navigate("/interview")}
+              className="w-full sm:w-auto px-8 py-6 rounded-[32px] bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-black uppercase text-xs tracking-[0.3em] hover:bg-indigo-500 hover:text-white transition-all shadow-4xl flex items-center justify-center gap-4 group"
+            >
+              Practice Test
+              <Bot
+                size={18}
+                className="group-hover:scale-110 transition-transform"
               />
             </button>
             <button
@@ -193,7 +205,7 @@ const Dashboard = () => {
         {/* Neural Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
           <DashCard
-            label="Neural Capacity"
+            label="Quiz Creates"
             value={isPremium ? "ULTD" : `${usageStats.roadmapsGenerated}/03`}
             icon={Zap}
             color="indigo"
@@ -207,14 +219,14 @@ const Dashboard = () => {
             delay={0.2}
           />
           <DashCard
-            label="Goals Synced"
+            label="Topics Started"
             value={Object.values(roadmapProgress).flat().length}
             icon={CheckCircle}
             color="cyan"
             delay={0.3}
           />
           <DashCard
-            label="Vault Items"
+            label="Saved Quizzes"
             value={vaultCount}
             icon={FileText}
             color="indigo"
@@ -231,14 +243,17 @@ const Dashboard = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="p-10 rounded-[50px] glass-panel border border-indigo-500/30 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group shadow-3xl"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-emerald-500/10 opacity-50" />
+                {/* Rotating Conic Border Effect */}
+                <div className="conic-gradient-border animate-border-spin" />
+
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-emerald-500/10 opacity-80 backdrop-blur-md z-0" />
                 <div className="flex items-center gap-8 relative z-10">
                   <div className="w-20 h-20 rounded-3xl bg-indigo-500 flex items-center justify-center shadow-2xl shadow-indigo-500/40 shrink-0">
                     <BrainCircuit className="text-white" size={40} />
                   </div>
                   <div className="space-y-1">
                     <h2 className="text-3xl font-black text-white uppercase tracking-tighter font-syne italic leading-none">
-                      Active Stream
+                      Current Topic
                     </h2>
                     <p className="text-white/40 font-black uppercase text-[10px] tracking-widest">
                       {userTopic || "Custom Study Session"}
@@ -270,7 +285,7 @@ const Dashboard = () => {
               <div className="relative z-10 space-y-10">
                 <h3 className="text-2xl font-black uppercase tracking-tight text-white flex items-center gap-4 italic font-syne">
                   <Map className="text-indigo-500" size={24} />
-                  Active Learning Paths
+                  Your Study Plans
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -278,11 +293,18 @@ const Dashboard = () => {
                     activePaths.map((path) => (
                       <motion.div
                         key={path.id}
-                        whileHover={{ y: -5 }}
-                        className="space-y-6 p-8 rounded-[40px] bg-white/[0.02] border border-white/5 hover:border-indigo-500/20 transition-all group cursor-pointer relative overflow-hidden"
+                        whileHover={{ y: -5, rotateX: 5, rotateY: -5 }}
+                        style={{
+                          transformStyle: "preserve-3d",
+                          perspective: "1000px",
+                        }}
+                        className="space-y-6 p-8 rounded-[40px] bg-white/[0.02] border border-white/5 hover:border-indigo-500/40 transition-all duration-300 group cursor-pointer relative overflow-hidden"
                         onClick={() => navigate(`/roadmap/${path.id}`)}
                       >
-                        <div className="absolute inset-0 bg-indigo-500/0 group-hover:bg-indigo-500/[0.02] transition-colors" />
+                        {/* Glass Glare Effect (Static for simplicity, but gives 3D depth) */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-50 transform -translate-x-full group-hover:translate-x-full transition-all duration-1000 z-20 pointer-events-none" />
+
+                        <div className="absolute inset-0 bg-indigo-500/0 group-hover:bg-indigo-500/[0.04] transition-colors" />
                         <div className="flex justify-between items-center relative z-10">
                           <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform border border-indigo-500/20">
@@ -308,7 +330,7 @@ const Dashboard = () => {
                             <span>
                               {path.completedCount} / {path.totalNodes} STEPS
                             </span>
-                            <span>Level Up Available</span>
+                            <span>Ready to Learn</span>
                           </div>
                         </div>
                       </motion.div>
@@ -319,13 +341,13 @@ const Dashboard = () => {
                         <Map size={40} />
                       </div>
                       <p className="text-white/30 font-black uppercase text-xs tracking-[0.3em]">
-                        No active roadmaps found.
+                        No active plans found.
                       </p>
                       <button
                         onClick={() => navigate("/hub")}
                         className="mt-8 px-8 py-4 rounded-2xl border border-indigo-500/30 text-indigo-400 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all"
                       >
-                        Initialize Mission
+                        Find a Plan
                       </button>
                     </div>
                   )}
@@ -337,6 +359,9 @@ const Dashboard = () => {
           {/* Assistant Column */}
           <div className="space-y-12">
             <div className="p-10 rounded-[50px] glass-panel border border-white/5 shadow-3xl relative overflow-hidden group min-h-[500px]">
+              {/* Scanning Sweep Effect */}
+              <div className="scanning-sweep" />
+
               <div className="absolute top-0 right-0 p-12 opacity-5 group-hover:scale-110 transition-transform -z-0">
                 <SparkleIcon size={300} className="text-indigo-500" />
               </div>
@@ -345,13 +370,42 @@ const Dashboard = () => {
               </div>
             </div>
 
+            {/* Neural Skill Matrix Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-10 rounded-[50px] glass-panel border border-white/5 shadow-4xl relative overflow-hidden group"
+            >
+              <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_10%_90%,rgba(168,85,247,0.05),transparent)] pointer-events-none" />
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 shadow-xl">
+                    <Activity size={24} className="text-purple-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-black uppercase text-white tracking-tighter italic font-syne">
+                      Your Skills
+                    </h3>
+                  </div>
+                </div>
+                <div className="-mt-8 -mb-8">
+                  <SkillRadar stats={skillStats} />
+                </div>
+                <div className="text-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[10px] font-black uppercase tracking-widest mt-2">
+                    <SparkleIcon size={12} /> Skill Chart
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
             {!isPremium && (
               <motion.div
                 whileHover={{ y: -5 }}
                 className="p-12 rounded-[50px] bg-gradient-to-br from-indigo-600 to-indigo-900 border border-white/10 shadow-4xl relative overflow-hidden group cursor-pointer"
                 onClick={() => setIsPremiumModalOpen(true)}
               >
-                <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-[100px] group-hover:scale-110 transition-transform" />
+                <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform" />
                 <div className="relative z-10 space-y-8">
                   <div className="flex items-center gap-6">
                     <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20 shadow-2xl">
@@ -359,18 +413,18 @@ const Dashboard = () => {
                     </div>
                     <div>
                       <h4 className="text-3xl font-black text-white uppercase italic tracking-tighter font-syne">
-                        UPGRADE
+                        UPGRADE TO PRO
                       </h4>
                       <p className="text-white/40 text-[10px] font-black uppercase tracking-widest leading-none">
-                        Neural Tier II
+                        Pro Plan
                       </p>
                     </div>
                   </div>
                   <ul className="space-y-4">
                     {[
-                      "Unlimited Generation",
-                      "Document Intel",
-                      "Priority Synthesis",
+                      "Unlimited Quizzes",
+                      "Read Any Document",
+                      "Faster Generation",
                     ].map((feat, i) => (
                       <li
                         key={i}
@@ -382,7 +436,7 @@ const Dashboard = () => {
                     ))}
                   </ul>
                   <button className="w-full py-6 rounded-3xl bg-white text-black font-black uppercase text-xs tracking-widest hover:bg-[#DFFF00] transition-all shadow-2xl">
-                    Enhance Core
+                    Upgrade Now
                   </button>
                 </div>
               </motion.div>
