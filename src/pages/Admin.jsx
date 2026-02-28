@@ -188,7 +188,7 @@ const Admin = () => {
     const success = await addHubTopic(hubTopic);
     if (success) {
       alert(
-        `Topic '${hubTopic.title}' created.\n\nLineage: [Model: gemini-2.5-flash] recorded.`,
+        `Topic '${hubTopic.title}' created.\n\nLineage: [Model: ${import.meta.env?.VITE_GEMINI_MODEL || "gemini-2.5-flash"}] recorded.`,
       );
       setHubTopic({
         title: "",

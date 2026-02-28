@@ -4,6 +4,7 @@ import { functions } from "./firebase";
 import { guardian } from "./Guardian";
 
 const API_KEY = import.meta.env?.VITE_GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+const MODEL_NAME = import.meta.env?.VITE_GEMINI_MODEL || "gemini-2.5-flash";
 
 // Helper to convert File to GenerativePart (for fallback)
 async function fileToGenerativePart(file) {
@@ -37,7 +38,7 @@ export const generateLiveQuiz = async (topic, difficulty = 'Intermediate', file 
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: MODEL_NAME,
         generationConfig: {
             responseMimeType: "application/json",
             temperature: 0.7,
@@ -98,7 +99,7 @@ export const generateMiniProject = async (weakSectors) => {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const modelsToTry = ["gemini-2.5-flash", "gemini-2.5-flash-preview-04-17"];
+    const modelsToTry = [MODEL_NAME, `${MODEL_NAME}-preview-04-17`];
 
     const prompt = `
     Analyze these weak topics: ${weakSectors.join(", ")}.
@@ -134,7 +135,7 @@ export const generateNeuralFeed = async (topic, skillStats, mentors, externalSig
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: MODEL_NAME,
         generationConfig: { responseMimeType: "application/json" }
     });
 
@@ -185,7 +186,7 @@ export const generateAIRoadmap = async (topic, file = null) => {
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.5-flash",
+        model: MODEL_NAME,
         generationConfig: {
             responseMimeType: "application/json",
             temperature: 0.7,
@@ -245,7 +246,7 @@ export const simulateInterviewStep = async (messages, config) => {
     try {
         console.log(`[Gemini-Interview] Simulating interview step locally...`);
         const genAI = new GoogleGenerativeAI(API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
         // Build the system instructions
         const systemPrompt = `
@@ -264,10 +265,16 @@ export const simulateInterviewStep = async (messages, config) => {
         `;
 
         // Convert history format to Gemini format
-        const history = messages.slice(0, -1).map(msg => ({
+        let history = messages.slice(0, -1).map(msg => ({
             role: msg.role === 'assistant' ? 'model' : 'user',
             parts: [{ text: msg.content }]
         }));
+
+        // Gemini requires the first message in history to be role 'user'
+        // Strip any leading 'model' messages (e.g., the interviewer's opening greeting)
+        while (history.length > 0 && history[0].role === 'model') {
+            history.shift();
+        }
 
         const chat = model.startChat({
             history: history,

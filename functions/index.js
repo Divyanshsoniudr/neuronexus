@@ -124,10 +124,15 @@ exports.simulateInterviewStep = functions.https.onCall(async (data, context) => 
 
     try {
         // Convert history format to Gemini format
-        const history = messages.slice(0, -1).map(msg => ({
+        let history = messages.slice(0, -1).map(msg => ({
             role: msg.role === 'assistant' ? 'model' : 'user',
             parts: [{ text: msg.content }]
         }));
+
+        // Gemini requires the first message in history to be role 'user'
+        while (history.length > 0 && history[0].role === 'model') {
+            history.shift();
+        }
 
         const chat = model.startChat({
             history: history,

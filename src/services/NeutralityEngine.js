@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const API_KEY = import.meta.env?.VITE_GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+const MODEL_NAME = import.meta.env?.VITE_GEMINI_MODEL || "gemini-2.5-flash";
 
 /**
  * The Neutrality Engine: Dialectical Reasoning Layer
@@ -21,7 +22,7 @@ class NeutralityEngine {
     if (!this.genAI) return { perspectives: [] };
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+      const model = this.genAI.getGenerativeModel({ model: MODEL_NAME });
 
       const prompt = `
         You are the "Neutrality Engine", an AI dedicated to dialectical reasoning and zero-bias analysis.

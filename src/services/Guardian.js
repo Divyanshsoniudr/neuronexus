@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const API_KEY = import.meta.env?.VITE_GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+const MODEL_NAME = import.meta.env?.VITE_GEMINI_MODEL || "gemini-2.5-flash";
 
 /**
  * The Guardian: Safety & Governance Layer
@@ -46,7 +47,7 @@ class Guardian {
         }
 
         try {
-            const model = this.genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+            const model = this.genAI.getGenerativeModel({ model: MODEL_NAME });
 
             const safetyPrompt = `
         You are "The Guardian", a safety and neutrality gatekeeper for a learning platform.
@@ -117,7 +118,7 @@ class Guardian {
 
         try {
             const model = this.genAI.getGenerativeModel({
-                model: "gemini-2.5-flash"
+                model: MODEL_NAME
             });
             const outputString = JSON.stringify(data).substring(0, 2000); // Sample for speed
 

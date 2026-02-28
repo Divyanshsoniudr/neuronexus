@@ -3,6 +3,7 @@ import { guardian } from "./Guardian";
 import { NEURAL_MENTORS } from "./NeuralMentors";
 
 const API_KEY = import.meta.env?.VITE_GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+const MODEL_NAME = import.meta.env?.VITE_GEMINI_MODEL || "gemini-2.5-flash";
 
 /**
  * PersonaOrchestrator: The Scenario Manager
@@ -25,7 +26,7 @@ class PersonaOrchestrator {
         const auditRes = await guardian.audit(topic);
         if (!auditRes.safe) throw new Error(auditRes.reason);
 
-        const model = this.genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = this.genAI.getGenerativeModel({ model: MODEL_NAME });
 
         const prompt = `
       Create a high-stakes, interactive professional scenario for the topic: "${topic}".
@@ -62,7 +63,7 @@ class PersonaOrchestrator {
     async getPersonaFeedback(scenarioContext, userDecision, roles) {
         if (!this.genAI) return [];
 
-        const model = this.genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = this.genAI.getGenerativeModel({ model: MODEL_NAME });
 
         const prompt = `
       SITUATION: "${scenarioContext}"
