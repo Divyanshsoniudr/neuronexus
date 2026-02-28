@@ -15,7 +15,7 @@ async function listModels() {
         // but we can try to hit the rest endpoint or use a known working model.
         // However, we can try to instantiate common models and see if they work.
 
-        const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-pro", "gemini-pro"];
+        const modelsToTry = ["gemini-2.5-flash", "gemini-2.5-pro"];
 
         for (const modelName of modelsToTry) {
             try {

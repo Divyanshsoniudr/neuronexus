@@ -25,7 +25,7 @@ class PersonaOrchestrator {
         const auditRes = await guardian.audit(topic);
         if (!auditRes.safe) throw new Error(auditRes.reason);
 
-        const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = this.genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         const prompt = `
       Create a high-stakes, interactive professional scenario for the topic: "${topic}".
@@ -62,7 +62,7 @@ class PersonaOrchestrator {
     async getPersonaFeedback(scenarioContext, userDecision, roles) {
         if (!this.genAI) return [];
 
-        const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = this.genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         const prompt = `
       SITUATION: "${scenarioContext}"

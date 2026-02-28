@@ -128,7 +128,7 @@ export const addHubTopic = async (topicData) => {
     try {
         const hubColl = collection(db, "hub_topics");
         const lineageInfo = {
-            model: "gemini-1.5-pro",
+            model: "gemini-2.5-flash",
             generationTime: new Date().toISOString(),
             rationale: topicData.rationale || "Automated curriculum sync"
         };

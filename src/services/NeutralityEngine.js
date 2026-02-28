@@ -7,23 +7,23 @@ const API_KEY = import.meta.env?.VITE_GEMINI_API_KEY || process.env.VITE_GEMINI_
  * Responsibile for "Steel-manning" multiple objective perspectives.
  */
 class NeutralityEngine {
-    constructor() {
-        this.genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
-    }
+  constructor() {
+    this.genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
+  }
 
-    /**
-     * Generates a dialectical review of a user's decision
-     * @param {string} scenario - The context of the situation
-     * @param {string} decision - The user's action/choice
-     * @returns {Promise<{perspectives: Array<{label: string, argument: string, evidence: string}>}>}
-     */
-    async getDialecticalReview(scenario, decision) {
-        if (!this.genAI) return { perspectives: [] };
+  /**
+   * Generates a dialectical review of a user's decision
+   * @param {string} scenario - The context of the situation
+   * @param {string} decision - The user's action/choice
+   * @returns {Promise<{perspectives: Array<{label: string, argument: string, evidence: string}>}>}
+   */
+  async getDialecticalReview(scenario, decision) {
+    if (!this.genAI) return { perspectives: [] };
 
-        try {
-            const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    try {
+      const model = this.genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-            const prompt = `
+      const prompt = `
         You are the "Neutrality Engine", an AI dedicated to dialectical reasoning and zero-bias analysis.
         
         CONTEXT:
@@ -56,18 +56,18 @@ class NeutralityEngine {
         }
       `;
 
-            const result = await model.generateContent(prompt);
-            const text = (await result.response).text();
+      const result = await model.generateContent(prompt);
+      const text = (await result.response).text();
 
-            const jsonStart = text.indexOf('{');
-            const jsonEnd = text.lastIndexOf('}') + 1;
-            return JSON.parse(text.substring(jsonStart, jsonEnd));
+      const jsonStart = text.indexOf('{');
+      const jsonEnd = text.lastIndexOf('}') + 1;
+      return JSON.parse(text.substring(jsonStart, jsonEnd));
 
-        } catch (error) {
-            console.error("[NeutralityEngine] Review Error:", error);
-            return { perspectives: [] };
-        }
+    } catch (error) {
+      console.error("[NeutralityEngine] Review Error:", error);
+      return { perspectives: [] };
     }
+  }
 }
 
 export const neutralityEngine = new NeutralityEngine();
