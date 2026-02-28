@@ -37,7 +37,7 @@ export const generateLiveQuiz = async (topic, difficulty = 'Intermediate', file 
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
+        model: "gemini-2.5-flash",
         generationConfig: {
             responseMimeType: "application/json",
             temperature: 0.7,
@@ -98,7 +98,7 @@ export const generateMiniProject = async (weakSectors) => {
     }
 
     const genAI = new GoogleGenerativeAI(API_KEY);
-    const modelsToTry = ["gemini-flash-latest", "gemini-2.5-flash", "gemini-2.0-flash"];
+    const modelsToTry = ["gemini-2.5-flash", "gemini-2.5-flash-preview-04-17"];
 
     const prompt = `
     Analyze these weak topics: ${weakSectors.join(", ")}.
@@ -134,7 +134,7 @@ export const generateNeuralFeed = async (topic, skillStats, mentors, externalSig
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
+        model: "gemini-2.5-flash",
         generationConfig: { responseMimeType: "application/json" }
     });
 
@@ -185,7 +185,7 @@ export const generateAIRoadmap = async (topic, file = null) => {
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
+        model: "gemini-2.5-flash",
         generationConfig: {
             responseMimeType: "application/json",
             temperature: 0.7,
@@ -245,7 +245,7 @@ export const simulateInterviewStep = async (messages, config) => {
     try {
         console.log(`[Gemini-Interview] Simulating interview step locally...`);
         const genAI = new GoogleGenerativeAI(API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
         // Build the system instructions
         const systemPrompt = `
