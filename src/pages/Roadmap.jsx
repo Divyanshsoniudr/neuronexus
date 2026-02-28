@@ -1,25 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ChevronLeft,
   Lock,
   CheckCircle,
   Play,
-  Sparkles,
-  Zap,
   Target,
   ArrowRight,
-  Shield,
-  Rocket,
-  Brain,
-  Star,
+  RefreshCw,
 } from "lucide-react";
 import NeuralLogo from "../components/NeuralLogo";
 import { useStore } from "../store/useStore";
@@ -30,7 +19,6 @@ import RoadmapQuestionnaire from "../components/RoadmapQuestionnaire";
 const Roadmap = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const containerRef = useRef(null);
 
   const {
     roadmapProgress,
@@ -46,21 +34,6 @@ const Roadmap = () => {
   const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [isVaultSync, setIsVaultSync] = useState(false);
   const [synthStage, setSynthStage] = useState(0);
-
-  // Initialize scroll tracking hooks at the very top
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const scrollProgressSpring = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  // Calculate transforms before any early returns
-  const pathHeight = useTransform(scrollProgressSpring, [0, 1], ["0%", "100%"]);
 
   const synthStages = [
     "Analyzing subject...",
@@ -86,15 +59,23 @@ const Roadmap = () => {
     }
   };
 
-  // Auto-focus the current node
   useEffect(() => {
-    if (path && level) {
-      const current =
-        path.nodes.find((n) => !completed.includes(n.id)) ||
-        path.nodes[path.nodes.length - 1];
-      setSelectedNode(current);
+    if (!path || !level) return;
+
+    const currentActive =
+      path.nodes.find((n) => !completed.includes(n.id)) ||
+      path.nodes[path.nodes.length - 1];
+
+    if (!selectedNode) {
+      setSelectedNode(currentActive);
+    } else if (
+      completed.includes(selectedNode.id) &&
+      selectedNode.id !== currentActive.id
+    ) {
+      setSelectedNode(currentActive);
     }
-  }, [path, level, completed, id]); // Added missing dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path?.id, level, completed.length]);
 
   useEffect(() => {
     let interval;
@@ -112,12 +93,10 @@ const Roadmap = () => {
     setIsSynthesizing(true);
     setActiveRoadmap(id, node.id);
 
-    // Check if we already have this in the vault for a faster feel
     const { getQuizFromVault } = await import("../services/dbService");
     const cached = await getQuizFromVault(node.topic, "Intermediate");
     if (cached) {
       setIsVaultSync(true);
-      // Brief pause for "Neural Sync" aesthetic but much faster than AI gen
       await new Promise((r) => setTimeout(r, 800));
     }
 
@@ -128,13 +107,13 @@ const Roadmap = () => {
     setIsVaultSync(false);
   };
 
-  // EARLY RETURNS MUST COME AFTER ALL HOOKS
-  if (!path)
+  if (!path) {
     return (
-      <div className="py-40 text-center uppercase font-black text-white/10">
+      <div className="py-40 text-center uppercase font-black text-white/70">
         Path Not Found
       </div>
     );
+  }
 
   if (!level) {
     return (
@@ -152,370 +131,207 @@ const Roadmap = () => {
   }
 
   return (
-    <div className="w-full bg-[#030303] min-h-screen relative overflow-hidden flex flex-col pt-10">
+    <div className="w-full bg-[#030303] min-h-screen text-white/90 font-sans pb-32">
       <SEO
         title={`${path.title} Journey`}
         description={`Master ${path.title} phase by phase.`}
       />
 
-      {/* --- CINEMATIC HEADER --- */}
-      <div className="fixed top-0 left-0 right-0 h-24 z-50 flex items-center justify-between px-6 lg:px-12 backdrop-blur-xl border-b border-white/5 bg-black/40">
+      {/* HEADER */}
+      <div className="sticky top-0 z-50 bg-[#030303]/90 backdrop-blur-md border-b border-white/5 px-6 py-4 flex items-center justify-between">
         <button
           onClick={() => navigate("/hub")}
-          className="flex items-center gap-2 text-white/40 hover:text-white transition-all uppercase text-[10px] font-black tracking-widest group"
+          className="flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-semibold"
         >
-          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors">
-            <ChevronLeft size={16} />
-          </div>
-          Back to Hub
+          <ChevronLeft size={18} />
+          <span className="hidden sm:inline">Back to Hub</span>
         </button>
-
-        <div className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center">
-          <div className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.4em] mb-1 italic">
-            Active Mission
+        <h1 className="text-lg font-black uppercase tracking-wider truncate mx-4">
+          {path.title}
+        </h1>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:block text-xs font-bold text-white/50">
+            {completed.length} / {path.nodes.length} Completed
           </div>
-          <h1 className="text-xl font-black text-white uppercase tracking-tighter italic font-syne">
-            {path.title}
-          </h1>
-        </div>
-
-        <div className="flex items-center gap-6">
           <button
             onClick={handleReset}
-            className="hidden md:block px-4 py-2 rounded-xl bg-red-500/5 border border-red-500/10 text-red-500 text-[8px] font-black uppercase tracking-widest hover:bg-red-500/20 transition-all font-syne italic"
+            className="p-2 rounded-full hover:bg-white/5 text-white/40 hover:text-white transition-colors"
+            title="Reset Progress"
           >
-            Reset Mission
+            <RefreshCw size={16} />
           </button>
-          <div className="hidden md:flex flex-col items-end">
-            <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">
-              Tier Progress
-            </div>
-            <div className="text-xs font-black text-emerald-400 uppercase tracking-widest font-syne">
-              {completed.length} / {path.nodes.length}
-            </div>
-          </div>
-          <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-[#DFFF00] bg-white/[0.03]">
-            <Target size={20} />
-          </div>
         </div>
       </div>
 
-      {/* Decorative Energy Particles */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden h-screen -z-10">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              y: [0, -100, 0],
-              x: [0, 20, -20, 0],
-              opacity: [0, 0.2, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 10 + i * 3,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 2,
-            }}
-            className="absolute"
-            style={{
-              left: `${15 + i * 10}%`,
-              top: `${20 + i * 10}%`,
-            }}
-          >
-            <Sparkles size={16 + i * 2} className="text-indigo-500/30" />
-          </motion.div>
-        ))}
-      </div>
+      {/* TIMELINE ARCHITECTURE */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 mt-16 relative">
+        {/* The Vertical Line */}
+        <div className="absolute left-[39px] sm:left-[47px] top-8 bottom-8 w-[2px] bg-white/5" />
 
-      {/* --- THE IMMERSIVE JOURNEY PATH --- */}
-      <div
-        ref={containerRef}
-        className="flex-1 w-full max-w-2xl mx-auto py-40 px-6 relative"
-      >
-        {/* The Vertical Track (Adventure Path) */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-40 bottom-40 w-3 bg-white/[0.02] rounded-full overflow-hidden">
-          <motion.div
-            style={{
-              height: pathHeight,
-            }}
-            className="w-full bg-gradient-to-b from-indigo-500 via-indigo-400 to-[#DFFF00] shadow-[0_0_30px_rgba(99,102,241,0.3)]"
-          />
-        </div>
-        <div className="absolute left-1/2 -translate-x-1/2 top-40 bottom-40 w-[2px] bg-white/5 blur-[1px]" />
-
-        <div className="relative z-40 space-y-48 flex flex-col items-center">
+        <div className="space-y-6">
           {path.nodes.map((node, index) => {
             const isCompleted = completed.includes(node.id);
             const isLocked =
               index > 0 && !completed.includes(path.nodes[index - 1].id);
             const isActive = selectedNode?.id === node.id;
-            const isReady = !isCompleted && !isLocked;
 
             return (
-              <motion.div
+              <div
                 key={node.id}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ margin: "-10% 0% -10% 0%", once: false }}
-                className={`relative flex items-center gap-20 w-full group ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"}`}
+                className="relative flex items-start gap-6 sm:gap-8 group"
               >
-                {/* Node Sphere */}
+                {/* Timeline Node Symbol */}
                 <div
-                  onClick={() => setSelectedNode(node)}
-                  className="relative cursor-pointer z-50 p-4 -m-4"
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex-shrink-0 flex items-center justify-center border-[3px] bg-[#030303] z-10 transition-colors duration-300 mt-2 ${
+                    isCompleted
+                      ? "border-emerald-500 text-emerald-500"
+                      : isLocked
+                        ? "border-white/10 text-white/20"
+                        : isActive
+                          ? "border-indigo-500 text-indigo-400 bg-indigo-500/10"
+                          : "border-white/20 text-white/40 group-hover:border-white/40"
+                  }`}
                 >
-                  {isReady && (
-                    <motion.div
-                      animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.1, 0.4] }}
-                      transition={{ duration: 4, repeat: Infinity }}
-                      className="absolute inset-0 bg-indigo-500 rounded-full blur-3xl"
-                    />
+                  {isCompleted ? (
+                    <CheckCircle size={20} />
+                  ) : isLocked ? (
+                    <Lock size={16} />
+                  ) : (
+                    <Target size={20} />
                   )}
+                </div>
 
-                  <div
-                    className={`w-24 h-24 rounded-[35%] border-2 flex items-center justify-center transition-all duration-500 group-hover:scale-110 relative z-10 ${
-                      isActive
-                        ? "bg-white border-[#DFFF00] text-black shadow-[0_0_50px_rgba(223,255,0,0.5)]"
-                        : isCompleted
-                          ? "bg-emerald-500/20 border-emerald-500/40 text-emerald-400"
-                          : isLocked
-                            ? "bg-black border-white/5 text-white/5"
-                            : "bg-white/5 border-white/10 text-white shadow-xl"
-                    }`}
-                  >
-                    {isCompleted ? (
-                      <CheckCircle size={32} />
-                    ) : isLocked ? (
-                      <Lock size={20} />
-                    ) : (
-                      <Play size={32} fill="currentColor" />
+                {/* Node Content Card */}
+                <div
+                  onClick={() => !isLocked && setSelectedNode(node)}
+                  className={`flex-1 rounded-2xl border transition-all duration-300 overflow-hidden ${
+                    isLocked
+                      ? "opacity-50 border-white/5 bg-white/[0.02] cursor-not-allowed"
+                      : isActive
+                        ? "border-indigo-500/50 bg-indigo-500/5 cursor-default shadow-[0_0_30px_rgba(99,102,241,0.1)]"
+                        : "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10 cursor-pointer"
+                  }`}
+                >
+                  {/* Card Header (Always visible) */}
+                  <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <div
+                        className={`text-xs font-bold uppercase tracking-widest mb-1.5 ${isActive ? "text-indigo-400" : "text-white/40"}`}
+                      >
+                        Phase 0{index + 1} • {node.category}
+                      </div>
+                      <h3
+                        className={`text-lg sm:text-xl font-black tracking-tight ${isActive ? "text-white" : "text-white/90"}`}
+                      >
+                        {node.title}
+                      </h3>
+                    </div>
+                    {!isLocked && !isActive && !isCompleted && (
+                      <div className="self-start sm:self-auto w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 group-hover:bg-white/10 group-hover:text-white transition-colors">
+                        <ArrowRight size={16} />
+                      </div>
                     )}
                   </div>
 
-                  <div
-                    className={`absolute top-full mt-4 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-colors ${isActive ? "text-[#DFFF00]" : "text-white/20"}`}
-                  >
-                    Step 0{index + 1}
-                  </div>
-                </div>
+                  {/* Expandable Details (Only visible when active) */}
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        className="border-t border-white/5 px-5 sm:px-6 py-6"
+                      >
+                        <p className="text-white/70 font-medium mb-8 leading-relaxed text-sm sm:text-base">
+                          <span className="text-white/90 font-bold block mb-2 uppercase text-xs tracking-wider">
+                            Objective Assessment
+                          </span>
+                          {node.topic}
+                        </p>
 
-                {/* Node Details (Shown only when active or hovered on desktop) */}
-                <div
-                  className={`flex-1 hidden md:block transition-all duration-700 ${isActive ? "opacity-100 translate-x-0 scale-100" : "opacity-20 group-hover:opacity-40 translate-x-10 scale-95"}`}
-                >
-                  <div
-                    className={`text-[10px] font-black uppercase tracking-[0.4em] mb-2 italic ${isActive ? "text-indigo-400" : "text-white/20"}`}
-                  >
-                    {node.category}
-                  </div>
-                  <h3
-                    className={`text-3xl lg:text-4xl font-black uppercase tracking-tighter italic font-syne mb-4 ${isActive ? "text-white" : "text-white/40"}`}
-                  >
-                    {node.title}
-                  </h3>
-                  <p className="text-white/40 text-sm font-medium leading-relaxed max-w-xs truncate">
-                    {node.topic}
-                  </p>
-                </div>
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          {isCompleted ? (
+                            <div className="inline-flex px-6 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold text-sm items-center justify-center gap-2">
+                              <CheckCircle size={18} /> Module Verified
+                            </div>
+                          ) : (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleStartNode(node);
+                              }}
+                              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white text-black font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-indigo-400 hover:text-white transition-all transform hover:scale-[1.02] shadow-lg"
+                            >
+                              <Play size={18} fill="currentColor" />
+                              Commence Training
+                            </button>
+                          )}
 
-                {/* Mobile labels (Simplified) */}
-                <div className="absolute md:hidden top-0 left-28 whitespace-nowrap">
-                  <h4 className="text-lg font-black text-white/50 uppercase italic">
-                    {node.title}
-                  </h4>
+                          <span className="text-xs font-semibold uppercase tracking-widest text-white/20 text-center sm:text-right">
+                            {isVaultSync ? "Quick Sync" : "Neural Generation"}
+                          </span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
-
-        {/* Dynamic Chapter Recommendations */}
-        <AnimatePresence mode="wait">
-          {selectedNode && (
-            <motion.div
-              key={selectedNode.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0, transition: { delay: 0.3 } }}
-              exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
-              className="mt-32 border-t border-white/5 pt-16 relative z-40 pb-48"
-            >
-              <div className="flex flex-col items-center mb-10 text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-4">
-                  <Star size={12} /> External Intelligence
-                </div>
-                <h3 className="text-2xl font-semibold text-white tracking-tight">
-                  Recommended Reading
-                </h3>
-                <p className="text-white/40 text-sm mt-2 font-medium">
-                  Curated articles to master{" "}
-                  <span className="text-white/80">'{selectedNode.topic}'</span>
-                </p>
-              </div>
-
-              <NeuralFeed userTopic={selectedNode.topic} skillStats={{}} />
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
-      {/* --- PERSISTENT MISSION CONTROL ACTION BAR --- */}
-      <AnimatePresence>
-        {selectedNode && (
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            className="fixed bottom-12 left-0 right-0 z-[100] px-6 lg:px-12 pointer-events-none"
-          >
-            <div className="max-w-6xl mx-auto w-full h-auto bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.8)] p-6 lg:px-12 pointer-events-auto relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-transparent to-transparent pointer-events-none" />
-
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-              <div className="flex items-center gap-8 flex-1">
-                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                  <Target className="text-[#DFFF00]" size={32} />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-4 mb-2">
-                    <span className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.4em] italic">
-                      Current Focus
-                    </span>
-                    <div className="h-px w-10 bg-white/10" />
-                    <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.4em]">
-                      {selectedNode.category}
-                    </span>
-                  </div>
-                  <h2 className="text-2xl lg:text-4xl font-black text-white uppercase tracking-tighter italic font-syne truncate leading-none">
-                    {selectedNode.title}
-                  </h2>
-                </div>
-              </div>
-
-              <div className="flex flex-col md:flex-row items-center gap-8 lg:gap-12 shrink-0">
-                <div className="hidden xl:flex items-center gap-6 border-x border-white/5 px-8">
-                  <div className="text-right">
-                    <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-1">
-                      Objective
-                    </div>
-                    <div className="text-xs font-black text-white uppercase tracking-widest truncate max-w-[150px]">
-                      {selectedNode.topic}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-1">
-                      Status
-                    </div>
-                    <div
-                      className={`text-xs font-black uppercase tracking-widest ${completed.includes(selectedNode.id) ? "text-emerald-400" : "text-[#DFFF00]"}`}
-                    >
-                      {completed.includes(selectedNode.id)
-                        ? "Verified"
-                        : "Pending Sync"}
-                    </div>
-                  </div>
-                </div>
-
-                {(() => {
-                  const idx = path.nodes.findIndex(
-                    (n) => n.id === selectedNode.id,
-                  );
-                  const isLocked =
-                    idx > 0 && !completed.includes(path.nodes[idx - 1].id);
-
-                  if (isLocked) {
-                    return (
-                      <div className="px-8 py-4 rounded-3xl bg-white/5 border border-white/5 opacity-50 flex items-center gap-4">
-                        <Lock size={20} className="text-white/20" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-white/40">
-                          Finish Previous Goal
-                        </span>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <button
-                      onClick={() => handleStartNode(selectedNode)}
-                      className="px-12 lg:px-16 py-6 lg:py-8 rounded-[30px] bg-white text-black font-black uppercase tracking-[0.4em] text-xs lg:text-sm flex items-center gap-4 hover:bg-[#DFFF00] transition-all shadow-[0_0_50px_rgba(255,255,255,0.2)] active:scale-95 group"
-                    >
-                      <Zap size={24} className="group-hover:animate-pulse" />
-                      START LEARNING
-                      <ArrowRight
-                        size={20}
-                        className="group-hover:translate-x-2 transition-transform"
-                      />
-                    </button>
-                  );
-                })()}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* --- SYNTHESIS OVERLAY (AI Generating) --- */}
+      {/* SYNTHESIS OVERLAY (AI Generating) */}
       <AnimatePresence>
         {isSynthesizing && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/98 backdrop-blur-[100px] z-[500] flex flex-col items-center justify-center p-6 text-center"
+            className="fixed inset-0 bg-[#030303]/98 backdrop-blur-xl z-[500] flex flex-col items-center justify-center p-6 text-center"
           >
-            <div className="relative w-64 h-64 mb-16">
+            <div className="relative w-48 h-48 mb-12">
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 border-2 border-indigo-500/10 rounded-full"
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 border border-indigo-500/20 rounded-full"
               />
               <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  animate={{ scale: [1, 1.1, 1], rotateY: [0, 180, 360] }}
-                  transition={{ duration: 5, repeat: Infinity }}
-                >
-                  <NeuralLogo size={120} />
-                </motion.div>
+                <NeuralLogo size={80} />
               </div>
             </div>
 
             <AnimatePresence mode="wait">
               <motion.div
                 key={synthStage}
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                className="space-y-8"
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-6"
               >
-                <h2 className="text-5xl font-black tracking-tight uppercase text-white font-syne italic leading-none">
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tighter text-white">
                   {synthStages[synthStage]}
                 </h2>
-                <div className="flex gap-4 justify-center">
+                <div className="flex gap-2 justify-center">
                   {synthStages.map((_, i) => (
                     <div
                       key={i}
-                      className={`h-2 rounded-full transition-all duration-1000 ${
+                      className={`h-1.5 rounded-full transition-all duration-500 ${
                         i === synthStage
-                          ? "w-20 bg-[#DFFF00]"
-                          : "w-4 bg-white/5"
+                          ? "w-12 bg-indigo-500"
+                          : "w-3 bg-white/10"
                       }`}
                     />
                   ))}
                 </div>
               </motion.div>
             </AnimatePresence>
-            <p className="mt-16 text-[#DFFF00] text-xs font-black uppercase tracking-[1em] animate-pulse font-syne italic">
-              {isVaultSync ? "LOADING SAVED QUIZ" : "GENERATING NEW QUIZ"}
+            <p className="mt-12 text-indigo-400 text-xs font-bold uppercase tracking-widest animate-pulse">
+              {isVaultSync ? "Loading Cached Data" : "Generating Neural Quiz"}
             </p>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Interactive Background Elements */}
-      <div className="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.05),transparent_50%)]" />
-      <div className="fixed top-1/4 -left-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] -z-10 animate-pulse" />
-      <div className="fixed bottom-1/4 -right-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] -z-10 animate-pulse" />
     </div>
   );
 };

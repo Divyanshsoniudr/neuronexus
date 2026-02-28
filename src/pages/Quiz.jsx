@@ -76,7 +76,7 @@ const Quiz = () => {
             className={`flex items-center gap-3 px-6 md:px-8 py-3 rounded-xl md:rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
               view === "question"
                 ? "bg-white text-black shadow-xl shrink-0"
-                : "text-white/40 hover:text-white"
+                : "text-white/90 hover:text-white"
             }`}
           >
             <Layers size={14} /> Questions
@@ -86,7 +86,7 @@ const Quiz = () => {
             className={`flex items-center gap-3 px-6 md:px-8 py-3 rounded-xl md:rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
               view === "map"
                 ? "bg-white text-black shadow-xl shrink-0"
-                : "text-white/40 hover:text-white"
+                : "text-white/90 hover:text-white"
             }`}
           >
             <Network size={14} /> Study Map
@@ -132,7 +132,7 @@ const Quiz = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center text-xs font-black text-white/60 uppercase tracking-widest">
+                  <div className="flex justify-between items-center text-xs font-black text-white/90 uppercase tracking-widest">
                     <span>Score</span>
                     <span>
                       {answers.filter((a) => a.isCorrect).length}/
@@ -150,7 +150,7 @@ const Quiz = () => {
                 </div>
 
                 <div className="pt-8 border-t border-white/5">
-                  <div className="text-xs font-black text-white/60 uppercase tracking-widest mb-4">
+                  <div className="text-xs font-black text-white/90 uppercase tracking-widest mb-4">
                     Study Status
                   </div>
                   <div className="flex gap-2">
@@ -169,10 +169,10 @@ const Quiz = () => {
                 <div className="flex justify-between items-end px-2">
                   <span className="text-indigo-400 text-xs font-black uppercase tracking-[0.3em]">
                     Question {currentQuestionIndex + 1}{" "}
-                    <span className="text-white/60 mx-1">/</span>{" "}
+                    <span className="text-white/90 mx-1">/</span>{" "}
                     {currentQuiz.length}
                   </span>
-                  <span className="text-white/60 text-xs font-black uppercase tracking-[0.3em]">
+                  <span className="text-white/90 text-xs font-black uppercase tracking-[0.3em]">
                     {Math.round(
                       ((currentQuestionIndex + (userFeedback ? 1 : 0)) /
                         currentQuiz.length) *
@@ -210,7 +210,7 @@ const Quiz = () => {
                         <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-black uppercase tracking-widest font-syne">
                           <Dna size={10} /> {currentQuestion.category}
                         </span>
-                        <span className="text-white/60 text-xs font-black uppercase tracking-widest font-syne">
+                        <span className="text-white/90 text-xs font-black uppercase tracking-widest font-syne">
                           Question {currentQuestionIndex + 1}
                         </span>
                       </div>

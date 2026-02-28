@@ -94,7 +94,7 @@ const Generator = () => {
             learning?
           </span>
         </h1>
-        <p className="text-white/60 text-lg max-w-xl mx-auto font-medium leading-relaxed">
+        <p className="text-white/90 text-lg max-w-xl mx-auto font-medium leading-relaxed">
           Type a topic or upload your notes. We'll create a 25-question practice
           test to check your knowledge in seconds.
         </p>
@@ -114,14 +114,14 @@ const Generator = () => {
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleStart()}
             placeholder="e.g. Chapter 4 Biology, Calculus exam, 18th Century History..."
-            className="flex-1 bg-transparent border-none focus:outline-none px-6 md:px-10 py-6 md:py-8 text-xl font-bold placeholder:text-white/10 font-syne text-white"
+            className="flex-1 bg-transparent border-none focus:outline-none px-6 md:px-10 py-6 md:py-8 text-xl font-bold placeholder:text-white/70 font-syne text-white"
           />
           <button
             onClick={handleStart}
             disabled={(!prompt.trim() && !file) || isGenerating}
             className={`relative px-12 md:px-16 py-6 md:py-8 rounded-[30px] font-black uppercase text-xs tracking-[0.4em] transition-all duration-500 flex items-center gap-6 overflow-hidden group/btn shadow-[0_0_50px_rgba(255,255,255,0.05)] ${
               !prompt.trim() && !file
-                ? "bg-white/5 text-white/20 cursor-not-allowed border border-white/5"
+                ? "bg-white/5 text-white/70 cursor-not-allowed border border-white/5"
                 : "bg-white text-black hover:bg-[#DFFF00] hover:text-black hover:shadow-[#DFFF00]/30"
             }`}
           >
@@ -162,7 +162,7 @@ const Generator = () => {
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-4 text-white/50 font-black uppercase text-xs tracking-[0.3em] group-hover:text-indigo-400 transition-colors">
+              <div className="flex items-center gap-4 text-white/90 font-black uppercase text-xs tracking-[0.3em] group-hover:text-indigo-400 transition-colors">
                 <Plus
                   size={20}
                   className="group-hover:rotate-90 transition-transform duration-300"
@@ -176,16 +176,16 @@ const Generator = () => {
       </motion.div>
 
       {/* Technical Footer */}
-      <div className="mt-24 pt-10 border-t border-white/5 flex items-center justify-center gap-12 text-xs font-black text-white/50 uppercase tracking-[0.5em] select-none">
-        <span className="hover:text-white/30 transition-colors cursor-crosshair">
+      <div className="mt-24 pt-10 border-t border-white/5 flex items-center justify-center gap-12 text-xs font-black text-white/90 uppercase tracking-[0.5em] select-none">
+        <span className="hover:text-white/80 transition-colors cursor-crosshair">
           Fast AI
         </span>
         <span className="text-indigo-500/20">•</span>
-        <span className="hover:text-white/30 transition-colors cursor-crosshair">
+        <span className="hover:text-white/80 transition-colors cursor-crosshair">
           Google's AI
         </span>
         <span className="text-indigo-500/20">•</span>
-        <span className="hover:text-white/30 transition-colors cursor-crosshair">
+        <span className="hover:text-white/80 transition-colors cursor-crosshair">
           Ready Now
         </span>
       </div>

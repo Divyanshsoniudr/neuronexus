@@ -84,7 +84,7 @@ const ScenarioEngine = () => {
         >
           <Zap className="text-indigo-400 animate-pulse" />
         </motion.div>
-        <p className="text-xs font-black uppercase tracking-[0.4em] text-white/30">
+        <p className="text-xs font-black uppercase tracking-[0.4em] text-white/80">
           Loading Scenario...
         </p>
       </div>
@@ -108,7 +108,7 @@ const ScenarioEngine = () => {
                 <ShieldCheck size={20} />
               </div>
               <div>
-                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/40 mb-1">
+                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/90 mb-1">
                   Active Scenario
                 </h3>
                 <h2 className="text-2xl font-black tracking-tight">
@@ -119,7 +119,7 @@ const ScenarioEngine = () => {
 
             {/* Context */}
             <div className="space-y-6 mb-12">
-              <p className="text-lg text-white/60 leading-relaxed font-light italic">
+              <p className="text-lg text-white/90 leading-relaxed font-light italic">
                 "{scenario.context}"
               </p>
               <div className="p-6 rounded-3xl bg-white/5 border border-white/10">
@@ -134,14 +134,14 @@ const ScenarioEngine = () => {
 
             {/* Decision Input */}
             <div className="space-y-4">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">
                 Your Decision / Reasoning
               </h4>
               <textarea
                 value={decision}
                 onChange={(e) => setDecision(e.target.value)}
                 placeholder="How would you handle this? Justify your logic..."
-                className="w-full h-40 bg-white/5 border border-white/10 rounded-3xl p-6 text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500/50 transition-all resize-none"
+                className="w-full h-40 bg-white/5 border border-white/10 rounded-3xl p-6 text-white placeholder:text-white/70 focus:outline-none focus:border-indigo-500/50 transition-all resize-none"
               />
               <button
                 onClick={handleSubmit}
@@ -192,7 +192,7 @@ const ScenarioEngine = () => {
                         )}
                       </div>
                       <div>
-                        <div className="text-[8px] font-black uppercase tracking-[0.2em] text-white/20 leading-none mb-1">
+                        <div className="text-[8px] font-black uppercase tracking-[0.2em] text-white/70 leading-none mb-1">
                           {mentor?.title || f.role}
                         </div>
                         <div className="text-xs font-black uppercase tracking-wider text-white">
@@ -210,7 +210,7 @@ const ScenarioEngine = () => {
                           style={{ width: `${f.rating * 10}%` }}
                         />
                       </div>
-                      <span className="text-[10px] font-black text-white/40">
+                      <span className="text-[10px] font-black text-white/90">
                         {f.rating}/10
                       </span>
                     </div>
@@ -236,7 +236,7 @@ const ScenarioEngine = () => {
                         <p className="text-sm text-white/80">{p.argument}</p>
                       </div>
                       <div className="p-5 rounded-2xl bg-white/[0.02] border-l-2 border-white/20">
-                        <p className="text-xs text-white/40 italic">
+                        <p className="text-xs text-white/90 italic">
                           Friction: {p.friction}
                         </p>
                       </div>

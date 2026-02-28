@@ -33,27 +33,27 @@ const InterviewSetup = ({ onStart }) => {
         <h2 className="text-4xl font-black uppercase text-white font-syne tracking-tighter">
           Practice Interview
         </h2>
-        <p className="text-white/40 text-xs font-black uppercase tracking-widest mt-2">
+        <p className="text-white/90 text-xs font-black uppercase tracking-widest mt-2">
           Set up your interview
         </p>
       </div>
 
       <div className="space-y-6">
         <div>
-          <label className="block text-xs font-black text-white/40 uppercase tracking-widest mb-3">
+          <label className="block text-xs font-black text-white/90 uppercase tracking-widest mb-3">
             Job Title
           </label>
           <input
             type="text"
             value={role}
             onChange={(e) => setRole(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/20 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white placeholder:text-white/70 focus:outline-none focus:border-indigo-500 transition-colors"
             placeholder="e.g. Systems Architect"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-black text-white/40 uppercase tracking-widest mb-3">
+          <label className="block text-xs font-black text-white/90 uppercase tracking-widest mb-3">
             Difficulty
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -64,7 +64,7 @@ const InterviewSetup = ({ onStart }) => {
                 className={`px-6 py-4 rounded-2xl border text-xs font-black uppercase tracking-widest transition-all ${
                   difficulty === level
                     ? "bg-indigo-500 text-white border-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.4)]"
-                    : "bg-white/5 text-white/60 border-white/10 hover:bg-white/10 hover:border-white/20"
+                    : "bg-white/5 text-white/90 border-white/10 hover:bg-white/10 hover:border-white/20"
                 }`}
               >
                 {level}
@@ -206,7 +206,7 @@ const InterviewChat = ({ config, onEnd }) => {
             <h3 className="text-white font-black uppercase text-sm tracking-widest font-syne">
               Virtual Interviewer
             </h3>
-            <p className="text-white/40 text-[10px] uppercase font-black tracking-widest">
+            <p className="text-white/90 text-[10px] uppercase font-black tracking-widest">
               {config.difficulty} {config.role}
             </p>
           </div>
@@ -302,7 +302,7 @@ const InterviewChat = ({ config, onEnd }) => {
               }
             }}
             placeholder="Formulate your response..."
-            className="flex-1 bg-transparent border-none text-white placeholder:text-white/20 resize-none max-h-32 min-h-[50px] py-3 pl-6 pr-4 focus:outline-none focus:ring-0 sm:text-sm"
+            className="flex-1 bg-transparent border-none text-white placeholder:text-white/70 resize-none max-h-32 min-h-[50px] py-3 pl-6 pr-4 focus:outline-none focus:ring-0 sm:text-sm"
             rows="1"
           />
           <div className="flex items-center gap-2 pr-2">
@@ -311,7 +311,7 @@ const InterviewChat = ({ config, onEnd }) => {
               className={`p-3 rounded-full transition-colors ${
                 isListening
                   ? "bg-red-500/20 text-red-500 animate-pulse"
-                  : "text-white/30 hover:text-white hover:bg-white/10"
+                  : "text-white/80 hover:text-white hover:bg-white/10"
               }`}
             >
               <Mic size={18} />
@@ -319,13 +319,13 @@ const InterviewChat = ({ config, onEnd }) => {
             <button
               onClick={handleSend}
               disabled={!input.trim() || isTyping}
-              className="p-4 rounded-full bg-indigo-500 text-white disabled:bg-white/5 disabled:text-white/20 hover:bg-indigo-400 transition-colors"
+              className="p-4 rounded-full bg-indigo-500 text-white disabled:bg-white/5 disabled:text-white/70 hover:bg-indigo-400 transition-colors"
             >
               <Send size={18} className="ml-1" />
             </button>
           </div>
         </div>
-        <p className="text-center text-[10px] font-black uppercase tracking-widest text-white/20 mt-4">
+        <p className="text-center text-[10px] font-black uppercase tracking-widest text-white/70 mt-4">
           Shift + Enter for new line • Markdown Supported
         </p>
       </div>

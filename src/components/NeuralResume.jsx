@@ -52,7 +52,7 @@ const NeuralResume = ({ stats }) => {
             >
               <cat.icon size={24} />
             </div>
-            <div className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">
+            <div className="text-[10px] font-black uppercase tracking-widest text-white/90 mb-1">
               {cat.name}
             </div>
             <div className="text-2xl font-black text-white">
@@ -75,7 +75,7 @@ const NeuralResume = ({ stats }) => {
       {/* Neural Roadmap Visualization */}
       <div className="p-12 glass-panel rounded-[48px] border border-white/5 relative overflow-hidden text-center">
         <div className="absolute inset-0 bg-mesh opacity-20 pointer-events-none" />
-        <h3 className="text-xl font-black uppercase tracking-[0.4em] text-white/60 mb-16 relative">
+        <h3 className="text-xl font-black uppercase tracking-[0.4em] text-white/90 mb-16 relative">
           Your Skill Map
         </h3>
 

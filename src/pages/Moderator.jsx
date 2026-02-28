@@ -49,7 +49,7 @@ const Moderator = () => {
             <div className="px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-[0.3em] flex items-center gap-2">
               <Shield size={12} /> Status: Active
             </div>
-            <div className="text-[10px] text-white/30 font-bold uppercase tracking-widest">
+            <div className="text-[10px] text-white/80 font-bold uppercase tracking-widest">
               {flaggedItems.length} Sessions Pending Review
             </div>
           </div>
@@ -58,7 +58,7 @@ const Moderator = () => {
         <div className="flex gap-4 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
             <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70"
               size={16}
             />
             <input
@@ -67,7 +67,7 @@ const Moderator = () => {
               className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-xs text-white focus:outline-none focus:border-emerald-500/50 transition-all font-bold"
             />
           </div>
-          <button className="p-3 rounded-2xl bg-white/5 border border-white/10 text-white/40 hover:text-white transition-all">
+          <button className="p-3 rounded-2xl bg-white/5 border border-white/10 text-white/90 hover:text-white transition-all">
             <Filter size={18} />
           </button>
         </div>
@@ -76,11 +76,11 @@ const Moderator = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Flagged Sessions List */}
         <div className="lg:col-span-1 space-y-4">
-          <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-6">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 mb-6">
             Flagged Instances
           </h3>
           {isLoading ? (
-            <div className="py-20 text-center animate-pulse text-white/10 uppercase font-black text-xs tracking-widest">
+            <div className="py-20 text-center animate-pulse text-white/70 uppercase font-black text-xs tracking-widest">
               Scanning...
             </div>
           ) : flaggedItems.length > 0 ? (
@@ -100,7 +100,7 @@ const Moderator = () => {
                 <h4 className="text-sm font-black text-white mb-2 line-clamp-1">
                   {item.topic || "Unknown Topic"}
                 </h4>
-                <div className="text-[10px] text-white/30 font-bold uppercase tracking-widest flex items-center gap-2">
+                <div className="text-[10px] text-white/80 font-bold uppercase tracking-widest flex items-center gap-2">
                   <Eye size={10} /> View details
                 </div>
               </motion.div>
@@ -111,7 +111,7 @@ const Moderator = () => {
                 size={32}
                 className="mx-auto text-emerald-500/20 mb-4"
               />
-              <p className="text-[10px] font-black uppercase tracking-widest text-white/10">
+              <p className="text-[10px] font-black uppercase tracking-widest text-white/70">
                 All sessions clear
               </p>
             </div>
@@ -155,7 +155,7 @@ const Moderator = () => {
 
                 <div className="grid grid-cols-2 gap-8 mb-12">
                   <div className="p-8 rounded-[32px] bg-white/[0.03] border border-white/5 italic">
-                    <div className="text-[8px] font-black uppercase tracking-widest text-white/20 mb-4">
+                    <div className="text-[8px] font-black uppercase tracking-widest text-white/70 mb-4">
                       User Query
                     </div>
                     <p className="text-sm font-bold text-white/80 leading-relaxed">
@@ -174,10 +174,10 @@ const Moderator = () => {
                 </div>
 
                 <div className="space-y-4">
-                  <h4 className="text-[9px] font-black uppercase tracking-widest text-white/20">
+                  <h4 className="text-[9px] font-black uppercase tracking-widest text-white/70">
                     Session Trace
                   </h4>
-                  <div className="p-8 rounded-[32px] bg-white/[0.02] border border-white/5 font-mono text-[10px] text-white/40 leading-loose">
+                  <div className="p-8 rounded-[32px] bg-white/[0.02] border border-white/5 font-mono text-[10px] text-white/90 leading-loose">
                     {/* Mocking the session trace for display */}
                     [08:42:15] System initialized
                     <br />
@@ -200,7 +200,7 @@ const Moderator = () => {
                 <h3 className="text-xl font-black text-white italic mb-2 uppercase tracking-tight">
                   Select a Session to Audit
                 </h3>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/20 max-w-xs mx-auto">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70 max-w-xs mx-auto">
                   Use the left panel to begin reviewing flagged neural activity.
                 </p>
               </div>

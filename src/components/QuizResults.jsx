@@ -47,7 +47,7 @@ const QuizResults = () => {
             animate={{ y: 0, opacity: 1 }}
             className="mb-12 relative"
           >
-            <h2 className="text-[10px] font-black text-white/30 uppercase tracking-[1em] mb-12 font-syne">
+            <h2 className="text-[10px] font-black text-white/80 uppercase tracking-[1em] mb-12 font-syne">
               Achievement _ 0{Math.floor(percentage / 10)}
             </h2>
 
@@ -150,7 +150,7 @@ const QuizResults = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1 }}
-                className="text-2xl font-black text-white/40 uppercase tracking-[0.2em] font-syne"
+                className="text-2xl font-black text-white/90 uppercase tracking-[0.2em] font-syne"
               >
                 {rank}
               </motion.h3>
@@ -165,7 +165,7 @@ const QuizResults = () => {
               Performance Analysis
             </h4>
             <div className="h-px w-24 bg-indigo-500/30 mb-8" />
-            <p className="text-xl text-white/60 font-medium leading-relaxed font-outfit">
+            <p className="text-xl text-white/90 font-medium leading-relaxed font-outfit">
               Your session results across{" "}
               <span className="text-white">
                 {Object.keys(skillStats).length} key categories
@@ -188,12 +188,12 @@ const QuizResults = () => {
                     {skill}
                   </h5>
                   <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">
+                    <span className="text-[10px] font-black text-white/70 uppercase tracking-widest">
                       Score / Correct
                     </span>
                     <span className="text-lg font-black text-[#DFFF00] italic font-outfit">
                       {val}{" "}
-                      <span className="text-[10px] text-white/30 ml-1">
+                      <span className="text-[10px] text-white/80 ml-1">
                         pts
                       </span>
                     </span>
@@ -222,7 +222,7 @@ const QuizResults = () => {
           {/* Action Grid (Editorial Style) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-12 mt-32 relative">
             <div className="space-y-6">
-              <h6 className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] font-syne">
+              <h6 className="text-[10px] font-black text-white/70 uppercase tracking-[0.4em] font-syne">
                 Continue Learning
               </h6>
               <button
@@ -243,7 +243,7 @@ const QuizResults = () => {
             </div>
 
             <div className="space-y-6">
-              <h6 className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] font-syne">
+              <h6 className="text-[10px] font-black text-white/70 uppercase tracking-[0.4em] font-syne">
                 Refine Performance
               </h6>
               {weakSectors.length > 0 ? (
@@ -261,7 +261,7 @@ const QuizResults = () => {
                 </button>
               ) : (
                 <div className="py-4 border-b border-white/10">
-                  <span className="text-sm font-bold text-white/20 uppercase tracking-widest font-syne italic">
+                  <span className="text-sm font-bold text-white/70 uppercase tracking-widest font-syne italic">
                     Excellent Score
                   </span>
                 </div>
@@ -304,13 +304,13 @@ const PerformanceCard = ({ icon: Icon, title, val, desc, color }) => {
       >
         <Icon size={24} />
       </div>
-      <h4 className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] mb-2">
+      <h4 className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] mb-2">
         {title}
       </h4>
       <div className="text-xl font-black text-white mb-2 italic truncate w-full uppercase">
         {val}
       </div>
-      <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">
+      <p className="text-[10px] text-white/70 font-bold uppercase tracking-widest">
         {desc}
       </p>
     </div>

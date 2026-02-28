@@ -132,7 +132,7 @@ const Profile = () => {
                   </button>
                   <button
                     onClick={() => setIsEditing(false)}
-                    className="flex-1 py-2 bg-white/10 text-white/60 rounded-lg font-black uppercase text-xs tracking-widest"
+                    className="flex-1 py-2 bg-white/10 text-white/90 rounded-lg font-black uppercase text-xs tracking-widest"
                   >
                     Cancel
                   </button>
@@ -144,7 +144,7 @@ const Profile = () => {
                   {user.displayName || "Explorer"}
                   <Edit
                     size={16}
-                    className="text-white/50 hover:text-indigo-400 cursor-pointer transition-colors"
+                    className="text-white/90 hover:text-indigo-400 cursor-pointer transition-colors"
                     onClick={() => setIsEditing(true)}
                   />
                 </h2>
@@ -157,7 +157,7 @@ const Profile = () => {
                       ? "bg-red-500/10 border-red-500/20 text-red-500"
                       : role === "moderator"
                         ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
-                        : "bg-white/5 border-white/10 text-white/40"
+                        : "bg-white/5 border-white/10 text-white/90"
                   }`}
                 >
                   <Shield size={10} /> {role || "Learner"}
@@ -167,7 +167,7 @@ const Profile = () => {
 
             <button
               onClick={handleSignOut}
-              className="w-full py-5 rounded-3xl bg-white/10 border border-white/10 text-white/60 font-black uppercase text-xs tracking-widest hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center justify-center gap-3 group/out"
+              className="w-full py-5 rounded-3xl bg-white/10 border border-white/10 text-white/90 font-black uppercase text-xs tracking-widest hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center justify-center gap-3 group/out"
             >
               <LogOut
                 size={16}
@@ -191,13 +191,13 @@ const Profile = () => {
           </div>
 
           <div className="glass-panel p-10 rounded-[48px] border border-white/5">
-            <h3 className="text-xs font-black uppercase tracking-[0.4em] text-white/50 mb-8 flex items-center gap-3">
+            <h3 className="text-xs font-black uppercase tracking-[0.4em] text-white/90 mb-8 flex items-center gap-3">
               <Settings size={14} className="text-indigo-500" />
               Account Settings
             </h3>
             <div className="space-y-6">
               <div className="space-y-3">
-                <label className="text-xs font-black uppercase tracking-widest text-white/60 block ml-2">
+                <label className="text-xs font-black uppercase tracking-widest text-white/90 block ml-2">
                   Change Password
                 </label>
                 <div className="relative group">
@@ -235,7 +235,7 @@ const Profile = () => {
                       </button>
                       <button
                         onClick={() => setShowDeleteConfirm(false)}
-                        className="flex-1 py-3 bg-white/10 text-white/60 rounded-xl font-black uppercase text-xs tracking-widest"
+                        className="flex-1 py-3 bg-white/10 text-white/90 rounded-xl font-black uppercase text-xs tracking-widest"
                       >
                         Cancel
                       </button>
@@ -278,7 +278,7 @@ const Profile = () => {
                 </span>
               </div>
 
-              <p className="text-white/60 text-xs font-black uppercase tracking-[0.5em] max-w-sm mx-auto">
+              <p className="text-white/90 text-xs font-black uppercase tracking-[0.5em] max-w-sm mx-auto">
                 Goals reached & saved online
               </p>
             </div>
@@ -294,7 +294,7 @@ const Profile = () => {
                   <div className="text-6xl font-black mb-1 text-white tabular-nums tracking-tighter italic">
                     {Object.keys(roadmapProgress).length}
                   </div>
-                  <p className="text-white/50 text-xs font-black uppercase tracking-widest">
+                  <p className="text-white/90 text-xs font-black uppercase tracking-widest">
                     Subjects Started
                   </p>
                 </div>
@@ -317,7 +317,7 @@ const Profile = () => {
                         ? "Expert"
                         : "Beginner"}
                   </div>
-                  <p className="text-white/50 text-xs font-black uppercase tracking-widest">
+                  <p className="text-white/90 text-xs font-black uppercase tracking-widest">
                     Your Level
                   </p>
                 </div>

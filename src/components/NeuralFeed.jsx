@@ -99,9 +99,9 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-white/50">Signals</span>
+              <span className="text-xs font-medium text-white/90">Signals</span>
               <span
-                className={`text-[10px] uppercase font-bold tracking-widest flex items-center gap-1.5 ${loading ? "text-white/20" : "text-emerald-400"}`}
+                className={`text-[10px] uppercase font-bold tracking-widest flex items-center gap-1.5 ${loading ? "text-white/70" : "text-emerald-400"}`}
               >
                 <span
                   className={`w-1.5 h-1.5 rounded-full ${loading ? "bg-white/20" : "bg-emerald-500 animate-pulse"}`}
@@ -115,13 +115,13 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
         <div className="flex bg-[#111] p-1 rounded-lg border border-white/5 w-full sm:w-auto">
           <button
             onClick={() => setActiveTab("global")}
-            className={`flex-1 sm:flex-none py-1.5 px-4 rounded-md text-xs font-medium transition-all ${activeTab === "global" ? "bg-white/10 text-white" : "text-white/40 hover:text-white"}`}
+            className={`flex-1 sm:flex-none py-1.5 px-4 rounded-md text-xs font-medium transition-all ${activeTab === "global" ? "bg-white/10 text-white" : "text-white/90 hover:text-white"}`}
           >
             Global
           </button>
           <button
             onClick={() => setActiveTab("synaptic")}
-            className={`flex-1 sm:flex-none py-1.5 px-4 rounded-md text-xs font-medium transition-all ${activeTab === "synaptic" ? "bg-white/10 text-white" : "text-white/40 hover:text-white"}`}
+            className={`flex-1 sm:flex-none py-1.5 px-4 rounded-md text-xs font-medium transition-all ${activeTab === "synaptic" ? "bg-white/10 text-white" : "text-white/90 hover:text-white"}`}
           >
             Personal
           </button>
@@ -129,7 +129,7 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
       </div>
 
       <div className="flex items-center justify-between">
-        <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/30 flex items-center gap-3">
+        <h3 className="text-[10px] font-bold uppercase tracking-widest text-white/80 flex items-center gap-3">
           <span className="w-8 h-[1px] bg-white/10" />
           Recent Streams
           <span className="w-8 h-[1px] bg-white/10" />
@@ -169,15 +169,15 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
                 )}
                 <div className="p-5">
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-white/10 group-hover:text-white transition-colors border border-white/5 shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/90 group-hover:bg-white/10 group-hover:text-white transition-colors border border-white/5 shrink-0">
                       <Globe size={14} />
                     </div>
                     <div className="flex flex-col flex-1 pt-0.5">
                       <div className="flex items-center justify-between w-full">
-                        <span className="text-xs font-medium text-white/40 group-hover:text-white/60 transition-colors line-clamp-1">
+                        <span className="text-xs font-medium text-white/90 group-hover:text-white/90 transition-colors line-clamp-1">
                           {signal.author || "Dev.to"}
                         </span>
-                        <span className="text-[10px] font-medium text-white/20 whitespace-nowrap ml-2">
+                        <span className="text-[10px] font-medium text-white/70 whitespace-nowrap ml-2">
                           {new Date(signal.published_at).toLocaleDateString()}
                         </span>
                       </div>
@@ -187,7 +187,7 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
                     {signal.title}
                   </h4>
                   {signal.description && (
-                    <p className="text-xs text-white/50 group-hover:text-white/70 transition-colors leading-relaxed line-clamp-3 mb-4">
+                    <p className="text-xs text-white/90 group-hover:text-white/90 transition-colors leading-relaxed line-clamp-3 mb-4">
                       {signal.description}
                     </p>
                   )}
@@ -196,7 +196,7 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
                     {signal.tags?.slice(0, 3).map((tag, i) => (
                       <div
                         key={i}
-                        className="px-2 py-0.5 rounded bg-white/5 text-white/50 text-[10px] font-medium group-hover:bg-white/10 group-hover:text-white transition-colors"
+                        className="px-2 py-0.5 rounded bg-white/5 text-white/90 text-[10px] font-medium group-hover:bg-white/10 group-hover:text-white transition-colors"
                       >
                         #{tag}
                       </div>
@@ -223,7 +223,7 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
           <button
             onClick={handleLoadMore}
             disabled={loadingMore}
-            className="px-8 py-3 rounded-xl border border-white/10 hover:border-white/30 text-white/50 hover:text-white transition-all text-xs font-semibold tracking-wide disabled:opacity-50 flex items-center gap-2 mx-auto"
+            className="px-8 py-3 rounded-xl border border-white/10 hover:border-white/30 text-white/90 hover:text-white transition-all text-xs font-semibold tracking-wide disabled:opacity-50 flex items-center gap-2 mx-auto"
           >
             {loadingMore ? (
               <>
@@ -239,7 +239,7 @@ const NeuralFeed = ({ skillStats, userTopic }) => {
 
       {(!hasMore || activeTab === "synaptic") && !loading && (
         <div className="pt-8 text-center">
-          <div className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/10 py-4 px-8 border-t border-white/5">
+          <div className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-white/70 py-4 px-8 border-t border-white/5">
             <Cpu size={14} />
             End of Stream
           </div>

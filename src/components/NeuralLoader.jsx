@@ -152,7 +152,7 @@ const NeuralLoader = ({ type = "synthesis", text }) => {
             </div>
           </div>
 
-          <p className="text-white/10 text-[8px] font-black uppercase tracking-[0.3em] animate-pulse">
+          <p className="text-white/70 text-[8px] font-black uppercase tracking-[0.3em] animate-pulse">
             Processing
           </p>
         </motion.div>

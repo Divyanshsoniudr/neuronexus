@@ -67,7 +67,7 @@ const NeuroMentor = ({ currentQuestion, mentorOverride }) => {
                   />
                 </div>
                 <div>
-                  <div className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em] leading-none mb-1">
+                  <div className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] leading-none mb-1">
                     {mentor.role}
                   </div>
                   <div className="text-sm font-black tracking-tighter leading-none font-syne uppercase">
@@ -77,7 +77,7 @@ const NeuroMentor = ({ currentQuestion, mentorOverride }) => {
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-white/20 hover:text-white transition-colors"
+                className="text-white/70 hover:text-white transition-colors"
               >
                 <X size={20} />
               </button>
@@ -121,7 +121,7 @@ const NeuroMentor = ({ currentQuestion, mentorOverride }) => {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSend()}
                   placeholder="Ask a question..."
-                  className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-5 pr-14 text-xs font-bold text-white transition-all outline-none focus:border-indigo-500/50 placeholder:text-white/10"
+                  className="w-full h-14 bg-white/5 border border-white/10 rounded-2xl px-5 pr-14 text-xs font-bold text-white transition-all outline-none focus:border-indigo-500/50 placeholder:text-white/70"
                 />
                 <button
                   onClick={handleSend}

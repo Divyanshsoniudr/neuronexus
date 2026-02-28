@@ -96,7 +96,7 @@ const AsciiCoreTerminal = () => {
         <div className="space-y-2">
           {logs.map((log) => (
             <div key={log.id} className="flex gap-4">
-              <span className="text-white/20">
+              <span className="text-white/70">
                 [{new Date(log.id).toLocaleTimeString()}]
               </span>
               <span
@@ -107,7 +107,7 @@ const AsciiCoreTerminal = () => {
                       ? "text-indigo-400"
                       : log.type === "MASTERY"
                         ? "text-amber-400"
-                        : "text-white/40"
+                        : "text-white/90"
                 }
               >
                 {log.type}
@@ -241,7 +241,7 @@ const Admin = () => {
           <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-4">
             Step-Up Required
           </h2>
-          <p className="text-white/40 text-[10px] font-black uppercase tracking-widest mb-8 leading-relaxed">
+          <p className="text-white/90 text-[10px] font-black uppercase tracking-widest mb-8 leading-relaxed">
             Enter your Admin Key to <br /> unlock the dashboard.
           </p>
 
@@ -338,12 +338,12 @@ const Admin = () => {
               <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 group-hover:border-white/10 transition-colors">
                 <stat.icon size={20} className={stat.color} />
               </div>
-              <div className="text-[10px] font-black font-mono text-white/20 uppercase tracking-widest">
+              <div className="text-[10px] font-black font-mono text-white/70 uppercase tracking-widest">
                 {stat.trend}
               </div>
             </div>
             <div className="space-y-1">
-              <div className="text-[9px] font-black text-white/30 uppercase tracking-[0.3em]">
+              <div className="text-[9px] font-black text-white/80 uppercase tracking-[0.3em]">
                 {stat.label}
               </div>
               <div className="text-3xl font-black text-white tracking-tighter italic">
@@ -362,14 +362,14 @@ const Admin = () => {
           <AsciiCoreTerminal />
 
           <div className="glass-panel p-10 rounded-[48px] border border-white/5 overflow-hidden">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-8 flex items-center gap-3 italic">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 mb-8 flex items-center gap-3 italic">
               <Database size={14} className="text-indigo-500" />
               Persona Management
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-left font-mono text-[10px]">
                 <thead>
-                  <tr className="text-white/20 uppercase tracking-widest border-b border-white/5">
+                  <tr className="text-white/70 uppercase tracking-widest border-b border-white/5">
                     <th className="pb-4 font-black">Identity</th>
                     <th className="pb-4 font-black">Email</th>
                     <th className="pb-4 font-black">Role</th>
@@ -380,10 +380,10 @@ const Admin = () => {
                 <tbody className="divide-y divide-white/5">
                   {users.map((u) => (
                     <tr key={u.uid} className="group hover:bg-white/[0.02]">
-                      <td className="py-4 text-white/40 group-hover:text-white transition-colors">
+                      <td className="py-4 text-white/90 group-hover:text-white transition-colors">
                         {u.uid.slice(0, 8)}...
                       </td>
-                      <td className="py-4 text-white/60">{u.email}</td>
+                      <td className="py-4 text-white/90">{u.email}</td>
                       <td className="py-4">
                         <select
                           value={u.role || "learner"}
@@ -409,7 +409,7 @@ const Admin = () => {
                           onClick={() =>
                             handleUpdate(u.uid, "isPremium", !u.isPremium)
                           }
-                          className={`px-3 py-1 rounded-full font-black text-[8px] uppercase tracking-tighter transition-all ${u.isPremium ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-white/5 text-white/20 border border-white/10 hover:border-emerald-500/40 hover:text-white"}`}
+                          className={`px-3 py-1 rounded-full font-black text-[8px] uppercase tracking-tighter transition-all ${u.isPremium ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-white/5 text-white/70 border border-white/10 hover:border-emerald-500/40 hover:text-white"}`}
                         >
                           {u.isPremium ? "Premium Active" : "Promote to Prem"}
                         </button>
@@ -431,7 +431,7 @@ const Admin = () => {
           </div>
 
           <div className="glass-panel p-10 rounded-[48px] border border-white/5 min-h-[400px]">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-8 flex items-center gap-3">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 mb-8 flex items-center gap-3">
               <Server size={14} className="text-red-500" />
               Activity Stream
             </h3>
@@ -440,24 +440,24 @@ const Admin = () => {
                 logs.map((log, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-6 text-[10px] py-3 border-b border-white/5 text-white/40"
+                    className="flex items-center gap-6 text-[10px] py-3 border-b border-white/5 text-white/90"
                   >
                     <span className="text-red-500/60 font-black w-20 text-nowrap">
                       {log.time}
                     </span>
-                    <span className="flex-1 font-bold text-white/60 tracking-tight flex items-center gap-2">
+                    <span className="flex-1 font-bold text-white/90 tracking-tight flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-indigo-500/40" />
                       {log.topic || log.type || "System Sync"}
                     </span>
                     <span
-                      className={`text-[8px] px-2 py-0.5 rounded font-black ${log.flagged ? "bg-red-500/10 text-red-500" : "bg-white/5 text-white/60"}`}
+                      className={`text-[8px] px-2 py-0.5 rounded font-black ${log.flagged ? "bg-red-500/10 text-red-500" : "bg-white/5 text-white/90"}`}
                     >
                       {log.flagged ? "AUDIT" : "ACTIVE"}
                     </span>
                   </div>
                 ))
               ) : (
-                <div className="py-12 text-center text-[10px] font-black uppercase tracking-widest text-white/10">
+                <div className="py-12 text-center text-[10px] font-black uppercase tracking-widest text-white/70">
                   Waiting for synaptic signals...
                 </div>
               )}
@@ -465,7 +465,7 @@ const Admin = () => {
           </div>
 
           <div className="glass-panel p-10 rounded-[48px] border border-white/5">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-8 flex items-center gap-3">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 mb-8 flex items-center gap-3">
               <Zap size={14} className="text-amber-500" />
               Topic Creator
             </h3>
@@ -516,7 +516,7 @@ const Admin = () => {
 
         <div className="space-y-8">
           <div className="glass-panel p-10 rounded-[48px] border border-white/5">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-6">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 mb-6">
               System Monitoring
             </h3>
             <div className="space-y-4">
@@ -558,7 +558,7 @@ const Admin = () => {
           </div>
 
           <div className="glass-panel p-10 rounded-[48px] border border-white/5">
-            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-6 flex items-center gap-2">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/70 mb-6 flex items-center gap-2">
               <LucideIcons.Radio size={14} className="text-emerald-500" />
               Global Broadcast
             </h3>
@@ -582,8 +582,8 @@ const Admin = () => {
           </button>
 
           <div className="p-10 rounded-[48px] border border-dashed border-white/10 text-center">
-            <ShieldCheck size={32} className="mx-auto text-white/10 mb-4" />
-            <p className="text-[10px] font-black text-white/20 uppercase tracking-widest leading-relaxed">
+            <ShieldCheck size={32} className="mx-auto text-white/70 mb-4" />
+            <p className="text-[10px] font-black text-white/70 uppercase tracking-widest leading-relaxed">
               Manual Governance Protocol <br />
               Authorized By Super Admin
             </p>

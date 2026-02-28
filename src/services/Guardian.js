@@ -46,7 +46,7 @@ class Guardian {
         }
 
         try {
-            const model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            const model = this.genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
             const safetyPrompt = `
         You are "The Guardian", a safety and neutrality gatekeeper for a learning platform.
@@ -117,7 +117,7 @@ class Guardian {
 
         try {
             const model = this.genAI.getGenerativeModel({
-                model: "gemini-1.5-flash"
+                model: "gemini-2.0-flash"
             });
             const outputString = JSON.stringify(data).substring(0, 2000); // Sample for speed
 

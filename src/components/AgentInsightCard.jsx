@@ -40,12 +40,12 @@ const AgentInsightCard = ({ mentor, insight, type = "thought" }) => {
               <span className="text-xs font-semibold text-white">
                 {mentor.name}
               </span>
-              <span className="text-xs text-white/20">—</span>
-              <span className="text-xs font-medium text-white/40">
+              <span className="text-xs text-white/70">—</span>
+              <span className="text-xs font-medium text-white/90">
                 {mentor.title}
               </span>
             </div>
-            <div className={`text-white/30`}>{getIcon()}</div>
+            <div className={`text-white/80`}>{getIcon()}</div>
           </div>
 
           <p className="text-sm text-white/70 leading-relaxed font-medium">

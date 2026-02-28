@@ -48,7 +48,7 @@ const PremiumModal = ({ isOpen, onClose }) => {
             <div className="relative z-10 p-12">
               <button
                 onClick={onClose}
-                className="absolute top-8 right-8 p-3 rounded-full bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-all"
+                className="absolute top-8 right-8 p-3 rounded-full bg-white/5 hover:bg-white/10 text-white/90 hover:text-white transition-all"
               >
                 <X size={20} />
               </button>
@@ -60,7 +60,7 @@ const PremiumModal = ({ isOpen, onClose }) => {
                 <h2 className="text-3xl font-semibold text-white tracking-tight mb-2">
                   QuizMaster Premium
                 </h2>
-                <p className="text-white/50 text-sm font-medium">
+                <p className="text-white/90 text-sm font-medium">
                   Unlock unlimited access to all features.
                 </p>
               </div>
@@ -103,7 +103,7 @@ const PremiumModal = ({ isOpen, onClose }) => {
                       <h4 className="text-sm font-semibold text-white mb-1">
                         {feat.title}
                       </h4>
-                      <p className="text-xs text-white/50">{feat.desc}</p>
+                      <p className="text-xs text-white/90">{feat.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -123,7 +123,7 @@ const PremiumModal = ({ isOpen, onClose }) => {
                     </>
                   )}
                 </button>
-                <div className="text-xs font-medium text-white/40 text-center">
+                <div className="text-xs font-medium text-white/90 text-center">
                   Instant Unlock • Unrestricted Access
                 </div>
               </div>

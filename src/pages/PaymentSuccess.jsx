@@ -62,7 +62,7 @@ const PaymentSuccess = () => {
         <span className="text-emerald-500 text-glow-emerald">Unlocked</span>
       </h1>
 
-      <p className="text-white/40 font-bold text-center max-w-md mb-12 uppercase tracking-widest text-[10px] leading-relaxed">
+      <p className="text-white/90 font-bold text-center max-w-md mb-12 uppercase tracking-widest text-[10px] leading-relaxed">
         Your payment was successful. All limits have been removed. You now have
         full access to all features.
       </p>
@@ -76,7 +76,7 @@ const PaymentSuccess = () => {
             <div className="text-[10px] font-black uppercase text-white">
               Unlimited Generation
             </div>
-            <div className="text-[9px] font-bold text-white/40">
+            <div className="text-[9px] font-bold text-white/90">
               No daily roadmap/quiz caps
             </div>
           </div>
@@ -89,7 +89,7 @@ const PaymentSuccess = () => {
             <div className="text-[10px] font-black uppercase text-white">
               Priority Access
             </div>
-            <div className="text-[9px] font-bold text-white/40">
+            <div className="text-[9px] font-bold text-white/90">
               Faster AI synthesis seeds
             </div>
           </div>

@@ -32,7 +32,7 @@ const Footer = () => {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl glass-panel border border-white/10 flex items-center justify-center text-white/60 hover:text-indigo-400 hover:border-indigo-400/30 transition-all font-bold"
+                  className="w-10 h-10 rounded-xl glass-panel border border-white/10 flex items-center justify-center text-white/90 hover:text-indigo-400 hover:border-indigo-400/30 transition-all font-bold"
                 >
                   <Icon size={18} />
                 </a>
@@ -41,7 +41,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-xs font-black uppercase tracking-[0.3em] text-white/60 mb-6 font-syne">
+            <h4 className="text-xs font-black uppercase tracking-[0.3em] text-white/90 mb-6 font-syne">
               RESOURCES
             </h4>
             <ul className="space-y-3">
@@ -54,7 +54,7 @@ const Footer = () => {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-sm font-bold text-white/60 hover:text-white transition-colors"
+                    className="text-sm font-bold text-white/90 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -64,7 +64,7 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="text-xs font-black uppercase tracking-[0.3em] text-white/60 mb-6 font-syne">
+            <h4 className="text-xs font-black uppercase tracking-[0.3em] text-white/90 mb-6 font-syne">
               Legal
             </h4>
             <ul className="space-y-3">
@@ -76,7 +76,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.path}
-                    className="text-sm font-bold text-white/60 hover:text-white transition-colors"
+                    className="text-sm font-bold text-white/90 hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -87,7 +87,7 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 pt-12 border-t border-white/5">
-          <div className="text-xs font-black tracking-[0.4em] uppercase text-white/40 font-syne">
+          <div className="text-xs font-black tracking-[0.4em] uppercase text-white/90 font-syne">
             © 2026 QuizMaster AI // Mastery Pursuit
           </div>
         </div>

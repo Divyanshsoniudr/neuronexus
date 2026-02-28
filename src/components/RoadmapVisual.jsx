@@ -83,7 +83,7 @@ const StepNode = ({ step, index }) => {
         </div>
 
         <div className="mt-8 text-center max-w-[200px]">
-          <div className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-3 font-syne group-hover:text-[#DFFF00] group-hover:border-[#DFFF00]/30 transition-all">
+          <div className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-white/90 mb-3 font-syne group-hover:text-[#DFFF00] group-hover:border-[#DFFF00]/30 transition-all">
             Step 0{index + 1}
           </div>
           <h4 className="text-xl md:text-3xl font-black text-white uppercase tracking-tighter italic font-syne group-hover:scale-110 transition-transform">

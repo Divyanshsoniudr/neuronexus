@@ -256,7 +256,7 @@ const SuperpowerCard = ({
       <h3 className="text-3xl font-black text-white uppercase font-syne tracking-tight">
         {title}
       </h3>
-      <p className="text-white/40 text-base font-medium leading-relaxed font-outfit">
+      <p className="text-white/90 text-base font-medium leading-relaxed font-outfit">
         {desc}
       </p>
     </div>
@@ -277,7 +277,7 @@ const FAQItem = ({ question, answer }) => {
         <div
           className={`p-2 rounded-lg bg-white/5 transition-transform ${isOpen ? "rotate-45" : ""}`}
         >
-          <Plus size={20} className="text-white/40" />
+          <Plus size={20} className="text-white/90" />
         </div>
       </button>
       <AnimatePresence>
@@ -288,7 +288,7 @@ const FAQItem = ({ question, answer }) => {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <p className="pt-4 text-white/50 leading-relaxed max-w-2xl">
+            <p className="pt-4 text-white/90 leading-relaxed max-w-2xl">
               {answer}
             </p>
           </motion.div>
@@ -397,7 +397,7 @@ const Landing = () => {
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
                 }}
-                className="text-white/40 text-lg md:text-2xl font-medium mb-12 md:mb-16 leading-relaxed max-w-2xl font-outfit"
+                className="text-white/90 text-lg md:text-2xl font-medium mb-12 md:mb-16 leading-relaxed max-w-2xl font-outfit"
               >
                 The smart study tool that helps you learn. Turn your notes into
                 fun quizzes and remember everything you read.
@@ -426,7 +426,7 @@ const Landing = () => {
                 {!user && (
                   <button
                     onClick={() => navigate("/auth")}
-                    className="px-10 md:px-16 py-5 md:py-6 rounded-3xl border border-white/10 text-white/30 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:border-[#DFFF00]/30 hover:text-white transition-all font-syne text-[10px]"
+                    className="px-10 md:px-16 py-5 md:py-6 rounded-3xl border border-white/10 text-white/80 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:border-[#DFFF00]/30 hover:text-white transition-all font-syne text-[10px]"
                   >
                     Login to Account
                   </button>
@@ -447,7 +447,7 @@ const Landing = () => {
                     <BrainCircuit size={24} className="text-[#DFFF00]" />
                   </div>
                   <div>
-                    <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">
+                    <div className="text-[10px] font-black text-white/90 uppercase tracking-widest">
                       Your Personal
                     </div>
                     <div className="text-sm font-black text-white uppercase font-syne italic">
@@ -464,7 +464,7 @@ const Landing = () => {
         <section className="py-12 md:py-20 border-y border-white/5 bg-white/[0.01] relative">
           <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-10 pointer-events-none" />
           <div className="flex flex-col items-center gap-6 md:gap-10 px-4 md:px-6 relative">
-            <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] text-white/30 text-center font-syne">
+            <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] text-white/80 text-center font-syne">
               TRUSTED BY STUDENTS WORLDWIDE
             </span>
             <div className="flex flex-wrap justify-center gap-10 md:gap-20 lg:gap-32 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
@@ -549,7 +549,7 @@ const Landing = () => {
               WHY STUDYING <br />
               <span className="text-red-500 italic">IS SO HARD.</span>
             </h2>
-            <p className="text-white/40 text-lg md:text-2xl leading-relaxed font-medium font-outfit">
+            <p className="text-white/90 text-lg md:text-2xl leading-relaxed font-medium font-outfit">
               Just reading your notes over and over doesn't work. Most people
               forget
               <span className="text-white"> almost everything </span>
@@ -564,7 +564,7 @@ const Landing = () => {
               <h3 className="text-3xl font-black text-white mb-6 uppercase font-syne">
                 Learn By Doing
               </h3>
-              <p className="text-white/50 text-lg mb-10 font-outfit">
+              <p className="text-white/90 text-lg mb-10 font-outfit">
                 QuizMaster makes you answer questions, which is the fastest way
                 to make information stick in your head forever.
               </p>
@@ -604,7 +604,7 @@ const Landing = () => {
                       <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
                       <div className="w-3 h-3 rounded-full bg-green-500/20" />
                     </div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-white/20">
+                    <div className="text-[10px] font-black uppercase tracking-widest text-white/70">
                       PRACTICE_QUIZ
                     </div>
                   </div>
@@ -645,7 +645,7 @@ const Landing = () => {
                           }`}
                         >
                           <span
-                            className={`text-sm font-medium ${opt.correct ? "text-green-400" : "text-white/40"}`}
+                            className={`text-sm font-medium ${opt.correct ? "text-green-400" : "text-white/90"}`}
                           >
                             {opt.text}
                           </span>
@@ -740,7 +740,7 @@ const Landing = () => {
                       <span className="block text-[10px] font-black text-white uppercase tracking-[0.1em] group-hover:text-[#DFFF00] transition-colors">
                         {feature.title}
                       </span>
-                      <span className="block text-[8px] font-medium text-white/20 uppercase tracking-widest">
+                      <span className="block text-[8px] font-medium text-white/70 uppercase tracking-widest">
                         {feature.desc}
                       </span>
                     </div>
@@ -756,7 +756,7 @@ const Landing = () => {
                 SMART <br />
                 <span className="text-[#DFFF00] italic">READING.</span>
               </h2>
-              <p className="text-white/40 text-lg md:text-xl leading-relaxed font-outfit max-w-xl">
+              <p className="text-white/90 text-lg md:text-xl leading-relaxed font-outfit max-w-xl">
                 Our AI doesn't just copy words—it actually understands what it's
                 reading. It finds the most important parts of your notes and
                 turns them into questions that help you learn.
@@ -784,7 +784,7 @@ const Landing = () => {
               REALLY <br />
               <span className="text-[#DFFF00] italic">SIMPLE.</span>
             </h2>
-            <p className="text-white/40 text-lg md:text-2xl font-medium max-w-3xl mx-auto font-outfit">
+            <p className="text-white/90 text-lg md:text-2xl font-medium max-w-3xl mx-auto font-outfit">
               Three easy steps to master any subject. We do all the hard work so
               you can just learn.
             </p>
@@ -826,13 +826,13 @@ const Landing = () => {
                   />
                 </div>
                 <div>
-                  <div className="text-[10px] font-black tracking-[0.4em] text-white/20 uppercase mb-4">
+                  <div className="text-[10px] font-black tracking-[0.4em] text-white/70 uppercase mb-4">
                     {s.label}
                   </div>
                   <h3 className="text-3xl font-black text-white mb-4 uppercase font-syne">
                     {s.title}
                   </h3>
-                  <p className="text-white/40 text-base leading-relaxed font-medium font-outfit">
+                  <p className="text-white/90 text-base leading-relaxed font-medium font-outfit">
                     {s.desc}
                   </p>
                 </div>
@@ -852,7 +852,7 @@ const Landing = () => {
               FOLLOW A <br />
               <span className="text-[#DFFF00] italic">STUDY PLAN.</span>
             </h2>
-            <p className="text-white/40 text-lg md:text-xl font-medium font-outfit max-w-2xl">
+            <p className="text-white/90 text-lg md:text-xl font-medium font-outfit max-w-2xl">
               Don't know what to study next? We've put together simple
               step-by-step plans for almost any subject. Just follow the path to
               learn anything.
@@ -886,7 +886,7 @@ const Landing = () => {
                   STUDY SMARTER <br />
                   <span className="text-[#DFFF00] italic">NOT HARDER.</span>
                 </h2>
-                <p className="text-white/40 text-lg md:text-xl font-medium font-outfit">
+                <p className="text-white/90 text-lg md:text-xl font-medium font-outfit">
                   Simple tools for smart students. Get better grades without
                   working longer hours.
                 </p>
@@ -968,7 +968,7 @@ const Landing = () => {
                     <h3 className="text-2xl md:text-3xl font-black mb-4 uppercase tracking-tighter font-syne text-white group-hover:text-indigo-400 transition-colors">
                       {feature.title}
                     </h3>
-                    <p className="text-white/40 text-base md:text-lg font-medium leading-relaxed font-outfit">
+                    <p className="text-white/90 text-base md:text-lg font-medium leading-relaxed font-outfit">
                       {feature.desc}
                     </p>
                   </div>
@@ -988,7 +988,7 @@ const Landing = () => {
               OLD WAY VS <br />
               <span className="text-indigo-400 not-italic">NEW WAY.</span>
             </h2>
-            <p className="text-white/40 text-lg md:text-2xl font-medium max-w-2xl mx-auto font-outfit">
+            <p className="text-white/90 text-lg md:text-2xl font-medium max-w-2xl mx-auto font-outfit">
               Stop reading the same page four times. Start mastering your
               subjects with interactive AI loops.
             </p>
@@ -997,10 +997,10 @@ const Landing = () => {
           <div className="max-w-5xl mx-auto p-1 rounded-[50px] glass-panel border border-white/10 relative z-10 shadow-3xl overflow-hidden">
             <div className="grid grid-cols-2 bg-white/5 border-b border-white/10">
               <div className="p-8 md:p-12 text-center border-r border-white/10 flex flex-col items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70">
                   <FileText size={24} />
                 </div>
-                <div className="font-black uppercase tracking-[0.3em] text-[10px] md:text-xs text-white/30 font-syne">
+                <div className="font-black uppercase tracking-[0.3em] text-[10px] md:text-xs text-white/80 font-syne">
                   JUST READING
                 </div>
               </div>
@@ -1024,7 +1024,7 @@ const Landing = () => {
                   key={i}
                   className="grid grid-cols-2 group hover:bg-white/[0.02] transition-colors"
                 >
-                  <div className="p-8 md:p-12 text-center border-r border-white/5 text-white/20 text-sm md:text-xl font-medium font-outfit">
+                  <div className="p-8 md:p-12 text-center border-r border-white/5 text-white/70 text-sm md:text-xl font-medium font-outfit">
                     {row[0]}
                   </div>
                   <div className="p-8 md:p-12 text-center text-white/80 font-black uppercase italic tracking-tight text-sm md:text-xl font-outfit">
@@ -1084,7 +1084,7 @@ const Landing = () => {
                 </button>
                 <button
                   onClick={() => navigate("/features")}
-                  className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 rounded-3xl md:rounded-[40px] border border-white/10 text-white/40 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:text-white transition-all font-syne text-xs relative z-20"
+                  className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 rounded-3xl md:rounded-[40px] border border-white/10 text-white/90 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:text-white transition-all font-syne text-xs relative z-20"
                 >
                   View Features
                 </button>

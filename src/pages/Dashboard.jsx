@@ -37,7 +37,7 @@ const DashCard = ({ icon: Icon, label, value, color, delay = 0 }) => (
     className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 flex flex-col justify-between hover:border-white/10 transition-all hover:-translate-y-1 shadow-sm"
   >
     <div className="flex items-center justify-between mb-8">
-      <span className="text-sm font-medium text-white/50">{label}</span>
+      <span className="text-sm font-medium text-white/90">{label}</span>
       <div
         className={`w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center`}
       >
@@ -137,7 +137,7 @@ const Dashboard = () => {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] animate-pulse" />
-              <span className="text-xs font-medium text-white/50">
+              <span className="text-xs font-medium text-white/90">
                 System Online
               </span>
             </div>
@@ -230,7 +230,7 @@ const Dashboard = () => {
                       reset();
                       navigate("/generator");
                     }}
-                    className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/5 text-white/50 hover:text-white hover:bg-red-500/10 hover:border-red-500/20 transition-colors"
+                    className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/5 text-white/90 hover:text-white hover:bg-red-500/10 hover:border-red-500/20 transition-colors"
                   >
                     <RefreshCw size={16} />
                   </button>
@@ -261,7 +261,7 @@ const Dashboard = () => {
                       onClick={() => navigate(`/roadmap/${path.id}`)}
                     >
                       <div className="flex items-center gap-3 mb-4">
-                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/60">
+                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/90">
                           <Map size={14} />
                         </div>
                         <span className="text-sm font-medium text-white">
@@ -271,7 +271,7 @@ const Dashboard = () => {
 
                       <div className="space-y-2">
                         <div className="flex justify-between items-center text-xs font-medium">
-                          <span className="text-white/40">
+                          <span className="text-white/90">
                             {path.completedCount} of {path.totalNodes} steps
                           </span>
                           <span className="text-indigo-400">
@@ -290,8 +290,8 @@ const Dashboard = () => {
                   ))
                 ) : (
                   <div className="col-span-2 text-center py-12 rounded-2xl border border-dashed border-white/10">
-                    <Map size={24} className="mx-auto mb-3 text-white/20" />
-                    <p className="text-sm font-medium text-white/40">
+                    <Map size={24} className="mx-auto mb-3 text-white/70" />
+                    <p className="text-sm font-medium text-white/90">
                       No active plans.
                     </p>
                     <button
@@ -337,7 +337,7 @@ const Dashboard = () => {
                       Upgrade to Pro
                     </h4>
                   </div>
-                  <p className="text-sm text-white/50 mb-2">
+                  <p className="text-sm text-white/90 mb-2">
                     Unlock unlimited generations, document uploads, and priority
                     processing.
                   </p>

@@ -17,7 +17,7 @@ export const OCRScanProof = () => {
       </div>
 
       <div className="space-y-4 opacity-40">
-        <div className="text-white/60 italic leading-relaxed">
+        <div className="text-white/90 italic leading-relaxed">
           // Handwritten Input Analysis...
           <br />
           The mitochondrion is a double-membrane-bound organelle found in most

@@ -24,23 +24,8 @@ async function fileToGenerativePart(file) {
 export const generateLiveQuiz = async (topic, difficulty = 'Intermediate', file = null) => {
     console.log(`[Gemini-Core] Synthesis initialized for: ${topic} (${difficulty}) ${file ? `+ Document: ${file.name}` : ''}`);
 
-    // If there is no file, use the SECURE Backend Cloud Function!
-    if (!file) {
-        try {
-            console.log(`[Gemini-Core] Routing request securely through Firebase Cloud Functions...`);
-            const generateQuizSecure = httpsCallable(functions, 'generateQuizSecure');
-            const result = await generateQuizSecure({ topic, difficulty });
-
-            const quizData = result.data.quiz;
-            console.log(`[Gemini-Core] SUCCESS via Secure Cloud Function`);
-
-            // Still run the output through the local Guardian audit
-            return await guardian.auditOutput(quizData);
-        } catch (error) {
-            console.error(`[Gemini-Core] Cloud Function Failed: ${error.message}`);
-            throw new Error(`Secure Generation Failed: ${error.message}`);
-        }
-    }
+    // Removed SECURE Backend Cloud Function call due to FREE Tier CORS/Deployment limits.
+    // Reverting to client-side generation for all requests.
 
     // --- FALLBACK FOR DOCUMENT UPLOADS (Client-Side) ---
     // Since moving large base64 documents requires a larger backend refactor, 
@@ -52,7 +37,7 @@ export const generateLiveQuiz = async (topic, difficulty = 'Intermediate', file 
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-pro",
+        model: "gemini-2.0-flash",
         generationConfig: {
             responseMimeType: "application/json",
             temperature: 0.7,
@@ -149,7 +134,7 @@ export const generateNeuralFeed = async (topic, skillStats, mentors, externalSig
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-2.0-flash",
         generationConfig: { responseMimeType: "application/json" }
     });
 
@@ -200,7 +185,7 @@ export const generateAIRoadmap = async (topic, file = null) => {
 
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-2.0-flash",
         generationConfig: {
             responseMimeType: "application/json",
             temperature: 0.7,
@@ -260,7 +245,7 @@ export const simulateInterviewStep = async (messages, config) => {
     try {
         console.log(`[Gemini-Interview] Simulating interview step locally...`);
         const genAI = new GoogleGenerativeAI(API_KEY);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
         // Build the system instructions
         const systemPrompt = `

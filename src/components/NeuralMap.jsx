@@ -26,7 +26,7 @@ const NeuralMap = () => {
         <div className="flex items-center gap-3 text-indigo-400 font-black uppercase tracking-[0.3em] text-xs font-syne animate-pulse">
           <Activity size={14} /> My Progress
         </div>
-        <div className="text-white/40 text-[10px] font-bold uppercase tracking-widest mt-1">
+        <div className="text-white/90 text-[10px] font-bold uppercase tracking-widest mt-1">
           Mapping your learning in real-time
         </div>
       </div>
@@ -69,7 +69,7 @@ const NeuralMap = () => {
                       ? isCorrect
                         ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
                         : "bg-red-500/20 border-red-500 text-red-400"
-                      : "bg-white/5 border-white/10 text-white/20"
+                      : "bg-white/5 border-white/10 text-white/70"
                 }`}
               >
                 {isAnswered ? (

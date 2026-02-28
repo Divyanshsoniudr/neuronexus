@@ -34,7 +34,7 @@ const Contact = () => {
           WE'RE HERE <br /> TO{" "}
           <span className="text-gradient uppercase">HELP.</span>
         </h1>
-        <p className="text-white/40 text-lg max-w-xl mx-auto font-medium">
+        <p className="text-white/90 text-lg max-w-xl mx-auto font-medium">
           Have questions about your account? Found a bug? Just want to say
           hello? Drop us a message below.
         </p>
@@ -44,7 +44,7 @@ const Contact = () => {
         <div className="space-y-8">
           <div className="p-8 rounded-[32px] glass-panel border border-white/5">
             <Mail className="text-indigo-400 mb-6" size={24} />
-            <div className="text-sm font-black text-white/20 uppercase tracking-widest mb-1">
+            <div className="text-sm font-black text-white/70 uppercase tracking-widest mb-1">
               Email Support
             </div>
             <div className="text-xl font-bold text-white">
@@ -53,7 +53,7 @@ const Contact = () => {
           </div>
           <div className="p-8 rounded-[32px] glass-panel border border-white/5">
             <Zap className="text-emerald-400 mb-6" size={24} />
-            <div className="text-sm font-black text-white/20 uppercase tracking-widest mb-1">
+            <div className="text-sm font-black text-white/70 uppercase tracking-widest mb-1">
               Response Time
             </div>
             <div className="text-xl font-bold text-white">Under 24 Hours</div>
@@ -73,7 +73,7 @@ const Contact = () => {
               <h2 className="text-3xl font-black text-white mb-4 uppercase">
                 Message Sent!
               </h2>
-              <p className="text-white/40 font-medium mb-8">
+              <p className="text-white/90 font-medium mb-8">
                 We've received your inquiry and will get back to you shortly.
               </p>
               <button
@@ -87,7 +87,7 @@ const Contact = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-white/20 ml-4">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/70 ml-4">
                     Name
                   </label>
                   <input
@@ -98,7 +98,7 @@ const Contact = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-white/20 ml-4">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-white/70 ml-4">
                     Email
                   </label>
                   <input
@@ -110,7 +110,7 @@ const Contact = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-white/20 ml-4">
+                <label className="text-[10px] font-black uppercase tracking-widest text-white/70 ml-4">
                   Message
                 </label>
                 <textarea

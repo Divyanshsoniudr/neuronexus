@@ -105,7 +105,7 @@ const BenefitSection = ({
         </motion.h3>
         <motion.p
           variants={itemVariants}
-          className="text-white/40 text-lg md:text-xl font-medium leading-relaxed max-w-xl"
+          className="text-white/90 text-lg md:text-xl font-medium leading-relaxed max-w-xl"
         >
           {desc}
         </motion.p>
@@ -114,7 +114,7 @@ const BenefitSection = ({
             <motion.li
               key={i}
               variants={itemVariants}
-              className="flex items-center gap-4 text-white/60 font-medium group/item"
+              className="flex items-center gap-4 text-white/90 font-medium group/item"
             >
               <div
                 className={`p-1.5 rounded-full bg-${color}-500/10 text-${color}-400 border border-${color}-500/20 group-hover/item:bg-${color}-500/30 transition-colors`}
@@ -313,7 +313,7 @@ const BenefitSection = ({
               <div className="text-sm font-black text-white uppercase tracking-tight">
                 {status}
               </div>
-              <div className="text-xs text-white/30 font-bold uppercase tracking-widest">
+              <div className="text-xs text-white/80 font-bold uppercase tracking-widest">
                 {detail}
               </div>
             </div>
@@ -340,7 +340,7 @@ const Features = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/40 text-[10px] font-bold uppercase tracking-[0.2em]"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90 text-[10px] font-bold uppercase tracking-[0.2em]"
           >
             <Sparkles size={14} className="text-[#DFFF00]" />
             Simplified Learning
@@ -351,7 +351,7 @@ const Features = () => {
             <span className="text-[#DFFF00]">Without the Stress.</span>
           </h1>
 
-          <p className="text-white/40 text-lg md:text-2xl font-medium max-w-2xl mx-auto leading-relaxed">
+          <p className="text-white/90 text-lg md:text-2xl font-medium max-w-2xl mx-auto leading-relaxed">
             Old-school studying is broken. We built a smart assistant that
             handles the heavy lifting, so you can focus on mastering your
             material.
@@ -366,7 +366,7 @@ const Features = () => {
             </button>
             <button
               onClick={() => navigate("/auth")}
-              className="px-12 py-6 rounded-3xl bg-white/5 text-white/60 font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all active:scale-95"
+              className="px-12 py-6 rounded-3xl bg-white/5 text-white/90 font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all active:scale-95"
             >
               Watch Video Guide
             </button>
@@ -386,7 +386,7 @@ const Features = () => {
                   Meet Your{" "}
                   <span className="text-indigo-400">Smart Helper.</span>
                 </h2>
-                <p className="text-white/40 text-lg font-medium leading-relaxed">
+                <p className="text-white/90 text-lg font-medium leading-relaxed">
                   Think of this "Atom" as our brain. While you relax, it’s
                   working inside your notes to build the perfect quiz, find your
                   weak spots, and track your progress.
@@ -398,7 +398,7 @@ const Features = () => {
                   <div className="text-2xl font-black text-white font-syne">
                     100%
                   </div>
-                  <div className="text-[10px] font-black text-white/20 uppercase tracking-widest">
+                  <div className="text-[10px] font-black text-white/70 uppercase tracking-widest">
                     Accuracy
                   </div>
                 </div>
@@ -406,7 +406,7 @@ const Features = () => {
                   <div className="text-2xl font-black text-white font-syne">
                     5 SEC
                   </div>
-                  <div className="text-[10px] font-black text-white/20 uppercase tracking-widest">
+                  <div className="text-[10px] font-black text-white/70 uppercase tracking-widest">
                     Build Time
                   </div>
                 </div>
@@ -419,12 +419,12 @@ const Features = () => {
 
               {/* Floating Labels that actually make sense */}
               <div className="absolute top-0 right-10 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md animate-float">
-                <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">
+                <span className="text-[9px] font-black text-white/90 uppercase tracking-widest">
                   Reading Notes...
                 </span>
               </div>
               <div className="absolute bottom-0 left-10 p-3 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md animate-float-slow">
-                <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">
+                <span className="text-[9px] font-black text-white/90 uppercase tracking-widest">
                   Building Quiz...
                 </span>
               </div>
@@ -439,7 +439,7 @@ const Features = () => {
           <h2 className="text-2xl md:text-3xl font-black text-white uppercase font-syne tracking-tight">
             How it Saves You Time
           </h2>
-          <p className="text-white/30 text-lg font-medium">
+          <p className="text-white/80 text-lg font-medium">
             The simplest study flow ever created.
           </p>
         </div>
@@ -503,11 +503,11 @@ const Features = () => {
           </h2>
           <div className="flex items-center justify-center gap-6">
             <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
-              <MessageSquareQuote size={20} className="text-white/40" />
+              <MessageSquareQuote size={20} className="text-white/90" />
             </div>
             <div className="text-left">
               <div className="text-white font-bold text-lg">Alex Johnson</div>
-              <div className="text-white/20 text-xs font-black uppercase tracking-widest">
+              <div className="text-white/70 text-xs font-black uppercase tracking-widest">
                 Medical Student
               </div>
             </div>
@@ -525,7 +525,7 @@ const Features = () => {
               Start Your <br />
               <span className="text-[#DFFF00]">Best Session</span> Now.
             </h2>
-            <p className="text-white/30 text-xl font-medium max-w-xl mx-auto">
+            <p className="text-white/80 text-xl font-medium max-w-xl mx-auto">
               No credit card, no complicated setup. Just better grades.
             </p>
           </div>

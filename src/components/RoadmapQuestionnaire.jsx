@@ -66,7 +66,7 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
           WHAT IS YOUR <br />
           <span className="italic text-indigo-500">{roadmapTitle}</span> LEVEL?
         </h2>
-        <p className="text-white/40 text-lg font-medium max-w-md mx-auto font-outfit">
+        <p className="text-white/90 text-lg font-medium max-w-md mx-auto font-outfit">
           Our AI will calibrate your roadmap to bypass what you already know.
         </p>
       </motion.div>
@@ -101,7 +101,7 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
                 <level.icon
                   size={24}
                   className={
-                    selected === level.id ? "text-indigo-600" : "text-white/60"
+                    selected === level.id ? "text-indigo-600" : "text-white/90"
                   }
                 />
               </div>
@@ -110,7 +110,7 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
               </h3>
               <p
                 className={`text-xs font-medium leading-relaxed ${
-                  selected === level.id ? "text-black/60" : "text-white/40"
+                  selected === level.id ? "text-black/60" : "text-white/90"
                 }`}
               >
                 {level.description}
@@ -119,7 +119,7 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
 
             <div
               className={`mt-4 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 ${
-                selected === level.id ? "text-indigo-600" : "text-white/20"
+                selected === level.id ? "text-indigo-600" : "text-white/70"
               }`}
             >
               {level.skipCount > 0

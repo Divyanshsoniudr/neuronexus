@@ -34,7 +34,7 @@ const NotFound = () => {
             Page <span className="text-indigo-400">Not Found</span>
           </h2>
 
-          <p className="text-white/30 mb-12 font-bold uppercase tracking-[0.2em] text-[10px] max-w-md mx-auto leading-relaxed">
+          <p className="text-white/80 mb-12 font-bold uppercase tracking-[0.2em] text-[10px] max-w-md mx-auto leading-relaxed">
             The link you followed might be broken or the page has been moved.
             Please check the URL or return to the main dashboard.
           </p>
@@ -42,7 +42,7 @@ const NotFound = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => navigate(-1)}
-              className="px-10 py-5 rounded-3xl bg-white/5 border border-white/10 text-white/40 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-3 group/back"
+              className="px-10 py-5 rounded-3xl bg-white/5 border border-white/10 text-white/90 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-3 group/back"
             >
               <ArrowLeft
                 size={16}
@@ -63,7 +63,7 @@ const NotFound = () => {
           </div>
         </div>
 
-        <div className="mt-16 flex items-center justify-center gap-2 text-[8px] font-black text-white/10 uppercase tracking-[0.5em]">
+        <div className="mt-16 flex items-center justify-center gap-2 text-[8px] font-black text-white/70 uppercase tracking-[0.5em]">
           <Zap size={10} /> System Operational
         </div>
       </motion.div>

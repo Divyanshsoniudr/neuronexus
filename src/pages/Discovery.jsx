@@ -195,7 +195,7 @@ const Discovery = () => {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="max-w-3xl relative z-10 px-6"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/40 text-[8px] font-black uppercase tracking-[0.3em] mb-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/90 text-[8px] font-black uppercase tracking-[0.3em] mb-10">
             <Sparkles size={10} className="text-indigo-400" />
             Learning Hub
           </div>
@@ -205,7 +205,7 @@ const Discovery = () => {
             <span className="text-gradient">to learn?</span>
           </h1>
 
-          <p className="text-white/30 text-base md:text-xl font-medium mb-16 max-w-xl mx-auto leading-relaxed tracking-tight">
+          <p className="text-white/80 text-base md:text-xl font-medium mb-16 max-w-xl mx-auto leading-relaxed tracking-tight">
             Choose a popular path below or create your own custom journey in
             seconds.
           </p>
@@ -230,14 +230,14 @@ const Discovery = () => {
                   }
                   value={customTopic}
                   onChange={(e) => setCustomTopic(e.target.value)}
-                  className="w-full h-full min-h-[64px] px-8 py-4 rounded-[32px] bg-transparent text-white font-bold placeholder:text-white/10 focus:outline-none text-base md:text-lg selection:bg-indigo-500"
+                  className="w-full h-full min-h-[64px] px-8 py-4 rounded-[32px] bg-transparent text-white font-bold placeholder:text-white/70 focus:outline-none text-base md:text-lg selection:bg-indigo-500"
                 />
               </div>
 
               <div className="flex flex-row gap-2 relative z-40 p-1">
                 <label className="cursor-pointer group/upload">
                   <div
-                    className={`h-full px-8 rounded-[28px] border border-white/5 bg-white/5 flex items-center justify-center gap-3 transition-all hover:bg-white/10 ${file ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "text-white/20"}`}
+                    className={`h-full px-8 rounded-[28px] border border-white/5 bg-white/5 flex items-center justify-center gap-3 transition-all hover:bg-white/10 ${file ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "text-white/70"}`}
                   >
                     <LucideIcons.FileUp size={20} />
                     <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">
@@ -276,14 +276,14 @@ const Discovery = () => {
               onClick={() => navigate("/generator")}
               whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.2)" }}
               whileTap={{ scale: 0.95 }}
-              className="px-12 py-5 rounded-[32px] border border-white/10 text-white/50 font-black uppercase tracking-[0.3em] hover:text-white hover:bg-white/5 transition-all flex items-center justify-center gap-3 text-[10px] backdrop-blur-md relative z-30 shadow-xl"
+              className="px-12 py-5 rounded-[32px] border border-white/10 text-white/90 font-black uppercase tracking-[0.3em] hover:text-white hover:bg-white/5 transition-all flex items-center justify-center gap-3 text-[10px] backdrop-blur-md relative z-30 shadow-xl"
             >
               Quick Quiz Mode{" "}
               <LucideIcons.Zap size={16} className="text-amber-400" />
             </motion.button>
 
             {!isPremium && (
-              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 flex items-center gap-2 px-6 py-2 rounded-full bg-white/[0.02] border border-white/5">
+              <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90 flex items-center gap-2 px-6 py-2 rounded-full bg-white/[0.02] border border-white/5">
                 <LucideIcons.Activity
                   size={14}
                   className="text-indigo-400 animate-pulse"
@@ -306,7 +306,7 @@ const Discovery = () => {
       </div>
 
       <div className="space-y-20 relative">
-        <div className="absolute -top-10 left-4 text-[8px] font-black uppercase tracking-[0.3em] text-white/20">
+        <div className="absolute -top-10 left-4 text-[8px] font-black uppercase tracking-[0.3em] text-white/70">
           Step 2: Pick a popular topic
         </div>
         {customRoadmaps.length > 0 && (

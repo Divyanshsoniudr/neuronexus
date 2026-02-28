@@ -94,7 +94,7 @@ const Auth = () => {
               <h1 className="text-3xl font-black mb-2 tracking-tighter uppercase">
                 GET STARTED
               </h1>
-              <p className="text-white/40 text-[10px] mb-10 uppercase tracking-[0.3em] font-black">
+              <p className="text-white/90 text-[10px] mb-10 uppercase tracking-[0.3em] font-black">
                 Account choice
               </p>
 
@@ -110,7 +110,7 @@ const Auth = () => {
                   <div className="absolute inset-0 flex items-center">
                     <div className="w-full border-t border-white/5"></div>
                   </div>
-                  <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-black text-white/20 px-4 bg-[#0a0a0a]">
+                  <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-black text-white/70 px-4 bg-[#0a0a0a]">
                     Or use email
                   </div>
                 </div>
@@ -124,7 +124,7 @@ const Auth = () => {
 
                 <button
                   onClick={() => setMode("register")}
-                  className="w-full py-5 rounded-[24px] border border-white/5 text-white/60 font-black uppercase tracking-widest hover:text-white transition-all flex items-center justify-center gap-3 text-xs"
+                  className="w-full py-5 rounded-[24px] border border-white/5 text-white/90 font-black uppercase tracking-widest hover:text-white transition-all flex items-center justify-center gap-3 text-xs"
                 >
                   <UserPlus size={18} /> Create New Account
                 </button>
@@ -142,7 +142,7 @@ const Auth = () => {
                   setMode("select");
                   setError("");
                 }}
-                className="absolute top-8 left-8 text-white/20 hover:text-white transition-colors"
+                className="absolute top-8 left-8 text-white/70 hover:text-white transition-colors"
               >
                 <ArrowRight className="rotate-180" size={20} />
               </button>
@@ -151,7 +151,7 @@ const Auth = () => {
                 <h1 className="text-3xl font-black mb-2 tracking-tighter uppercase text-white">
                   {mode === "login" ? "LOG IN" : "SIGN UP"}
                 </h1>
-                <p className="text-white/40 text-[10px] uppercase tracking-[0.3em] font-black">
+                <p className="text-white/90 text-[10px] uppercase tracking-[0.3em] font-black">
                   Enter your credentials
                 </p>
               </div>
@@ -160,7 +160,7 @@ const Auth = () => {
                 <div className="space-y-2">
                   <div className="relative">
                     <Mail
-                      className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20"
+                      className="absolute left-6 top-1/2 -translate-y-1/2 text-white/70"
                       size={18}
                     />
                     <input
@@ -168,12 +168,12 @@ const Auth = () => {
                       placeholder="EMAIL ADDRESS"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white/5 border border-white/5 rounded-[24px] py-5 pl-14 pr-6 text-white font-bold placeholder:text-white/10 focus:border-indigo-500/50 focus:bg-white/10 outline-none transition-all uppercase tracking-wider text-sm"
+                      className="w-full bg-white/5 border border-white/5 rounded-[24px] py-5 pl-14 pr-6 text-white font-bold placeholder:text-white/70 focus:border-indigo-500/50 focus:bg-white/10 outline-none transition-all uppercase tracking-wider text-sm"
                     />
                   </div>
                   <div className="relative">
                     <Lock
-                      className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20"
+                      className="absolute left-6 top-1/2 -translate-y-1/2 text-white/70"
                       size={18}
                     />
                     <input
@@ -181,7 +181,7 @@ const Auth = () => {
                       placeholder="PASSWORD"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full bg-white/5 border border-white/5 rounded-[24px] py-5 pl-14 pr-6 text-white font-bold placeholder:text-white/10 focus:border-indigo-500/50 focus:bg-white/10 outline-none transition-all uppercase tracking-wider text-sm"
+                      className="w-full bg-white/5 border border-white/5 rounded-[24px] py-5 pl-14 pr-6 text-white font-bold placeholder:text-white/70 focus:border-indigo-500/50 focus:bg-white/10 outline-none transition-all uppercase tracking-wider text-sm"
                     />
                   </div>
                 </div>
@@ -214,7 +214,7 @@ const Auth = () => {
                   )}
                 </button>
 
-                <p className="text-center text-[10px] font-black text-white/20 uppercase tracking-widest pt-4">
+                <p className="text-center text-[10px] font-black text-white/70 uppercase tracking-widest pt-4">
                   {mode === "login" ? "No account?" : "Already joined?"}
                   <button
                     type="button"
@@ -235,7 +235,7 @@ const Auth = () => {
         <div className="mt-10 pt-8 border-t border-white/5">
           <button
             onClick={() => navigate("/")}
-            className="text-white/20 text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors flex items-center justify-center gap-1 group mx-auto"
+            className="text-white/70 text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors flex items-center justify-center gap-1 group mx-auto"
           >
             Back to Home{" "}
             <ArrowRight

@@ -26,7 +26,7 @@ const Privacy = () => {
             <h3 className="text-xs font-black text-cyan-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
               <Lock size={14} /> 01. Data Privacy
             </h3>
-            <p className="text-white/40 text-sm leading-relaxed">
+            <p className="text-white/90 text-sm leading-relaxed">
               Your learning stats and progress are yours alone. We do not sell
               your "Learning Profile" data to third-party entities. All data is
               encrypted and stored securely.
@@ -37,7 +37,7 @@ const Privacy = () => {
             <h3 className="text-xs font-black text-purple-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
               <Eye size={14} /> 02. Data Usage
             </h3>
-            <p className="text-white/40 text-sm leading-relaxed">
+            <p className="text-white/90 text-sm leading-relaxed">
               We use anonymized quiz data to tune our AI generation engine. This
               ensures the difficulty curves remain precise across the entire
               system without compromising individual identity.
@@ -48,7 +48,7 @@ const Privacy = () => {
             <h3 className="text-xs font-black text-green-400 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
               <FileText size={14} /> 03. AI Boundaries
             </h3>
-            <p className="text-white/40 text-sm leading-relaxed">
+            <p className="text-white/90 text-sm leading-relaxed">
               The AI assistant only access the current quiz context to provide
               feedback. It does not have access to your personal filesystem or
               external private documents unless explicitly uploaded for use.
@@ -57,7 +57,7 @@ const Privacy = () => {
         </div>
 
         <div className="mt-20 pt-12 border-t border-white/5 text-center">
-          <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">
+          <p className="text-[10px] font-black text-white/70 uppercase tracking-[0.4em]">
             Latest Amendment: Feb 2026 // Version 5.0.1
           </p>
         </div>

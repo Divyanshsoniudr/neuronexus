@@ -84,7 +84,7 @@ const Navbar = () => {
               </span>
               <div className="flex items-center gap-1.5 ml-2 border-l border-white/10 pl-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[7px] font-black text-white/20 uppercase tracking-[0.2em]">
+                <span className="text-[7px] font-black text-white/70 uppercase tracking-[0.2em]">
                   {NEURAL_MENTORS.length} Tutors Online
                 </span>
               </div>
@@ -105,7 +105,7 @@ const Navbar = () => {
                     ? "text-white font-bold"
                     : item.special
                       ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(52,211,153,0.1)] font-bold animate-pulse"
-                      : "text-white/30 hover:text-white font-medium"
+                      : "text-white/80 hover:text-white font-medium"
                 }`}
               >
                 <item.icon
@@ -142,7 +142,7 @@ const Navbar = () => {
                   await signOut();
                   navigate("/");
                 }}
-                className="px-6 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/60 text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center gap-2"
+                className="px-6 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/90 text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center gap-2"
               >
                 <LogOut size={14} /> Sign Out
               </button>
@@ -160,7 +160,7 @@ const Navbar = () => {
         {/* Mobile Toggle */}
         <button
           onClick={toggleMobileMenu}
-          className="md:hidden p-2 text-white/60 hover:text-white transition-colors"
+          className="md:hidden p-2 text-white/90 hover:text-white transition-colors"
         >
           {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -186,7 +186,7 @@ const Navbar = () => {
                     className={`flex items-center gap-6 p-4 rounded-2xl border transition-all ${
                       location.pathname === item.path
                         ? "bg-white/10 border-white/20 text-white"
-                        : "border-transparent text-white/40"
+                        : "border-transparent text-white/90"
                     }`}
                   >
                     <item.icon size={24} />
@@ -217,7 +217,7 @@ const Navbar = () => {
                       <span className="text-white font-bold text-sm">
                         {user.displayName || "Learner"}
                       </span>
-                      <span className="text-white/60 text-xs font-bold uppercase tracking-widest">
+                      <span className="text-white/90 text-xs font-bold uppercase tracking-widest">
                         My Account
                       </span>
                     </div>

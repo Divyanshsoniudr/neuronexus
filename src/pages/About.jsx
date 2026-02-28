@@ -25,7 +25,7 @@ const About = () => {
           THE END OF <br />{" "}
           <span className="text-gradient uppercase">CRAMMING.</span>
         </h1>
-        <p className="text-white/40 text-lg max-w-xl mx-auto font-medium">
+        <p className="text-white/90 text-lg max-w-xl mx-auto font-medium">
           QuizMaster was built to solve a simple problem: traditional studying
           is slow and ineffective. We use AI to make active recall the default
           way you learn.
@@ -87,7 +87,7 @@ const About = () => {
             <h3 className="text-xl font-black uppercase tracking-tight text-white mb-2">
               {item.title}
             </h3>
-            <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+            <p className="text-white/90 text-sm leading-relaxed">{item.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -97,7 +97,7 @@ const About = () => {
         <h2 className="text-3xl font-black mb-6 uppercase tracking-tight text-white relative z-10">
           The Vision
         </h2>
-        <p className="text-white/40 text-sm leading-relaxed max-w-2xl mx-auto italic relative z-10">
+        <p className="text-white/90 text-sm leading-relaxed max-w-2xl mx-auto italic relative z-10">
           "We believe that education should be measurable, fast, and accessible.
           QuizMaster is the tool we wish we had during our own exams—a private
           tutor that fits in your pocket and knows exactly how to help you

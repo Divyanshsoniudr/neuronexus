@@ -62,7 +62,7 @@ class ErrorBoundary extends React.Component {
                   <span className="italic text-red-500">A PROBLEM.</span>
                 </h1>
 
-                <p className="text-white/40 text-lg font-medium leading-relaxed mb-12 max-w-md mx-auto font-outfit">
+                <p className="text-white/90 text-lg font-medium leading-relaxed mb-12 max-w-md mx-auto font-outfit">
                   The app had a small hiccup. Let's get back to learning.
                 </p>
 
@@ -79,7 +79,7 @@ class ErrorBoundary extends React.Component {
                   </button>
                   <button
                     onClick={this.handleHome}
-                    className="px-8 py-5 rounded-2xl border border-white/10 text-white/60 font-black uppercase tracking-widest hover:bg-white/5 transition-all flex items-center justify-center gap-3 text-xs font-syne"
+                    className="px-8 py-5 rounded-2xl border border-white/10 text-white/90 font-black uppercase tracking-widest hover:bg-white/5 transition-all flex items-center justify-center gap-3 text-xs font-syne"
                   >
                     <Home size={18} />
                     Return Home
