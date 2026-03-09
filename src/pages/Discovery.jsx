@@ -288,7 +288,7 @@ const Discovery = () => {
                   size={14}
                   className="text-indigo-400 animate-pulse"
                 />
-                Active Pathways: {usageStats.roadmapsGenerated}/3
+                Active Plans: {usageStats.roadmapsGenerated}/3
               </div>
             )}
 
@@ -340,21 +340,21 @@ const Discovery = () => {
         )}
 
         <CategorySection
-          title="Battle Roles"
+          title="Career Paths"
           roadmapCounts={roadmapCounts}
           items={TOPIC_CATEGORIES.ROLES}
           onSelect={(topic) => navigate(`/roadmap/${topic.id}`)}
         />
 
         <CategorySection
-          title="Core Skills"
+          title="Technologies"
           roadmapCounts={roadmapCounts}
           items={TOPIC_CATEGORIES.SKILLS}
           onSelect={(topic) => navigate(`/roadmap/${topic.id}`)}
         />
 
         <CategorySection
-          title="Mastery Secrets"
+          title="Best Practices"
           roadmapCounts={roadmapCounts}
           items={TOPIC_CATEGORIES.BEST_PRACTICES}
           onSelect={(topic) => navigate(`/roadmap/${topic.id}`)}

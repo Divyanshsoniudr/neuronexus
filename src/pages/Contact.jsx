@@ -13,9 +13,39 @@ import SEO from "../components/SEO";
 const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    // Web3Forms integration
+    const formData = new FormData(e.target);
+
+    // It's best practice to keep this key in your .env file as VITE_WEB3FORMS_KEY
+    // You can get a free key at https://web3forms.com/
+    const accessKey =
+      import.meta.env.VITE_WEB3FORMS_KEY || "YOUR_ACCESS_KEY_HERE";
+    formData.append("access_key", accessKey);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        alert("Something went wrong. Please check your access key.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Network error. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -93,6 +123,7 @@ const Contact = () => {
                   <input
                     required
                     type="text"
+                    name="name"
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-indigo-500 transition-all font-bold"
                     placeholder="Alex Hormozi"
                   />
@@ -104,6 +135,7 @@ const Contact = () => {
                   <input
                     required
                     type="email"
+                    name="email"
                     className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-indigo-500 transition-all font-bold"
                     placeholder="alex@gmail.com"
                   />
@@ -115,13 +147,31 @@ const Contact = () => {
                 </label>
                 <textarea
                   required
+                  name="message"
                   rows={5}
                   className="w-full bg-white/5 border border-white/10 rounded-3xl px-6 py-4 focus:outline-none focus:border-indigo-500 transition-all font-bold"
                   placeholder="How can we help you?"
                 />
               </div>
-              <button className="w-full py-6 rounded-3xl bg-white text-black font-black uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all flex items-center justify-center gap-3">
-                Send Message <Send size={18} />
+
+              {/* Optional: Add a honeypot field to prevent spam bots */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                className="hidden"
+                style={{ display: "none" }}
+              />
+
+              <button
+                disabled={isSubmitting}
+                className={`w-full py-6 rounded-3xl bg-white text-black font-black uppercase tracking-widest transition-all flex items-center justify-center gap-3 ${
+                  isSubmitting
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:bg-indigo-500 hover:text-white"
+                }`}
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}{" "}
+                <Send size={18} />
               </button>
             </form>
           )}

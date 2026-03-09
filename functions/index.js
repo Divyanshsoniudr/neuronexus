@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const logger = require("firebase-functions/logger");
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -74,14 +75,22 @@ exports.generateQuizSecure = functions.https.onCall(async (data, context) => {
         usageStats.quizzesGeneratedToday += 1;
         await userRef.set({ usageStats }, { merge: true });
 
-        // Optionally cache to Knowledge Vault directly from backend here
-        // const vaultRef = db.collection('vault').doc(`${topic.toLowerCase()}_${difficulty.toLowerCase()}`);
-        // await vaultRef.set({ topic, difficulty, questions: quizData, createdAt: new Date().toISOString() });
+        logger.info("Quiz Generated Successfully", {
+            uid,
+            topic,
+            difficulty,
+            questionCount: quizData.length
+        });
 
         return { success: true, quiz: quizData };
 
     } catch (error) {
-        console.error("Gemini Backend Generation Error:", error);
+        logger.error("Gemini Backend Generation Error", {
+            error: error.message || error,
+            uid,
+            topic,
+            difficulty
+        });
         throw new functions.https.HttpsError('internal', 'Failed to generate quiz from external AI service.');
     }
 });
@@ -143,15 +152,24 @@ exports.simulateInterviewStep = functions.https.onCall(async (data, context) => 
             systemInstruction: { parts: [{ text: systemPrompt }] }
         });
 
-        // The last message is the user's latest input
         const latestInput = messages[messages.length - 1].content;
         const result = await chat.sendMessage(latestInput);
         const text = result.response.text();
 
+        logger.info("Interview Step Processed", {
+            uid: context.auth.uid,
+            role: config.role,
+            difficulty: config.difficulty
+        });
+
         return { success: true, response: text };
 
     } catch (error) {
-        console.error("Gemini Interview Error:", error);
+        logger.error("Gemini Interview Error", {
+            error: error.message || error,
+            uid: context.auth.uid,
+            role: config?.role
+        });
         throw new functions.https.HttpsError('internal', 'Failed to process interview step.');
     }
 });

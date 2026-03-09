@@ -103,6 +103,7 @@ const InterviewChat = ({ config, onEnd }) => {
 
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
+  const [isSpeechEnabled, setIsSpeechEnabled] = useState(false);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -140,6 +141,23 @@ const InterviewChat = ({ config, onEnd }) => {
       }
     };
   }, []);
+
+  // ── SpeechSynthesis — AI speaks each new assistant message ──────────────
+  useEffect(() => {
+    if (!isSpeechEnabled) return;
+    const lastMsg = messages[messages.length - 1];
+    if (lastMsg?.role === "assistant") {
+      const clean = lastMsg.content
+        .replace(/[#*`_~>\[\]]/g, "")
+        .replace(/\n+/g, " ")
+        .slice(0, 500);
+      const utterance = new SpeechSynthesisUtterance(clean);
+      utterance.rate = 0.95;
+      utterance.pitch = 1;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [messages, isSpeechEnabled]);
 
   const toggleListen = () => {
     if (isListening) {
@@ -212,12 +230,28 @@ const InterviewChat = ({ config, onEnd }) => {
           </div>
         </div>
 
-        <button
-          onClick={onEnd}
-          className="px-6 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-black uppercase tracking-widest hover:bg-red-500/20 transition-colors"
-        >
-          End Interview
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => {
+              const next = !isSpeechEnabled;
+              setIsSpeechEnabled(next);
+              if (!next) window.speechSynthesis.cancel();
+            }}
+            className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all border ${
+              isSpeechEnabled
+                ? "bg-indigo-500/20 text-indigo-400 border-indigo-500/30"
+                : "bg-white/5 text-white/40 border-white/10 hover:text-white/80"
+            }`}
+          >
+            🎤 Voice {isSpeechEnabled ? "On" : "Off"}
+          </button>
+          <button
+            onClick={onEnd}
+            className="px-6 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-black uppercase tracking-widest hover:bg-red-500/20 transition-colors"
+          >
+            End Interview
+          </button>
+        </div>
       </div>
 
       {/* Chat Area */}

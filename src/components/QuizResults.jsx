@@ -10,6 +10,7 @@ import {
   Trophy,
   Brain,
 } from "lucide-react";
+import { AnalyticsService } from "../services/AnalyticsService";
 
 const QuizResults = () => {
   const {
@@ -20,13 +21,53 @@ const QuizResults = () => {
     userTopic,
     startForge,
     getWeakSectors,
+    saveCurrentQuiz,
   } = useStore();
   const navigate = useNavigate();
+
+  // ── Web Share API + Clipboard fallback ───────────────────────────────
+  const [copied, setCopied] = React.useState(false);
+  const [isSaving, setIsSaving] = React.useState(false);
+
+  const handleSaveToVault = async () => {
+    setIsSaving(true);
+    const success = await saveCurrentQuiz(userTopic);
+    setIsSaving(false);
+    if (success) {
+      alert("Quiz securely saved to your Vault!");
+    }
+  };
+
+  const handleShare = async () => {
+    const text = `I scored ${percentage}% (${rank}) on "${
+      userTopic || "a quiz"
+    }" — can you beat me? 🧠 NeuronNexus`;
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "My NeuronNexus Score", text, url });
+      } catch (err) {
+        if (err.name !== "AbortError") console.error(err);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(`${text}\n${url}`);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      } catch {
+        alert(text);
+      }
+    }
+  };
 
   const percentage = Math.round((score / currentQuiz.length) * 100);
   const rank =
     percentage >= 90 ? "Expert" : percentage >= 70 ? "Learner" : "Beginner";
   const weakSectors = getWeakSectors();
+
+  React.useEffect(() => {
+    AnalyticsService.logQuizCompleted(userTopic, percentage, rank);
+  }, [userTopic, percentage, rank]);
 
   return (
     <motion.div
@@ -282,6 +323,13 @@ const QuizResults = () => {
               className="text-[9px] font-black text-white uppercase tracking-[0.4em] border-b border-white/20 pb-1 hover:border-[#DFFF00] hover:text-[#DFFF00] transition-all"
             >
               New Subject
+            </button>
+            <button
+              onClick={handleSaveToVault}
+              disabled={isSaving}
+              className="text-[9px] font-black text-white uppercase tracking-[0.4em] border-b border-white/20 pb-1 hover:border-[#DFFF00] hover:text-[#DFFF00] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSaving ? "Saving..." : "Save to Vault"}
             </button>
           </div>
         </div>

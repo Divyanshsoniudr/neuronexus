@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, animate } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart3,
@@ -29,23 +29,71 @@ import NeuralFabric from "../components/NeuralFabric";
 import NeuralAtoms from "../components/NeuralAtoms";
 import SkillRadar from "../components/SkillRadar";
 
+const AnimatedValue = ({ value }) => {
+  const nodeRef = React.useRef(null);
+
+  useEffect(() => {
+    if (typeof value === "number") {
+      const controls = animate(0, value, {
+        duration: 1.5,
+        ease: "easeOut",
+        onUpdate(val) {
+          if (nodeRef.current)
+            nodeRef.current.textContent = Math.floor(val).toString();
+        },
+      });
+      return () => controls.stop();
+    } else if (typeof value === "string" && value.includes("%")) {
+      const num = parseInt(value, 10);
+      if (!isNaN(num)) {
+        const controls = animate(0, num, {
+          duration: 1.5,
+          ease: "easeOut",
+          onUpdate(val) {
+            if (nodeRef.current)
+              nodeRef.current.textContent = `${Math.floor(val)}%`;
+          },
+        });
+        return () => controls.stop();
+      }
+    }
+  }, [value]);
+
+  if (
+    typeof value === "number" ||
+    (typeof value === "string" &&
+      value.includes("%") &&
+      !isNaN(parseInt(value, 10)))
+  ) {
+    return (
+      <span ref={nodeRef}>
+        0{typeof value === "string" && value.includes("%") ? "%" : ""}
+      </span>
+    );
+  }
+  return <span>{value}</span>;
+};
+
 const DashCard = ({ icon: Icon, label, value, color, delay = 0 }) => (
   <motion.div
     initial={{ opacity: 0, y: 10 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay, duration: 0.5 }}
-    className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 flex flex-col justify-between hover:border-white/10 transition-all hover:-translate-y-1 shadow-sm"
+    className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 flex flex-col justify-between hover:border-white/10 transition-all hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] group relative overflow-hidden"
   >
-    <div className="flex items-center justify-between mb-8">
+    <div
+      className={`absolute top-0 right-0 w-32 h-32 bg-${color}-500/5 rounded-full blur-3xl -translate-y-16 translate-x-16 group-hover:bg-${color}-500/10 transition-colors duration-500`}
+    />
+    <div className="flex items-center justify-between mb-8 relative z-10">
       <span className="text-sm font-medium text-white/90">{label}</span>
       <div
-        className={`w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center`}
+        className={`w-10 h-10 rounded-xl bg-${color}-500/10 border border-${color}-500/20 flex items-center justify-center group-hover:scale-110 transition-transform`}
       >
         <Icon size={18} className={`text-${color}-400`} />
       </div>
     </div>
-    <div className="text-3xl font-semibold text-white tracking-tight">
-      {value}
+    <div className="text-3xl font-semibold text-white tracking-tight relative z-10">
+      <AnimatedValue value={value} />
     </div>
   </motion.div>
 );
@@ -81,6 +129,36 @@ const Dashboard = () => {
     };
     fetchVaultStats();
   }, [user, roadmapProgress]);
+
+  // ── Notifications API — streak nudge, once per session ────────────────────
+  useEffect(() => {
+    if (!user) return;
+    if (sessionStorage.getItem("notif_asked")) return;
+    sessionStorage.setItem("notif_asked", "true");
+    if (!("Notification" in window)) return;
+
+    const requestAndNotify = async () => {
+      let permission = Notification.permission;
+      if (permission === "default") {
+        permission = await Notification.requestPermission();
+      }
+      if (permission === "granted") {
+        setTimeout(() => {
+          const name = user?.displayName?.split(" ")[0] || "learner";
+          const n = new Notification("NeuronNexus 🧠", {
+            body: `Welcome back, ${name}! Ready to keep your streak alive?`,
+            icon: "/favicon.ico",
+            tag: "streak-nudge",
+          });
+          n.onclick = () => {
+            window.focus();
+            n.close();
+          };
+        }, 3000);
+      }
+    };
+    requestAndNotify();
+  }, [user]);
 
   const navigate = useNavigate();
 
@@ -256,34 +334,37 @@ const Dashboard = () => {
                   activePaths.map((path) => (
                     <motion.div
                       key={path.id}
-                      whileHover={{ y: -2 }}
-                      className="p-5 rounded-2xl bg-[#111] border border-white/5 hover:border-white/20 transition-colors cursor-pointer"
+                      whileHover={{ y: -4 }}
+                      className="p-5 rounded-2xl bg-[#111] border border-white/5 hover:border-indigo-500/30 transition-all cursor-pointer group relative overflow-hidden hover:shadow-[0_0_30px_rgba(99,102,241,0.1)]"
                       onClick={() => navigate(`/roadmap/${path.id}`)}
                     >
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white/90">
-                          <Map size={14} />
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/0 rounded-full blur-2xl -translate-y-12 translate-x-12 group-hover:bg-indigo-500/10 transition-colors duration-500" />
+                      <div className="relative z-10">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center text-white/90 group-hover:bg-indigo-500/20 group-hover:text-indigo-400 transition-colors">
+                            <Map size={14} />
+                          </div>
+                          <span className="text-sm font-medium text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-indigo-200 transition-all duration-300">
+                            {path.title}
+                          </span>
                         </div>
-                        <span className="text-sm font-medium text-white">
-                          {path.title}
-                        </span>
-                      </div>
 
-                      <div className="space-y-2">
-                        <div className="flex justify-between items-center text-xs font-medium">
-                          <span className="text-white/90">
-                            {path.completedCount} of {path.totalNodes} steps
-                          </span>
-                          <span className="text-indigo-400">
-                            {path.progress}%
-                          </span>
-                        </div>
-                        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${path.progress}%` }}
-                            className="h-full bg-indigo-500"
-                          />
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center text-xs font-medium">
+                            <span className="text-white/90">
+                              {path.completedCount} of {path.totalNodes} steps
+                            </span>
+                            <span className="text-indigo-400">
+                              {path.progress}%
+                            </span>
+                          </div>
+                          <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${path.progress}%` }}
+                              className="h-full bg-indigo-500 group-hover:bg-indigo-400 transition-colors"
+                            />
+                          </div>
                         </div>
                       </div>
                     </motion.div>

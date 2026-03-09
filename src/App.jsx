@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BroadcastBanner from "./components/BroadcastBanner";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Pages
 import Landing from "./pages/Landing";
@@ -18,6 +19,7 @@ import Quiz from "./pages/Quiz";
 import Dashboard from "./pages/Dashboard";
 import Interview from "./pages/Interview"; // IMPORT ADDED
 import Profile from "./pages/Profile";
+import Flashcards from "./pages/Flashcards";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import About from "./pages/About";
@@ -55,6 +57,7 @@ function App() {
         <div className="min-h-screen w-full bg-[#050505] text-white selection:bg-indigo-500 selection:text-white flex flex-col">
           <BroadcastBanner />
           <div className="bg-mesh" />
+          <ScrollToTop />
           <Navbar />
 
           <main className="flex-1 pt-32 pb-20 px-4 md:px-12 flex flex-col items-center justify-center relative z-10">
@@ -117,6 +120,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Profile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/flashcards"
+                  element={
+                    <ProtectedRoute>
+                      <Flashcards />
                     </ProtectedRoute>
                   }
                 />

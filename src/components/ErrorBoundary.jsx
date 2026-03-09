@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 import NeuralLogo from "./NeuralLogo";
+import { captureNeuralError } from "../services/SentryService";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error("ErrorBoundary caught an error:", error, errorInfo);
+    captureNeuralError(error, { reactErrorInfo: errorInfo });
   }
 
   handleReset = () => {

@@ -246,3 +246,27 @@ export const deleteUserCloudData = async (userId) => {
         throw error;
     }
 };
+
+// --- SAVED QUIZZES (VAULT) ---
+
+export const saveQuizToUserVault = async (userId, quizData) => {
+    try {
+        const vaultRef = collection(db, "users", userId, "savedQuizzes");
+        await addDoc(vaultRef, quizData);
+    } catch (error) {
+        console.error("dbService: saveQuizToUserVault failed", error);
+        throw error;
+    }
+};
+
+export const getSavedQuizzes = async (userId) => {
+    try {
+        const vaultRef = collection(db, "users", userId, "savedQuizzes");
+        const q = query(vaultRef, orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        console.error("dbService: getSavedQuizzes failed", error);
+        return [];
+    }
+};

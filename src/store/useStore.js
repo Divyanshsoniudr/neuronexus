@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { generateLiveQuiz as generateGeminiQuiz } from '../services/geminiService';
 import { loginWithGoogle, logout, subscribeToAuthChanges, registerWithEmail, loginWithEmail } from '../services/authService';
-import { saveUserStats, syncSessionData, getUserStats, saveQuizToHistory, getQuizFromVault, saveQuizToVault, saveUsageStats } from '../services/dbService';
+import { saveUserStats, syncSessionData, getUserStats, saveQuizToHistory, getQuizFromVault, saveQuizToVault, saveUsageStats, getSavedQuizzes, saveQuizToUserVault } from '../services/dbService';
 import { guardian } from '../services/Guardian';
 
 export const useStore = create((set, get) => ({
@@ -19,6 +19,10 @@ export const useStore = create((set, get) => ({
     isGenerating: false,
     currentDifficulty: localStorage.getItem('quiz_diff') || 'Intermediate',
     isScenarioMode: JSON.parse(localStorage.getItem('is_scenario_mode')) || false,
+
+    // Vault State
+    savedQuizzes: [],
+    currentFlashcards: null,
 
     skillStats: {
         Syntax: 0,
@@ -82,6 +86,88 @@ export const useStore = create((set, get) => ({
     },
 
     // Actions
+    fetchSavedQuizzes: async () => {
+        const { user } = get();
+        if (!user) return;
+        try {
+            const quizzes = await getSavedQuizzes(user.uid);
+            set({ savedQuizzes: quizzes });
+        } catch (error) {
+            console.error("Failed to fetch saved quizzes", error);
+        }
+    },
+
+    saveCurrentQuiz: async (title) => {
+        const { user, currentQuiz, userTopic, currentDifficulty } = get();
+        if (!user || currentQuiz.length === 0) return false;
+
+        try {
+            const quizData = {
+                title: title || userTopic || 'Untitled Quiz',
+                topic: userTopic,
+                difficulty: currentDifficulty,
+                questions: currentQuiz,
+                createdAt: new Date().toISOString()
+            };
+            await saveQuizToUserVault(user.uid, quizData);
+            await get().fetchSavedQuizzes(); // Refresh the list
+            return true;
+        } catch (error) {
+            console.error("Failed to save quiz", error);
+            return false;
+        }
+    },
+
+    loadQuizToFlashcards: (quizId) => {
+        const { savedQuizzes } = get();
+        const quiz = savedQuizzes.find(q => q.id === quizId);
+        if (quiz) {
+            set({ currentFlashcards: quiz.questions });
+            return true;
+        }
+        return false;
+    },
+
+    generateFlashcardsFromTopic: async (topic, difficulty = 'Intermediate') => {
+        set({ isGenerating: true });
+
+        try {
+            // Setup naming logic identical to generic quiz generation
+            let activeTopic = topic;
+            if (activeTopic.startsWith("Mastery: ")) activeTopic = activeTopic.replace("Mastery: ", "");
+
+            // 1. Try to hit the Knowledge Vault (Cache) first
+            const cachedQuiz = await getQuizFromVault(activeTopic, difficulty);
+            if (cachedQuiz) {
+                console.log(`[Store:Flashcards] Vault Hit: ${activeTopic}`);
+                set({
+                    currentFlashcards: cachedQuiz,
+                    isGenerating: false
+                });
+                return true;
+            }
+
+            // 2. If it misses, we need to generate it from scratch using Gemini
+            console.log(`[Store:Flashcards] Vault Miss, Synthesizing: ${activeTopic}`);
+            const quiz = await generateGeminiQuiz(activeTopic, difficulty, null);
+
+            // 3. Cache it for next time
+            await saveQuizToVault(activeTopic, difficulty, quiz);
+
+            set({
+                currentFlashcards: quiz,
+                isGenerating: false
+            });
+            return true;
+
+        } catch (error) {
+            console.error("Failed to generate flashcards", error);
+            set({ isGenerating: false });
+            alert(error.message || "Failed to generate flashcards.");
+            return false;
+        }
+    },
+
     generateAIQuiz: async (topic, difficulty = 'Intermediate', file = null, forceRefresh = false) => {
         const { usageStats, isPremium } = get();
         const today = new Date().toDateString();

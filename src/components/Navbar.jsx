@@ -64,7 +64,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full h-16 md:h-20 z-50 backdrop-blur-3xl bg-black/40 border-b border-white/5 flex items-center px-6 md:px-12 justify-between">
+      <nav className="fixed top-0 left-0 w-full h-16 md:h-20 z-50 backdrop-blur-3xl bg-black/40 border-b border-white/5 flex items-center px-4 md:px-8 justify-between gap-4 overflow-hidden">
         <Link
           to="/"
           className="flex items-center gap-3 group shrink-0"
@@ -92,15 +92,15 @@ const Navbar = () => {
           </div>
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
+        {/* Desktop Nav Links — scrollable if too many items */}
+        <div className="hidden md:flex items-center gap-1 lg:gap-2 min-w-0 overflow-x-auto scrollbar-none flex-1 justify-end">
           {navItems
             .filter((item) => !item.hidden)
             .map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl transition-all duration-300 relative group font-outfit ${
+                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl transition-all duration-300 relative group font-outfit shrink-0 ${
                   location.pathname === item.path
                     ? "text-white font-bold"
                     : item.special
@@ -109,24 +109,27 @@ const Navbar = () => {
                 }`}
               >
                 <item.icon
-                  size={18}
+                  size={14}
                   className={
                     location.pathname === item.path
                       ? "text-indigo-400"
                       : "group-hover:scale-110 transition-transform"
                   }
                 />
-                <span className="text-xs uppercase font-black tracking-[0.2em]">
+                <span className="text-[10px] uppercase font-black tracking-[0.1em]">
                   {item.label}
                 </span>
               </Link>
             ))}
+        </div>
 
+        {/* Desktop Profile / Sign-in — always fixed, never scrolls */}
+        <div className="hidden md:flex items-center gap-3 pl-3 border-l border-white/5 shrink-0 ml-2">
           {user ? (
-            <div className="flex items-center gap-6 pl-4 border-l border-white/5">
+            <>
               <Link
                 to="/profile"
-                className="w-10 h-10 rounded-full border border-white/10 p-0.5 overflow-hidden hover:border-indigo-500/50 transition-all shadow-lg"
+                className="w-10 h-10 rounded-full border border-white/10 p-0.5 overflow-hidden hover:border-indigo-500/50 transition-all shadow-lg shrink-0"
               >
                 <img
                   src={
@@ -142,15 +145,15 @@ const Navbar = () => {
                   await signOut();
                   navigate("/");
                 }}
-                className="px-6 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white/90 text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center gap-2"
+                className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/90 text-xs font-black uppercase tracking-widest hover:bg-red-500 hover:text-white hover:border-red-500 transition-all flex items-center gap-2 shrink-0"
               >
                 <LogOut size={14} /> Sign Out
               </button>
-            </div>
+            </>
           ) : (
             <Link
               to="/auth"
-              className="px-8 py-3 rounded-2xl bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all shadow-xl shadow-indigo-500/10"
+              className="px-6 py-2.5 rounded-2xl bg-white text-black text-xs font-black uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all shadow-xl shadow-indigo-500/10 shrink-0"
             >
               Sign In
             </Link>

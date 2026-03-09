@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useBlocker } from "react-router-dom";
 import {
   Check,
   X,
@@ -18,6 +18,7 @@ import NeuralMap from "../components/NeuralMap";
 import ImprovementRoom from "../components/TheForge";
 import QuizResults from "../components/QuizResults";
 import ScenarioEngine from "../components/ScenarioEngine";
+import { AnalyticsService } from "../services/AnalyticsService";
 
 const Quiz = () => {
   const {
@@ -36,6 +37,58 @@ const Quiz = () => {
   ); // question, map, scenario
   const [showResults, setShowResults] = React.useState(false);
   const navigate = useNavigate();
+
+  // ── Tab-switch detection (Page Visibility API) ──────────────────────────
+  const [tabSwitchCount, setTabSwitchCount] = React.useState(0);
+  const [showTabWarning, setShowTabWarning] = React.useState(false);
+
+  React.useEffect(() => {
+    if (currentQuiz.length === 0) return;
+
+    // Log the event once when quiz formally mounts
+    AnalyticsService.logQuizStarted(userTopic, "auto");
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setTabSwitchCount((prev) => prev + 1);
+      } else {
+        setShowTabWarning(true);
+        setTimeout(() => setShowTabWarning(false), 4000);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [currentQuiz.length]);
+
+  // ── Screen Wake Lock API ────────────────────────────────────────────────
+  const wakeLockRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (currentQuiz.length === 0) return;
+    const acquireLock = async () => {
+      if ("wakeLock" in navigator) {
+        try {
+          wakeLockRef.current = await navigator.wakeLock.request("screen");
+        } catch (err) {
+          console.warn("Wake Lock unavailable:", err.message);
+        }
+      }
+    };
+    acquireLock();
+    const handleVisibility = () => {
+      if (!document.hidden) acquireLock();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      wakeLockRef.current?.release();
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [currentQuiz.length]);
+
+  // ── Navigation Guard (useBlocker) ───────────────────────────────────────
+  const shouldBlock = currentQuiz.length > 0 && !showResults;
+  const blocker = useBlocker(shouldBlock);
 
   if (currentQuiz.length === 0) {
     return (
@@ -68,6 +121,49 @@ const Quiz = () => {
       animate={{ opacity: 1 }}
       className="max-w-6xl w-full mx-auto pb-24 px-6 md:px-0"
     >
+      {/* ── Tab-switch warning banner (Page Visibility API) ── */}
+      {showTabWarning && (
+        <motion.div
+          initial={{ y: -60, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -60, opacity: 0 }}
+          className="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-black uppercase tracking-widest flex items-center gap-3 shadow-xl backdrop-blur-md"
+        >
+          ⚠️ Tab switch #{tabSwitchCount} detected — stay focused!
+        </motion.div>
+      )}
+
+      {/* ── Navigation Guard Modal (useBlocker) ── */}
+      {blocker.state === "blocked" && (
+        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-6">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="glass-panel p-10 rounded-[40px] border border-white/10 max-w-md w-full text-center space-y-6"
+          >
+            <h2 className="text-2xl font-black uppercase tracking-tight text-white">
+              Leave Quiz?
+            </h2>
+            <p className="text-white/70 text-sm font-medium">
+              Your progress will be lost. You'll need to generate a new quiz.
+            </p>
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={() => blocker.reset()}
+                className="px-8 py-3 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-xs hover:bg-[#DFFF00] transition-all"
+              >
+                Stay
+              </button>
+              <button
+                onClick={() => blocker.proceed()}
+                className="px-8 py-3 rounded-2xl border border-red-500/30 text-red-400 font-black uppercase tracking-widest text-xs hover:bg-red-500/10 transition-all"
+              >
+                Leave Anyway
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
       {/* View Toggle */}
       <div className="flex justify-center mb-12">
         <div className="inline-flex items-center p-1 rounded-2xl md:rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl">

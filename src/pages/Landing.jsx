@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 import {
   motion,
   AnimatePresence,
@@ -41,6 +42,37 @@ import WireframeAtom from "../components/WireframeAtom";
 import { useStore } from "../store/useStore";
 import SEO from "../components/SEO";
 import ShaderGradient from "../components/ShaderGradient";
+
+/** StatCounter — counts up from 0 to `target` when scrolled into view.
+ * Uses the Intersection Observer API (Web API). */
+function StatCounter({ target, suffix = "", prefix = "", label }) {
+  const [count, setCount] = React.useState(0);
+  const ref = useIntersectionObserver(() => {
+    let start = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 16);
+  });
+  return (
+    <div ref={ref} className="flex flex-col items-center gap-1">
+      <span className="text-2xl md:text-4xl font-black text-white font-outfit tracking-tighter">
+        {prefix}
+        {count.toLocaleString()}
+        {suffix}
+      </span>
+      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/50">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 const FloatingHeroAsset = ({ children }) => {
   const x = useMotionValue(0);
@@ -103,7 +135,7 @@ const SuperpowerCard = ({
     viewport={{ once: true }}
     transition={{ delay, duration: 0.8 }}
     whileHover={{ y: -10 }}
-    className="group relative glass-panel p-8 md:p-12 rounded-[56px] border border-white/5 overflow-hidden flex flex-col items-center text-center space-y-8"
+    className="group relative glass-panel p-6 md:p-8 rounded-3xl border border-white/5 overflow-hidden flex flex-col items-center text-center space-y-6"
   >
     <div
       className={`absolute inset-0 bg-${color}-500/5 blur-3xl group-hover:bg-${color}-500/10 transition-all duration-700 opacity-0 group-hover:opacity-100`}
@@ -256,7 +288,7 @@ const SuperpowerCard = ({
       <h3 className="text-3xl font-black text-white uppercase font-syne tracking-tight">
         {title}
       </h3>
-      <p className="text-white/90 text-base font-medium leading-relaxed font-outfit">
+      <p className="text-white text-base font-medium leading-relaxed font-outfit">
         {desc}
       </p>
     </div>
@@ -277,7 +309,7 @@ const FAQItem = ({ question, answer }) => {
         <div
           className={`p-2 rounded-lg bg-white/5 transition-transform ${isOpen ? "rotate-45" : ""}`}
         >
-          <Plus size={20} className="text-white/90" />
+          <Plus size={20} className="text-white" />
         </div>
       </button>
       <AnimatePresence>
@@ -302,41 +334,30 @@ const Landing = () => {
   const navigate = useNavigate();
   const { user } = useStore();
 
-  // Mesh displacement decay removed - handled by BeamGrid
+  const sectionClasses =
+    "relative flex flex-col justify-center px-4 md:px-12 py-16 md:py-24 w-full overflow-hidden";
 
   return (
-    <div className="w-full bg-[#050505] overflow-hidden">
+    <>
       <ShaderGradient />
       <SEO
         title="Ace Your Exams Faster"
-        description="Turn your notes into custom AI quizzes in seconds. The simplest way to prepare for any test."
+        description="Turn your notes into custom AI quizzes in seconds."
       />
 
-      <div
-        className="w-full max-w-7xl mx-auto px-4 md:px-6 overflow-hidden relative"
-        style={{ pointerEvents: "auto" }}
-      >
-        <NeuralFabric />
-
-        {/* Decorative Background Glows */}
-        <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] pointer-events-none -z-10 opacity-60">
-          <div className="absolute top-[20%] left-[20%] w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[20%] right-[30%] w-[700px] h-[700px] bg-[#DFFF00]/5 rounded-full blur-[150px]" />
-        </div>
-
-        <BeamGrid />
-
-        {/* --- HERO SECTION --- */}
-        <section className="relative pt-24 md:pt-40 pb-20 md:pb-32 px-4 md:px-12 overflow-visible">
-          {/* Ambient Background Shards */}
-          <div className="absolute inset-0 pointer-events-none -z-10">
+      <div className="bg-[#050505] min-h-screen">
+        {/* ── SECTION 1: HERO ── */}
+        <div className={`${sectionClasses} pt-16 md:pt-20`}>
+          <NeuralFabric />
+          {/* Ambient glows */}
+          <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden contain-layout">
             <motion.div
               animate={{
                 y: [0, -30, 0],
                 rotate: [0, 10, 0],
               }}
               transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-[20%] right-[10%] w-32 h-32 bg-indigo-500/10 blur-2xl rounded-full"
+              className="absolute top-[20%] right-[10%] w-32 h-32 md:w-64 md:h-64 bg-indigo-500/10 blur-[80px] md:blur-[120px] rounded-full transform-gpu will-change-transform"
             />
             <motion.div
               animate={{
@@ -349,25 +370,24 @@ const Landing = () => {
                 ease: "easeInOut",
                 delay: 1,
               }}
-              className={`absolute bottom-[10%] left-[5%] w-48 h-48 bg-[#DFFF00]/5 blur-3xl rounded-full`}
+              className="absolute bottom-[10%] left-[5%] w-48 h-48 md:w-80 md:h-80 bg-[#DFFF00]/5 blur-[100px] md:blur-[150px] rounded-full transform-gpu will-change-transform"
             />
           </div>
+          <BeamGrid />
 
-          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
+          <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-10 lg:gap-16 relative z-10 scale-[0.85] md:scale-95 transform-gpu origin-center">
             <motion.div
               initial="initial"
               animate="animate"
-              variants={{
-                animate: { transition: { staggerChildren: 0.15 } },
-              }}
-              className="flex-1 text-center lg:text-left relative z-10"
+              variants={{ animate: { transition: { staggerChildren: 0.15 } } }}
+              className="flex-1 text-center lg:text-left mt-10 md:mt-0"
             >
               <motion.div
                 variants={{
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
                 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#DFFF00]/5 border border-[#DFFF00]/10 text-[#DFFF00] text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] mb-10 md:mb-16 font-syne shadow-2xl hover:bg-[#DFFF00]/10 transition-colors cursor-pointer group"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#DFFF00]/5 border border-[#DFFF00]/10 text-[#DFFF00] text-[10px] font-black uppercase tracking-[0.4em] mb-6 md:mb-8 font-syne hover:bg-[#DFFF00]/10 transition-colors cursor-pointer group"
               >
                 <Sparkles
                   size={14}
@@ -376,28 +396,26 @@ const Landing = () => {
                 Smart tools for students
               </motion.div>
 
-              <div className="mb-6 md:mb-10">
-                <motion.h1
-                  variants={{
-                    initial: { opacity: 0, scale: 0.9, y: 30 },
-                    animate: { opacity: 1, scale: 1, y: 0 },
-                  }}
-                  className="text-[clamp(2.5rem,8vw,6rem)] font-black mb-6 md:mb-10 tracking-tighter leading-[0.85] text-white font-outfit uppercase italic"
-                >
-                  LEARN <br />
-                  <FlipWords
-                    words={["FASTER", "BETTER", "EASIER", "SMARTER"]}
-                    className="text-[#DFFF00] not-italic"
-                  />
-                </motion.h1>
-              </div>
+              <motion.h1
+                variants={{
+                  initial: { opacity: 0, scale: 0.9, y: 30 },
+                  animate: { opacity: 1, scale: 1, y: 0 },
+                }}
+                className="text-[clamp(2.5rem,8vw,6rem)] font-black mb-4 md:mb-6 tracking-tighter leading-[0.85] text-white font-outfit uppercase italic"
+              >
+                LEARN <br />
+                <FlipWords
+                  words={["FASTER", "BETTER", "EASIER", "SMARTER"]}
+                  className="text-[#DFFF00] not-italic"
+                />
+              </motion.h1>
 
               <motion.p
                 variants={{
                   initial: { opacity: 0, y: 20 },
                   animate: { opacity: 1, y: 0 },
                 }}
-                className="text-white/90 text-lg md:text-2xl font-medium mb-12 md:mb-16 leading-relaxed max-w-2xl font-outfit"
+                className="text-white/90 text-base md:text-lg font-medium mb-8 md:mb-10 leading-relaxed max-w-2xl font-outfit"
               >
                 The smart study tool that helps you learn. Turn your notes into
                 fun quizzes and remember everything you read.
@@ -408,13 +426,13 @@ const Landing = () => {
                   initial: { opacity: 0, scale: 0.95 },
                   animate: { opacity: 1, scale: 1 },
                 }}
-                className="flex flex-col sm:flex-row gap-6 md:gap-8 mb-24 md:mb-32"
+                className="flex flex-col sm:flex-row gap-4 md:gap-6"
               >
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => navigate(user ? "/generator" : "/auth")}
-                  className="px-10 md:px-16 py-5 md:py-6 rounded-3xl bg-white text-black font-black uppercase tracking-[0.3em] hover:bg-[#DFFF00] transition-all shadow-3xl shadow-[#DFFF00]/20 flex items-center justify-center gap-4 font-syne text-[10px] relative overflow-hidden group"
+                  className="px-10 md:px-16 py-5 rounded-3xl bg-white text-black font-black uppercase tracking-[0.3em] hover:bg-[#DFFF00] transition-all shadow-3xl flex items-center justify-center gap-4 font-syne text-[10px] relative overflow-hidden group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   Start Studying{" "}
@@ -426,7 +444,7 @@ const Landing = () => {
                 {!user && (
                   <button
                     onClick={() => navigate("/auth")}
-                    className="px-10 md:px-16 py-5 md:py-6 rounded-3xl border border-white/10 text-white/80 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:border-[#DFFF00]/30 hover:text-white transition-all font-syne text-[10px]"
+                    className="px-10 md:px-16 py-5 rounded-3xl border border-white/10 text-white/80 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:border-[#DFFF00]/30 hover:text-white transition-all font-syne text-[10px]"
                   >
                     Login to Account
                   </button>
@@ -458,170 +476,135 @@ const Landing = () => {
               </FloatingHeroAsset>
             </motion.div>
           </div>
-        </section>
 
-        {/* --- SOCIAL PROOF BAR (TRUST) --- */}
-        <section className="py-12 md:py-20 border-y border-white/5 bg-white/[0.01] relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505] z-10 pointer-events-none" />
-          <div className="flex flex-col items-center gap-6 md:gap-10 px-4 md:px-6 relative">
-            <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.5em] text-white/80 text-center font-syne">
-              TRUSTED BY STUDENTS WORLDWIDE
-            </span>
-            <div className="flex flex-wrap justify-center gap-10 md:gap-20 lg:gap-32 opacity-30 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-700">
-              {[
-                { icon: Globe, label: "GlobalStack", color: "indigo" },
-                { icon: ShieldCheck, label: "SecureCore", color: "emerald" },
-                { icon: Monitor, label: "DevLayer", color: "indigo" },
-                { icon: Layout, label: "UXMatrix", color: "emerald" },
-              ].map((logo, i) => (
-                <div
-                  key={logo.label}
-                  className="flex items-center gap-3 md:gap-4 group cursor-default"
-                >
-                  <logo.icon
-                    size={20}
-                    className={`text-${logo.color}-400 group-hover:scale-110 transition-transform`}
-                  />
-                  <span className="font-syne text-sm md:text-lg font-black uppercase tracking-tighter text-white">
-                    {logo.label}
-                  </span>
-                </div>
-              ))}
+          {/* Social proof at bottom of hero */}
+          <div className="absolute bottom-0 inset-x-0 py-5 border-t border-white/5 bg-white/[0.01]">
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-20 px-6">
+              <span className="text-[8px] font-black uppercase tracking-[0.4em] text-white/40 font-syne hidden sm:block">
+                TRUSTED WORLDWIDE
+              </span>
+              <StatCounter target={10000} suffix="+" label="Students" />
+              <StatCounter target={500000} suffix="+" label="Questions" />
+              <StatCounter target={94} suffix="%" label="Pass Rate" />
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* --- THE SUPERPOWERS: 3D SHOWCASE --- */}
-        <section className="py-24 md:py-48 px-4 md:px-12 relative">
-          <div className="max-w-4xl mx-auto text-center mb-20 md:mb-32">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em] mb-8 font-syne"
-            >
-              The AI Advantage
-            </motion.div>
-            <h2 className="text-[clamp(2.5rem,7vw,5rem)] font-black mb-8 tracking-tighter leading-[0.9] text-white font-syne uppercase italic">
-              YOUR <br />
-              <span className="text-indigo-400 not-italic">SECRET WEAPON.</span>
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <SuperpowerCard
-              tag="Step 01"
-              color="cyan"
-              icon={Search}
-              title="Upload Notes"
-              desc="Take pictures of your notes or upload PDFs. We can read even messy handwriting."
-              delay={0.1}
-              illustrationType="lukasz"
-            />
-            <SuperpowerCard
-              tag="Step 02"
-              color="indigo"
-              icon={BrainCircuit}
-              title="Auto Quizzes"
-              desc="We automatically create practice tests based on exactly what you need to learn."
-              delay={0.2}
-              illustrationType="storytale"
-            />
-            <SuperpowerCard
-              tag="Step 03"
-              color="emerald"
-              icon={BarChart3}
-              title="Track Progress"
-              desc="See how much you remember. Reach 100% and ace your test."
-              delay={0.3}
-              illustrationType="things"
-            />
-          </div>
-        </section>
-
-        {/* --- THE PROBLEM --- */}
-        <section id="problem" className="py-24 md:py-48 px-6 md:px-12 relative">
-          <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
-            <div className="inline-block p-3 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 mb-8">
-              <AlertCircle size={24} />
-            </div>
-            <h2 className="text-[clamp(1.5rem,6vw,4.5rem)] font-black mb-8 md:mb-12 tracking-tighter leading-[0.9] text-white font-syne uppercase">
-              WHY STUDYING <br />
-              <span className="text-red-500 italic">IS SO HARD.</span>
-            </h2>
-            <p className="text-white/90 text-lg md:text-2xl leading-relaxed font-medium font-outfit">
-              Just reading your notes over and over doesn't work. Most people
-              forget
-              <span className="text-white"> almost everything </span>
-              the very next day. You need a better way to remember.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div className="glass-panel p-8 md:p-12 rounded-[40px] border border-white/5 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 blur-3xl rounded-full" />
-              <CheckCircle className="text-[#DFFF00] mb-6" size={32} />
-              <h3 className="text-3xl font-black text-white mb-6 uppercase font-syne">
-                Learn By Doing
-              </h3>
-              <p className="text-white/90 text-lg mb-10 font-outfit">
-                QuizMaster makes you answer questions, which is the fastest way
-                to make information stick in your head forever.
-              </p>
-              <div className="space-y-4">
-                {[
-                  "Stop forgetting what you just read.",
-                  "See exactly what you still need to learn.",
-                  "Learn your material in half the time.",
-                ].map((text, i) => (
-                  <div key={i} className="flex gap-4 items-center">
-                    <div className="w-2 h-2 rounded-full bg-[#DFFF00]" />
-                    <span className="text-white font-black uppercase tracking-widest text-xs font-syne">
-                      {text}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative h-[450px] md:h-full lg:min-h-[600px] flex items-center justify-center">
-              <BeamGrid />
-
-              {/* --- LIVE QUIZ MOCKUP --- */}
+        {/* ── SLIDE 2: SECRET WEAPON ── */}
+        <div className={sectionClasses}>
+          <div className="max-w-5xl mx-auto w-full scale-[0.80] md:scale-85 transform-gpu origin-center mt-4">
+            <div className="text-center mb-6 md:mb-10">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="relative z-10 w-full max-w-[400px]"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em] mb-3 md:mb-5 font-syne"
               >
-                <div className="absolute inset-0 bg-indigo-500/10 blur-[100px] rounded-full animate-pulse" />
+                The AI Advantage
+              </motion.div>
+              <h2 className="text-[clamp(1.8rem,5vw,3.5rem)] font-black tracking-tighter leading-[0.9] text-white font-syne uppercase italic">
+                YOUR <br />
+                <span className="text-indigo-400 not-italic">
+                  SECRET WEAPON.
+                </span>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <SuperpowerCard
+                tag="Step 01"
+                color="cyan"
+                icon={Search}
+                title="Upload Notes"
+                desc="Take pictures of your notes or upload PDFs. We can read even messy handwriting."
+                delay={0.1}
+                illustrationType="lukasz"
+              />
+              <SuperpowerCard
+                tag="Step 02"
+                color="indigo"
+                icon={BrainCircuit}
+                title="Auto Quizzes"
+                desc="We automatically create practice tests based on exactly what you need to learn."
+                delay={0.2}
+                illustrationType="storytale"
+              />
+              <SuperpowerCard
+                tag="Step 03"
+                color="emerald"
+                icon={BarChart3}
+                title="Track Progress"
+                desc="See how much you remember. Reach 100% and ace your test."
+                delay={0.3}
+                illustrationType="things"
+              />
+            </div>
+          </div>
+        </div>
 
-                <div className="relative glass-panel rounded-[40px] border border-white/10 shadow-2xl overflow-hidden">
-                  {/* Header */}
-                  <div className="p-6 border-b border-white/5 bg-white/5 flex items-center justify-between">
-                    <div className="flex gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-500/20" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
-                      <div className="w-3 h-3 rounded-full bg-green-500/20" />
+        {/* ── SLIDE 3: THE PROBLEM ── */}
+        <div className={sectionClasses}>
+          <div className="max-w-5xl mx-auto w-full scale-[0.80] md:scale-95 transform-gpu origin-center top-6 relative">
+            <div className="text-center mb-6 md:mb-8">
+              <div className="inline-block p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 mb-3 md:mb-5">
+                <AlertCircle size={18} className="md:w-5 md:h-5" />
+              </div>
+              <h2 className="text-[clamp(1.5rem,5vw,3.5rem)] font-black mb-2 md:mb-4 tracking-tighter leading-[0.9] text-white font-syne uppercase">
+                WHY STUDYING <br />
+                <span className="text-red-500 italic">IS SO HARD.</span>
+              </h2>
+              <p className="text-white/90 text-xs md:text-base font-medium font-outfit max-w-2xl mx-auto px-4 md:px-0 hidden md:block">
+                Just reading your notes over and over doesn't work. Most people
+                forget <span className="text-white">almost everything</span> the
+                very next day. You need a better way to remember.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-center">
+              <div className="glass-panel p-6 md:p-8 rounded-3xl border border-white/5 relative overflow-hidden contain-paint">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 blur-3xl rounded-full transform-gpu will-change-transform" />
+                <CheckCircle className="text-[#DFFF00] mb-4" size={24} />
+                <h3 className="text-xl font-black text-white mb-3 uppercase font-syne">
+                  Learn By Doing
+                </h3>
+                <p className="text-white/80 text-sm mb-5 font-outfit">
+                  QuizMaster makes you answer questions, which is the fastest
+                  way to make information stick in your head forever.
+                </p>
+                <div className="space-y-3">
+                  {[
+                    "Stop forgetting what you just read.",
+                    "See exactly what you still need to learn.",
+                    "Learn your material in half the time.",
+                  ].map((text, i) => (
+                    <div key={i} className="flex gap-3 items-center">
+                      <div className="w-2 h-2 rounded-full bg-[#DFFF00] shrink-0" />
+                      <span className="text-white font-black uppercase tracking-widest text-[10px] font-syne">
+                        {text}
+                      </span>
                     </div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-white/70">
+                  ))}
+                </div>
+              </div>
+              <div className="relative flex items-center justify-center">
+                <div className="absolute inset-0 bg-indigo-500/10 blur-[100px] rounded-full animate-pulse" />
+                <div className="relative glass-panel rounded-3xl border border-white/10 shadow-2xl overflow-hidden w-full max-w-[380px]">
+                  <div className="p-5 border-b border-white/5 bg-white/5 flex items-center justify-between">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-500/30" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-500/30" />
+                      <div className="w-3 h-3 rounded-full bg-green-500/30" />
+                    </div>
+                    <div className="text-[9px] font-black uppercase tracking-widest text-white/50">
                       PRACTICE_QUIZ
                     </div>
                   </div>
-
-                  {/* Question Area */}
-                  <div className="p-8 space-y-8">
-                    <div className="space-y-4">
-                      <div className="text-xs font-black text-[#DFFF00] uppercase tracking-widest">
-                        Question #12
-                      </div>
-                      <h4 className="text-xl font-black text-white leading-tight font-syne uppercase">
-                        How does "Active Recall" strengthen long-term memory?
-                      </h4>
+                  <div className="p-6 space-y-4">
+                    <div className="text-xs font-black text-[#DFFF00] uppercase tracking-widest">
+                      Question #12
                     </div>
-
-                    {/* Options */}
-                    <div className="space-y-3">
+                    <h4 className="text-base font-black text-white leading-tight font-syne uppercase">
+                      How does "Active Recall" strengthen long-term memory?
+                    </h4>
+                    <div className="space-y-2">
                       {[
                         {
                           text: "By repeating information out loud",
@@ -638,270 +621,223 @@ const Landing = () => {
                       ].map((opt, i) => (
                         <div
                           key={i}
-                          className={`p-4 rounded-2xl border transition-all flex items-center justify-between group ${
-                            opt.correct
-                              ? "bg-green-500/10 border-green-500/30 ring-1 ring-green-500/20"
-                              : "bg-white/5 border-white/5 hover:border-white/20"
-                          }`}
+                          className={`p-3 rounded-xl border flex items-center justify-between ${opt.correct ? "bg-green-500/10 border-green-500/30" : "bg-white/5 border-white/5"}`}
                         >
                           <span
-                            className={`text-sm font-medium ${opt.correct ? "text-green-400" : "text-white/90"}`}
+                            className={`text-xs font-medium ${opt.correct ? "text-green-400" : "text-white/70"}`}
                           >
                             {opt.text}
                           </span>
                           {opt.correct && (
-                            <CheckCircle size={16} className="text-green-400" />
+                            <CheckCircle
+                              size={14}
+                              className="text-green-400 shrink-0"
+                            />
                           )}
                         </div>
                       ))}
                     </div>
-
-                    {/* Feedback */}
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="p-4 rounded-2xl bg-[#DFFF00]/10 border border-[#DFFF00]/20 flex items-start gap-4"
-                    >
-                      <Sparkles
-                        size={18}
-                        className="text-[#DFFF00] shrink-0 mt-1"
-                      />
-                      <p className="text-xs text-[#DFFF00]/80 font-medium leading-relaxed italic">
-                        Correct! Retrieval practice builds stronger neural
-                        pathways than passive revision.
-                      </p>
-                    </motion.div>
                   </div>
                 </div>
-
-                {/* Floating Elements */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="absolute -top-6 -right-6 p-4 rounded-2xl glass-panel border border-white/10 shadow-xl"
-                >
-                  <div className="text-[10px] font-black text-green-400 uppercase tracking-widest mb-1">
-                    +92% RETENTION
-                  </div>
-                  <div className="h-1.5 w-24 bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full w-[92%] bg-green-400" />
-                  </div>
-                </motion.div>
-              </motion.div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* --- THE LOGIC (NEURAL SYNTHESIS) --- */}
-        <section className="py-24 md:py-48 px-6 md:px-12 bg-white/[0.02] border-y border-white/5">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  {
-                    title: "Context Analysis",
-                    icon: BrainCircuit,
-                    color: "indigo",
-                    desc: "Maps text meaning",
-                  },
-                  {
-                    title: "Auto-Questioning",
-                    icon: MousePointerClick,
-                    color: "emerald",
-                    desc: "Q&A Generation",
-                  },
-                  {
-                    title: "Handwriting Scan",
-                    icon: FileText,
-                    color: "indigo",
-                    desc: "Messy Note OCR",
-                  },
-                  {
-                    title: "Retention Track",
-                    icon: BarChart3,
-                    color: "emerald",
-                    desc: "Mastery Analytics",
-                  },
-                ].map((feature, i) => (
-                  <div
-                    key={i}
-                    className="aspect-square glass-panel rounded-3xl border border-white/10 flex flex-col items-center justify-center gap-3 relative overflow-hidden group p-6"
-                  >
-                    <div className="absolute inset-0 bg-white/0 group-hover:bg-white/[0.02] transition-colors" />
-                    <feature.icon
-                      className={`text-${feature.color}-400 group-hover:scale-110 transition-all mb-2`}
-                      size={32}
-                    />
-                    <div className="text-center space-y-1">
-                      <span className="block text-[10px] font-black text-white uppercase tracking-[0.1em] group-hover:text-[#DFFF00] transition-colors">
-                        {feature.title}
-                      </span>
-                      <span className="block text-[8px] font-medium text-white/70 uppercase tracking-widest">
-                        {feature.desc}
-                      </span>
-                    </div>
+        {/* ── SLIDE 4: SMART AI ── */}
+        <div
+          className={`${sectionClasses} bg-white/[0.02] border-y border-white/5`}
+        >
+          <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center scale-[0.85] md:scale-95 transform-gpu origin-center">
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              {[
+                {
+                  title: "Context Analysis",
+                  icon: BrainCircuit,
+                  color: "indigo",
+                  desc: "Maps text meaning",
+                },
+                {
+                  title: "Auto-Questioning",
+                  icon: MousePointerClick,
+                  color: "emerald",
+                  desc: "Q&A Generation",
+                },
+                {
+                  title: "Handwriting Scan",
+                  icon: FileText,
+                  color: "indigo",
+                  desc: "Messy Note OCR",
+                },
+                {
+                  title: "Retention Track",
+                  icon: BarChart3,
+                  color: "emerald",
+                  desc: "Mastery Analytics",
+                },
+              ].map((f, i) => (
+                <div
+                  key={i}
+                  className="aspect-square glass-panel rounded-3xl border border-white/10 flex flex-col items-center justify-center gap-3 relative overflow-hidden group p-5"
+                >
+                  <f.icon
+                    className={`text-${f.color}-400 group-hover:scale-110 transition-all`}
+                    size={28}
+                  />
+                  <div className="text-center">
+                    <span className="block text-[9px] font-black text-white uppercase tracking-[0.1em] group-hover:text-[#DFFF00] transition-colors">
+                      {f.title}
+                    </span>
+                    <span className="block text-[8px] text-white/50 uppercase tracking-widest">
+                      {f.desc}
+                    </span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-            <div className="order-1 lg:order-2 space-y-8 md:space-y-12">
-              <div className="text-[10px] font-black uppercase tracking-[0.5em] text-[#DFFF00] font-syne">
+            <div className="space-y-6">
+              <div className="text-[10px] font-black uppercase tracking-[0.4em] text-[#DFFF00] font-syne">
                 OUR REALLY SMART AI // VERSION 1.5
               </div>
-              <h2 className="text-4xl md:text-7xl font-black text-white uppercase tracking-tighter leading-[0.9] font-syne">
+              <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter leading-[0.9] font-syne">
                 SMART <br />
                 <span className="text-[#DFFF00] italic">READING.</span>
               </h2>
-              <p className="text-white/90 text-lg md:text-xl leading-relaxed font-outfit max-w-xl">
-                Our AI doesn't just copy words—it actually understands what it's
-                reading. It finds the most important parts of your notes and
-                turns them into questions that help you learn.
+              <p className="text-white/80 text-sm md:text-base leading-relaxed font-outfit max-w-xl">
+                Our AI doesn't just copy words — it actually understands what
+                it's reading. It finds the most important parts of your notes
+                and turns them into questions that help you learn.
               </p>
               <button
                 onClick={() => navigate("/generator")}
-                className="inline-flex items-center gap-4 text-xs font-black uppercase tracking-[0.3em] text-white hover:text-[#DFFF00] transition-colors group"
+                className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.3em] text-white hover:text-[#DFFF00] transition-colors group"
               >
                 START THE MAGIC{" "}
                 <ArrowRight
-                  size={16}
+                  size={14}
                   className="group-hover:translate-x-2 transition-transform"
                 />
               </button>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* --- THE METHOD (HOW IT WORKS) --- */}
-        <section className="py-24 md:py-48 relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#DFFF00]/5 blur-[150px] rounded-full pointer-events-none" />
-
-          <div className="text-center mb-16 md:mb-32 relative z-10">
-            <h2 className="text-4xl md:text-8xl font-black tracking-tighter mb-6 md:mb-10 uppercase font-syne text-white">
-              REALLY <br />
-              <span className="text-[#DFFF00] italic">SIMPLE.</span>
-            </h2>
-            <p className="text-white/90 text-lg md:text-2xl font-medium max-w-3xl mx-auto font-outfit">
-              Three easy steps to master any subject. We do all the hard work so
-              you can just learn.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 relative z-10">
-            {[
-              {
-                title: "UPLOAD",
-                label: "STEP 01",
-                desc: "Send us your notes, PDFs, or photos. We can even read messy handwriting!",
-                icon: Rocket,
-              },
-              {
-                title: "PROCESS",
-                label: "STEP 02",
-                desc: "Our smart AI reads everything and creates perfect practice questions for you.",
-                icon: Activity,
-              },
-              {
-                title: "LEARN",
-                label: "STEP 03",
-                desc: "Answer the questions. If you get stuck, we'll explain it in a way that makes sense.",
-                icon: CheckCircle,
-              },
-            ].map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="glass-panel p-8 md:p-12 rounded-[40px] border border-white/10 group flex flex-col items-center text-center space-y-8 hover:bg-white/5 transition-colors"
-              >
-                <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-[#DFFF00]/10 group-hover:border-[#DFFF00]/30 transition-all">
-                  <s.icon
-                    size={32}
-                    className="text-white group-hover:text-[#DFFF00] transition-colors"
-                  />
-                </div>
-                <div>
-                  <div className="text-[10px] font-black tracking-[0.4em] text-white/70 uppercase mb-4">
-                    {s.label}
+        {/* ── SLIDE 5: HOW IT WORKS ── */}
+        <div className={sectionClasses}>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#DFFF00]/5 blur-[60px] md:blur-[150px] rounded-full pointer-events-none transform-gpu will-change-transform" />
+          <div className="max-w-5xl mx-auto w-full relative z-10 scale-[0.80] md:scale-90 transform-gpu origin-center top-4 md:top-0">
+            <div className="text-center mb-4 md:mb-6">
+              <h2 className="text-2xl md:text-5xl font-black tracking-tighter mb-1 md:mb-2 uppercase font-syne text-white">
+                REALLY <br />
+                <span className="text-[#DFFF00] italic">SIMPLE.</span>
+              </h2>
+              <p className="text-white/80 text-xs md:text-sm font-medium max-w-xl mx-auto font-outfit hidden md:block">
+                Three easy steps to master any subject.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  title: "UPLOAD",
+                  label: "STEP 01",
+                  desc: "Send us your notes, PDFs, or photos. We can even read messy handwriting!",
+                  icon: Rocket,
+                },
+                {
+                  title: "PROCESS",
+                  label: "STEP 02",
+                  desc: "Our smart AI reads everything and creates perfect practice questions for you.",
+                  icon: Activity,
+                },
+                {
+                  title: "LEARN",
+                  label: "STEP 03",
+                  desc: "Answer the questions. If you get stuck, we'll explain it in a way that makes sense.",
+                  icon: CheckCircle,
+                },
+              ].map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass-panel p-6 rounded-3xl border border-white/10 group flex flex-col items-center text-center space-y-4 hover:bg-white/5 transition-colors"
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-[#DFFF00]/10 group-hover:border-[#DFFF00]/30 transition-all">
+                    <s.icon
+                      size={22}
+                      className="text-white group-hover:text-[#DFFF00] transition-colors"
+                    />
                   </div>
-                  <h3 className="text-3xl font-black text-white mb-4 uppercase font-syne">
-                    {s.title}
-                  </h3>
-                  <p className="text-white/90 text-base leading-relaxed font-medium font-outfit">
-                    {s.desc}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* --- THE PLANS (ROADMAP PITCH) --- */}
-        <section className="relative py-24 md:py-48 overflow-visible">
-          <div className="max-w-7xl mx-auto px-6 md:px-12 mb-20 md:mb-32">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-[0.2em] mb-8 font-syne">
-              <Sparkles size={12} />
-              STAY ON TRACK
+                  <div>
+                    <div className="text-[9px] font-black tracking-[0.3em] text-white/40 uppercase mb-1">
+                      {s.label}
+                    </div>
+                    <h3 className="text-lg font-black text-white mb-2 uppercase font-syne">
+                      {s.title}
+                    </h3>
+                    <p className="text-white/60 text-sm leading-relaxed font-outfit">
+                      {s.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
-            <h2 className="text-4xl md:text-8xl font-black mb-8 md:mb-12 uppercase tracking-tighter leading-none font-syne text-white">
-              FOLLOW A <br />
-              <span className="text-[#DFFF00] italic">STUDY PLAN.</span>
-            </h2>
-            <p className="text-white/90 text-lg md:text-xl font-medium font-outfit max-w-2xl">
-              Don't know what to study next? We've put together simple
-              step-by-step plans for almost any subject. Just follow the path to
-              learn anything.
-            </p>
           </div>
+        </div>
 
-          <RoadmapVisual />
-
-          <div className="flex justify-center mt-20">
-            <button
-              onClick={() => navigate("/hub")}
-              className="px-12 py-6 rounded-[24px] bg-white text-black font-black uppercase text-xs tracking-widest hover:bg-[#DFFF00] transition-all flex items-center gap-4 group shadow-[0_0_50px_rgba(255,255,255,0.1)]"
-            >
-              FIND YOUR PLAN{" "}
-              <ArrowRight
-                className="group-hover:translate-x-2 transition-transform"
-                size={16}
-              />
-            </button>
-          </div>
-        </section>
-
-        {/* --- BENTO MASONRY FEATURES --- */}
-        <section className="py-24 md:py-48 px-6 md:px-12 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#DFFF00]/5 blur-[120px] rounded-full pointer-events-none" />
-
-          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16 md:mb-32">
-              <div className="max-w-2xl">
-                <h2 className="text-[clamp(1.5rem,5vw,4rem)] font-black mb-8 uppercase tracking-tighter leading-none font-syne text-white">
-                  STUDY SMARTER <br />
-                  <span className="text-[#DFFF00] italic">NOT HARDER.</span>
-                </h2>
-                <p className="text-white/90 text-lg md:text-xl font-medium font-outfit">
-                  Simple tools for smart students. Get better grades without
-                  working longer hours.
-                </p>
+        {/* ── SLIDE 6: STUDY PLANS ── */}
+        <div className={sectionClasses}>
+          <div className="max-w-7xl mx-auto w-full scale-[0.80] md:scale-85 transform-gpu origin-center">
+            <div className="mb-6 text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[9px] font-black uppercase tracking-[0.2em] mb-4 font-syne">
+                <Sparkles size={10} /> STAY ON TRACK
               </div>
+              <h2 className="text-2xl md:text-5xl font-black mb-3 uppercase tracking-tighter leading-none font-syne text-white">
+                FOLLOW A <br />
+                <span className="text-[#DFFF00] italic">STUDY PLAN.</span>
+              </h2>
             </div>
+            <RoadmapVisual />
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={() => navigate("/hub")}
+                className="px-10 py-4 rounded-2xl bg-white text-black font-black uppercase text-xs tracking-widest hover:bg-[#DFFF00] transition-all flex items-center gap-3 group shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              >
+                FIND YOUR PLAN{" "}
+                <ArrowRight
+                  className="group-hover:translate-x-2 transition-transform"
+                  size={14}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+        {/* ── SLIDE 7: BENTO FEATURES ── */}
+        <div className={sectionClasses}>
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#DFFF00]/5 blur-[60px] md:blur-[100px] rounded-full pointer-events-none transform-gpu will-change-transform" />
+          <div className="max-w-7xl mx-auto w-full relative z-10 scale-[0.75] md:scale-90 transform-gpu origin-center md:origin-center mt-8 md:mt-0 mb-auto md:mb-0">
+            <div className="mb-4 md:mb-6 text-center md:text-left">
+              <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-black mb-2 md:mb-3 uppercase tracking-tighter leading-none font-syne text-white">
+                STUDY SMARTER <br />
+                <span className="text-[#DFFF00] italic">NOT HARDER.</span>
+              </h2>
+              <p className="text-white/80 text-xs md:text-base font-medium font-outfit hidden md:block">
+                Simple tools for smart students. Get better grades without
+                working longer hours.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
               {[
                 {
                   title: "READS HANDWRITING",
                   desc: "Take a picture of your messy notes. We can read them easily.",
                   icon: FileText,
-                  className: "md:col-span-8 md:row-span-1",
+                  className: "md:col-span-8",
                   proof: (
-                    <div className="absolute right-0 bottom-0 top-0 w-1/2 bg-gradient-to-l from-white/5 to-transparent flex items-center justify-center p-8 overflow-hidden pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute right-0 bottom-0 top-0 w-1/2 bg-gradient-to-l from-white/5 to-transparent flex items-center justify-center p-6 overflow-hidden pointer-events-none opacity-40 group-hover:opacity-100 transition-opacity">
                       <div className="w-full h-full border border-white/5 rounded-2xl bg-black/40 p-4 space-y-3 rotate-3 translate-x-12 group-hover:rotate-0 group-hover:translate-x-0 transition-all duration-700">
                         <div className="h-2 w-3/4 bg-white/20 rounded-full" />
                         <div className="h-2 w-1/2 bg-white/10 rounded-full" />
@@ -923,31 +859,52 @@ const Landing = () => {
                   title: "UNDERSTANDS IMAGES",
                   desc: "Upload pictures of charts or textbook pages, and we'll ask questions about them.",
                   icon: Layout,
-                  className: "md:col-span-4 md:row-span-1",
+                  className: "md:col-span-4",
                 },
                 {
                   title: "BREAKS IT DOWN",
                   desc: "Our AI takes really complicated topics and makes them easy to understand.",
                   icon: BrainCircuit,
-                  className: "md:col-span-4 md:row-span-1",
+                  className: "md:col-span-4",
                 },
                 {
                   title: "TRACKS PROGRESS",
                   desc: "See exactly what you still need to study before your test.",
                   icon: BarChart3,
-                  className: "md:col-span-8 md:row-span-1",
+                  className: "md:col-span-8",
                   proof: (
-                    <div className="absolute right-0 bottom-0 top-0 w-1/2 flex items-end justify-center p-8 pointer-events-none">
-                      <div className="flex gap-2 items-end h-32">
-                        {[40, 70, 45, 90, 65, 85].map((h, i) => (
-                          <motion.div
-                            key={i}
-                            initial={{ height: 0 }}
-                            whileInView={{ height: `${h}%` }}
-                            transition={{ delay: i * 0.1, duration: 1 }}
-                            className="w-4 bg-indigo-500/20 group-hover:bg-indigo-500/40 rounded-t-lg transition-colors"
-                          />
-                        ))}
+                    <div className="absolute right-0 bottom-0 top-0 w-1/2 flex items-end justify-center p-6 pointer-events-none">
+                      <div className="flex gap-2 items-end h-24">
+                        <motion.div
+                          initial={{ height: 0 }}
+                          whileInView={{ height: "40%" }}
+                          transition={{ delay: 0, duration: 1 }}
+                          className="w-4 bg-indigo-500/20 group-hover:bg-indigo-500/40 rounded-t-lg transition-colors"
+                        />
+                        <motion.div
+                          initial={{ height: 0 }}
+                          whileInView={{ height: "70%" }}
+                          transition={{ delay: 0.1, duration: 1 }}
+                          className="w-4 bg-indigo-500/20 group-hover:bg-indigo-500/40 rounded-t-lg transition-colors"
+                        />
+                        <motion.div
+                          initial={{ height: 0 }}
+                          whileInView={{ height: "45%" }}
+                          transition={{ delay: 0.2, duration: 1 }}
+                          className="w-4 bg-indigo-500/20 group-hover:bg-indigo-500/40 rounded-t-lg transition-colors"
+                        />
+                        <motion.div
+                          initial={{ height: 0 }}
+                          whileInView={{ height: "90%" }}
+                          transition={{ delay: 0.3, duration: 1 }}
+                          className="w-4 bg-indigo-500/20 group-hover:bg-indigo-500/40 rounded-t-lg transition-colors"
+                        />
+                        <motion.div
+                          initial={{ height: 0 }}
+                          whileInView={{ height: "65%" }}
+                          transition={{ delay: 0.4, duration: 1 }}
+                          className="w-4 bg-indigo-500/20 group-hover:bg-indigo-500/40 rounded-t-lg transition-colors"
+                        />
                       </div>
                     </div>
                   ),
@@ -955,20 +912,20 @@ const Landing = () => {
               ].map((feature, idx) => (
                 <motion.div
                   key={idx}
-                  whileHover={{ y: -8, scale: 1.01 }}
-                  className={`glass-panel p-8 md:p-12 rounded-[40px] border border-white/10 group relative overflow-hidden transition-all duration-500 min-h-[320px] md:min-h-[400px] flex flex-col justify-between ${feature.className}`}
+                  whileHover={{ y: -6 }}
+                  className={`glass-panel p-6 rounded-3xl border border-white/10 group relative overflow-hidden transition-all duration-500 min-h-[180px] md:min-h-[220px] flex flex-col justify-between ${feature.className}`}
                 >
                   <div className="relative z-10 max-w-[60%]">
-                    <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-10 group-hover:bg-indigo-500/10 group-hover:border-indigo-500/30 transition-all">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-4 group-hover:bg-indigo-500/10 group-hover:border-indigo-500/30 transition-all">
                       <feature.icon
                         className="text-white group-hover:text-indigo-400 transition-colors"
-                        size={28}
+                        size={18}
                       />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-black mb-4 uppercase tracking-tighter font-syne text-white group-hover:text-indigo-400 transition-colors">
+                    <h3 className="text-base md:text-lg font-black mb-1.5 uppercase tracking-tighter font-syne text-white group-hover:text-indigo-400 transition-colors">
                       {feature.title}
                     </h3>
-                    <p className="text-white/90 text-base md:text-lg font-medium leading-relaxed font-outfit">
+                    <p className="text-white/60 text-xs font-medium leading-relaxed font-outfit">
                       {feature.desc}
                     </p>
                   </div>
@@ -977,123 +934,123 @@ const Landing = () => {
               ))}
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* --- COMPARISON: OLD VS NEW --- */}
-        <section className="py-24 md:py-48 px-4 md:px-12 relative overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/5 blur-[150px] rounded-full pointer-events-none" />
-
-          <div className="text-center mb-20 md:mb-32 relative z-10 px-4">
-            <h2 className="text-[clamp(2.5rem,7vw,6rem)] font-black tracking-tighter mb-8 uppercase font-syne text-white leading-none italic">
-              OLD WAY VS <br />
-              <span className="text-indigo-400 not-italic">NEW WAY.</span>
-            </h2>
-            <p className="text-white/90 text-lg md:text-2xl font-medium max-w-2xl mx-auto font-outfit">
-              Stop reading the same page four times. Start mastering your
-              subjects with interactive AI loops.
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto p-1 rounded-[50px] glass-panel border border-white/10 relative z-10 shadow-3xl overflow-hidden">
-            <div className="grid grid-cols-2 bg-white/5 border-b border-white/10">
-              <div className="p-8 md:p-12 text-center border-r border-white/10 flex flex-col items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/70">
-                  <FileText size={24} />
-                </div>
-                <div className="font-black uppercase tracking-[0.3em] text-[10px] md:text-xs text-white/80 font-syne">
-                  JUST READING
-                </div>
-              </div>
-              <div className="p-8 md:p-12 text-center flex flex-col items-center gap-4 bg-indigo-500/5">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-400/10 border border-indigo-400/20 flex items-center justify-center text-indigo-400">
-                  <Zap size={24} />
-                </div>
-                <div className="font-black uppercase tracking-[0.3em] text-[10px] md:text-xs text-indigo-400 font-syne">
-                  PRACTICE QUIZZES
-                </div>
-              </div>
+        {/* ── SLIDE 8: OLD VS NEW ── */}
+        <div className={sectionClasses}>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/5 blur-[60px] md:blur-[150px] rounded-full pointer-events-none transform-gpu will-change-transform" />
+          <div className="max-w-4xl mx-auto w-full relative z-10 scale-[0.80] md:scale-85 transform-gpu origin-center">
+            <div className="text-center mb-6 md:mb-8">
+              <h2 className="text-[clamp(1.8rem,5vw,4rem)] font-black tracking-tighter mb-2 md:mb-4 uppercase font-syne text-white leading-none italic">
+                OLD WAY VS <br />
+                <span className="text-indigo-400 not-italic">NEW WAY.</span>
+              </h2>
+              <p className="text-white text-xs md:text-base font-medium max-w-2xl mx-auto font-outfit px-4 md:px-0 hidden md:block">
+                Stop reading the same page four times. Start mastering your
+                subjects with interactive AI loops.
+              </p>
             </div>
-            <div className="divide-y divide-white/5 bg-black/20">
-              {[
-                ["Forgot after 3 days", "Remember it for the test"],
-                ["Thinking you know it", "Actually knowing it"],
-                ["Boring & exhausting", "Fast & fun practice"],
-                ["Hard to track progress", "Clear score tracking"],
-              ].map((row, i) => (
-                <div
-                  key={i}
-                  className="grid grid-cols-2 group hover:bg-white/[0.02] transition-colors"
-                >
-                  <div className="p-8 md:p-12 text-center border-r border-white/5 text-white/70 text-sm md:text-xl font-medium font-outfit">
-                    {row[0]}
+            <div className="p-1 rounded-[30px] md:rounded-[40px] glass-panel border border-white/10 shadow-3xl overflow-hidden">
+              <div className="grid grid-cols-2 bg-white/5 border-b border-white/10">
+                <div className="p-6 md:p-10 text-center border-r border-white/10 flex flex-col items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
+                    <FileText size={20} />
                   </div>
-                  <div className="p-8 md:p-12 text-center text-white/80 font-black uppercase italic tracking-tight text-sm md:text-xl font-outfit">
-                    {row[1]}
+                  <div className="font-black uppercase tracking-[0.3em] text-[10px] text-white font-syne">
+                    JUST READING
                   </div>
                 </div>
-              ))}
+                <div className="p-6 md:p-10 text-center flex flex-col items-center gap-3 bg-indigo-500/5">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-400/10 border border-indigo-400/20 flex items-center justify-center text-indigo-400">
+                    <Zap size={20} />
+                  </div>
+                  <div className="font-black uppercase tracking-[0.3em] text-[10px] text-indigo-400 font-syne">
+                    PRACTICE QUIZZES
+                  </div>
+                </div>
+              </div>
+              <div className="divide-y divide-white/5 bg-black/20">
+                {[
+                  ["Forgot after 3 days", "Remember it for the test"],
+                  ["Thinking you know it", "Actually knowing it"],
+                  ["Boring & exhausting", "Fast & fun practice"],
+                  ["Hard to track progress", "Clear score tracking"],
+                ].map((row, i) => (
+                  <div
+                    key={i}
+                    className="grid grid-cols-2 hover:bg-white/[0.02] transition-colors"
+                  >
+                    <div className="p-5 md:p-8 text-center border-r border-white/5 text-white text-sm font-medium font-outfit">
+                      {row[0]}
+                    </div>
+                    <div className="p-5 md:p-8 text-center text-white font-black uppercase italic tracking-tight text-sm font-outfit">
+                      {row[1]}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* --- FAQ --- */}
-        <section className="py-20 md:py-40 max-w-3xl mx-auto px-4 md:px-6">
-          <div className="text-center mb-12 md:mb-20">
-            <h2 className="text-3xl md:text-6xl font-black tracking-tighter mb-4 md:mb-6 uppercase font-syne">
-              Common Questions
-            </h2>
-          </div>
-          <div className="space-y-3 md:space-y-4">
-            <FAQItem
-              question="Is the AI actually accurate?"
-              answer="We use Gemini 1.5 Pro, one of the most advanced reasoning models in existence. It generates questions that aren't just factual, but conceptual, ensuring you actually understand the subject."
-            />
-            <FAQItem
-              question="Can I upload my hand-written notes?"
-              answer="Yes! Our OCR engine is specifically trained to handle messy student handwriting, diagrams, and annotated textbook pages."
-            />
-            <FAQItem
-              question="Is there a limit on quiz generation?"
-              answer="Free accounts can generate up to 5 comprehensive quizzes per week. Pro accounts have unlimited quiz generation."
-            />
-            <FAQItem
-              question="Does it work for math and science?"
-              answer="Absolutely. We support LaTeX formatting for complex equations and can parse technical diagrams from your photos."
-            />
-          </div>
-        </section>
-
-        {/* --- FINAL CONVERSION --- */}
-        <section className="relative pt-24 md:pt-48 pb-24 md:pb-48 px-6 md:px-12 overflow-hidden bg-black">
+        {/* ── SLIDE 9: FAQ + CTA ── */}
+        <div className={`${sectionClasses} bg-black`}>
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-          <div className="max-w-7xl mx-auto relative z-10">
-            <div className="glass-panel p-10 md:p-24 rounded-[64px] md:rounded-[136px] border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent text-center relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(223,255,0,0.02),transparent)] animate-pulse" />
-
-              <h2 className="text-4xl md:text-8xl font-black text-white uppercase tracking-tighter leading-tight mb-10 md:mb-16 font-syne">
+          <div className="max-w-5xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 items-start scale-[0.80] md:scale-90 transform-gpu origin-top md:origin-center mt-12 md:mt-0">
+            {/* FAQ */}
+            <div>
+              <h2 className="text-2xl md:text-4xl font-black tracking-tighter mb-4 uppercase font-syne">
+                Common Questions
+              </h2>
+              <div className="space-y-2">
+                {[
+                  {
+                    q: "Is the AI actually accurate?",
+                    a: "We use Gemini 1.5 Pro, one of the most advanced reasoning models in existence. It generates questions that aren't just factual, but conceptual.",
+                  },
+                  {
+                    q: "Can I upload hand-written notes?",
+                    a: "Yes! Our OCR engine is specifically trained to handle messy student handwriting, diagrams, and annotated textbook pages.",
+                  },
+                  {
+                    q: "Is there a limit on quiz generation?",
+                    a: "Free accounts can generate up to 5 comprehensive quizzes per week. Pro accounts have unlimited quiz generation.",
+                  },
+                  {
+                    q: "Does it work for math and science?",
+                    a: "Absolutely. We support LaTeX formatting for complex equations and can parse technical diagrams from your photos.",
+                  },
+                ].map(({ q, a }) => (
+                  <FAQItem key={q} question={q} answer={a} />
+                ))}
+              </div>
+            </div>
+            {/* CTA */}
+            <div className="glass-panel p-8 md:p-12 rounded-3xl border border-white/5 bg-gradient-to-br from-white/[0.02] to-transparent text-center relative overflow-hidden flex flex-col justify-center gap-6">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(223,255,0,0.03),transparent)] animate-pulse" />
+              <h2 className="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter leading-tight font-syne relative z-10">
                 READY TO GET <br />
                 <span className="text-[#DFFF00] italic">BETTER GRADES?</span>
               </h2>
-              <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center items-center">
+              <div className="flex flex-col gap-3 relative z-10">
                 <button
                   onClick={() => navigate(user ? "/generator" : "/auth")}
-                  className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 rounded-3xl md:rounded-[40px] bg-white text-black font-black uppercase tracking-[0.3em] hover:bg-[#DFFF00] transition-all shadow-2xl shadow-white/5 font-syne text-xs relative z-20"
+                  className="w-full px-8 py-4 rounded-2xl bg-white text-black font-black uppercase tracking-[0.3em] hover:bg-[#DFFF00] transition-all font-syne text-xs"
                 >
                   Get Started Free
                 </button>
                 <button
                   onClick={() => navigate("/features")}
-                  className="w-full sm:w-auto px-10 md:px-16 py-5 md:py-6 rounded-3xl md:rounded-[40px] border border-white/10 text-white/90 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:text-white transition-all font-syne text-xs relative z-20"
+                  className="w-full px-8 py-4 rounded-2xl border border-white/10 text-white/80 font-black uppercase tracking-[0.3em] hover:bg-white/5 hover:text-white transition-all font-syne text-xs"
                 >
                   View Features
                 </button>
               </div>
             </div>
           </div>
-        </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -38,10 +38,10 @@ const LEVELS = [
     skipCount: 7,
   },
   {
-    id: "Legend",
-    title: "Legend",
+    id: "Expert",
+    title: "Expert",
     description:
-      "I'm an expert. Show me the deepest technical hurdles and architectural mastery.",
+      "I'm highly experienced here. Show me the hardest questions and expert-level concepts.",
     icon: Trophy,
     color: "rose",
     skipCount: 12,
@@ -67,7 +67,8 @@ const RoadmapQuestionnaire = ({ onComplete, roadmapTitle }) => {
           <span className="italic text-indigo-500">{roadmapTitle}</span> LEVEL?
         </h2>
         <p className="text-white/90 text-lg font-medium max-w-md mx-auto font-outfit">
-          Our AI will calibrate your roadmap to bypass what you already know.
+          We'll customize your study plan so you don't repeat what you already
+          know.
         </p>
       </motion.div>
 

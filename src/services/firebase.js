@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
-import { getFunctions } from "firebase/functions"; // IMPORT ADDED
+import { getFunctions } from "firebase/functions";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -20,4 +21,13 @@ export const db = initializeFirestore(app, {
         tabManager: persistentMultipleTabManager()
     })
 });
-export const functions = getFunctions(app); // EXPORT ADDED
+export const functions = getFunctions(app);
+
+// Use a try-catch for analytics as it fails in SSR/Node environments (like testing)
+let analyticsInstance = null;
+try {
+    analyticsInstance = typeof window !== "undefined" ? getAnalytics(app) : null;
+} catch (e) {
+    console.warn("Firebase Analytics failed to initialize", e);
+}
+export const analytics = analyticsInstance;

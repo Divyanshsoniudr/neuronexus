@@ -8,6 +8,7 @@ import {
   Play,
   Target,
   ArrowRight,
+  BookOpen,
   RefreshCw,
 } from "lucide-react";
 import NeuralLogo from "../components/NeuralLogo";
@@ -24,21 +25,22 @@ const Roadmap = () => {
     roadmapProgress,
     roadmapLevels,
     setRoadmapLevel,
-    setActiveRoadmap,
     generateAIQuiz,
+    generateFlashcardsFromTopic,
     resetRoadmapProgress,
     customRoadmaps,
   } = useStore();
 
   const [selectedNode, setSelectedNode] = useState(null);
   const [isSynthesizing, setIsSynthesizing] = useState(false);
+  const [isSynthFlashcards, setIsSynthFlashcards] = useState(false);
   const [isVaultSync, setIsVaultSync] = useState(false);
   const [synthStage, setSynthStage] = useState(0);
 
   const synthStages = [
-    "Analyzing subject...",
-    "Creating questions...",
-    "Building your plan...",
+    "Analyzing topic...",
+    "Writing questions...",
+    "Preparing quiz...",
     "Almost ready...",
   ];
 
@@ -79,7 +81,7 @@ const Roadmap = () => {
 
   useEffect(() => {
     let interval;
-    if (isSynthesizing) {
+    if (isSynthesizing || isSynthFlashcards) {
       interval = setInterval(() => {
         setSynthStage((prev) => (prev + 1) % synthStages.length);
       }, 1200);
@@ -87,11 +89,10 @@ const Roadmap = () => {
       setSynthStage(0);
     }
     return () => clearInterval(interval);
-  }, [isSynthesizing]);
+  }, [isSynthesizing, isSynthFlashcards]);
 
   const handleStartNode = async (node) => {
     setIsSynthesizing(true);
-    setActiveRoadmap(id, node.id);
 
     const { getQuizFromVault } = await import("../services/dbService");
     const cached = await getQuizFromVault(node.topic, "Intermediate");
@@ -104,6 +105,26 @@ const Roadmap = () => {
     if (success) navigate("/quiz");
 
     setIsSynthesizing(false);
+    setIsVaultSync(false);
+  };
+
+  const handleStudyFlashcards = async (node) => {
+    setIsSynthFlashcards(true);
+
+    const { getQuizFromVault } = await import("../services/dbService");
+    const cached = await getQuizFromVault(node.topic, "Intermediate");
+    if (cached) {
+      setIsVaultSync(true);
+      await new Promise((r) => setTimeout(r, 800));
+    }
+
+    const success = await generateFlashcardsFromTopic(
+      node.topic,
+      "Intermediate",
+    );
+    if (success) navigate("/flashcards");
+
+    setIsSynthFlashcards(false);
     setIsVaultSync(false);
   };
 
@@ -244,7 +265,7 @@ const Roadmap = () => {
                       >
                         <p className="text-white/70 font-medium mb-8 leading-relaxed text-sm sm:text-base">
                           <span className="text-white/90 font-bold block mb-2 uppercase text-xs tracking-wider">
-                            Objective Assessment
+                            What You'll Learn
                           </span>
                           {node.topic}
                         </p>
@@ -252,23 +273,36 @@ const Roadmap = () => {
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                           {isCompleted ? (
                             <div className="inline-flex px-6 py-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-bold text-sm items-center justify-center gap-2">
-                              <CheckCircle size={18} /> Module Verified
+                              <CheckCircle size={18} /> Completed
                             </div>
                           ) : (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleStartNode(node);
-                              }}
-                              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-white text-black font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-indigo-400 hover:text-white transition-all transform hover:scale-[1.02] shadow-lg"
-                            >
-                              <Play size={18} fill="currentColor" />
-                              Commence Training
-                            </button>
+                            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleStartNode(node);
+                                }}
+                                className="flex-1 sm:flex-none px-8 py-4 rounded-xl bg-white text-black font-black uppercase tracking-widest text-sm flex items-center justify-center gap-3 hover:bg-indigo-400 hover:text-white transition-all transform hover:scale-[1.02] shadow-lg"
+                              >
+                                <Play size={18} fill="currentColor" />
+                                Start Practicing
+                              </button>
+
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleStudyFlashcards(node);
+                                }}
+                                className="flex-1 sm:flex-none px-6 py-4 rounded-xl bg-white/5 border border-white/10 text-emerald-400 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-all"
+                              >
+                                <BookOpen size={14} />
+                                Flashcards
+                              </button>
+                            </div>
                           )}
 
                           <span className="text-xs font-semibold uppercase tracking-widest text-white/20 text-center sm:text-right">
-                            {isVaultSync ? "Quick Sync" : "Neural Generation"}
+                            {isVaultSync ? "Loading Quiz" : "Creating Quiz"}
                           </span>
                         </div>
                       </motion.div>
@@ -283,7 +317,7 @@ const Roadmap = () => {
 
       {/* SYNTHESIS OVERLAY (AI Generating) */}
       <AnimatePresence>
-        {isSynthesizing && (
+        {(isSynthesizing || isSynthFlashcards) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -327,7 +361,11 @@ const Roadmap = () => {
               </motion.div>
             </AnimatePresence>
             <p className="mt-12 text-indigo-400 text-xs font-bold uppercase tracking-widest animate-pulse">
-              {isVaultSync ? "Loading Cached Data" : "Generating Neural Quiz"}
+              {isVaultSync
+                ? "Loading saved questions..."
+                : isSynthFlashcards
+                  ? "Generating flashcards..."
+                  : "Creating your quiz..."}
             </p>
           </motion.div>
         )}

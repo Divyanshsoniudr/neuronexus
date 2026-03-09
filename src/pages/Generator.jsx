@@ -21,8 +21,22 @@ import SEO from "../components/SEO";
 const Generator = () => {
   const [prompt, setPrompt] = useState("");
   const [file, setFile] = useState(null);
+  const [pasteFeedback, setPasteFeedback] = useState(false);
   const { generateAIQuiz, isGenerating } = useStore();
   const navigate = useNavigate();
+
+  const handlePaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        setPrompt(text.trim().slice(0, 200));
+        setPasteFeedback(true);
+        setTimeout(() => setPasteFeedback(false), 2000);
+      }
+    } catch {
+      // User denied clipboard permission — silently skip
+    }
+  };
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -116,6 +130,13 @@ const Generator = () => {
             placeholder="e.g. Chapter 4 Biology, Calculus exam, 18th Century History..."
             className="flex-1 bg-transparent border-none focus:outline-none px-6 md:px-10 py-6 md:py-8 text-xl font-bold placeholder:text-white/70 font-syne text-white"
           />
+          <button
+            onClick={handlePaste}
+            title="Paste from clipboard"
+            className="px-4 py-2 rounded-xl text-white/40 hover:text-white/80 hover:bg-white/5 transition-all text-xs font-black uppercase tracking-widest shrink-0"
+          >
+            {pasteFeedback ? "✓" : "⌘V"}
+          </button>
           <button
             onClick={handleStart}
             disabled={(!prompt.trim() && !file) || isGenerating}
